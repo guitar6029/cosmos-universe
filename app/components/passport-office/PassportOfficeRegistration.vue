@@ -20,7 +20,7 @@ async function fileApplication() { emit("begin"); await beginRegistration({ firs
 
 
 const fileApplicationStatus = computed(() => {
-  return pending ? "Filing…" : "File application";
+  return pending.value ? "Filing…" : "File application";
 })
 
 
@@ -90,7 +90,7 @@ const fileApplicationStatus = computed(() => {
       <p>Your secure launch phrase is protected and will not be displayed here.</p>
       <p v-if="error" class="passport-registration__error" role="alert">{{ error }}</p>
       <button type="button" :disabled="pending || !isLoaded" @click="fileApplication">{{ fileApplicationStatus
-      }}</button>
+        }}</button>
       <button type="button" class="passport-registration__secondary" :disabled="pending"
         @click="correctApplication">Make corrections</button>
       <button type="button" class="passport-registration__secondary" :disabled="pending" @click="emit('cancel')">Cancel
