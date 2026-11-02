@@ -12,4 +12,5 @@ export function usePassportOfficeRegistration(signUp: Ref<RegistrationSignUp | n
   async function verify(code: string) { if (!isLoaded.value || !signUp.value || pending.value) return; pending.value = true; error.value = ""; try { const attempt = await signUp.value.attemptEmailAddressVerification({ code: code.trim() }); const activate = setActive.value; if (attempt.status !== "complete" || !attempt.createdSessionId || !activate) { error.value = "Your application needs another Clerk security step before its session can be activated."; return; } await activate({ session: attempt.createdSessionId }); complete(); } catch (value) { error.value = errorMessage(value); } finally { pending.value = false; } }
   async function resend() { if (!signUp.value || pending.value) return; pending.value = true; error.value = ""; try { await signUp.value.prepareEmailAddressVerification({ strategy: "email_code" }); } catch (value) { error.value = errorMessage(value); } finally { pending.value = false; } }
   return { verifying, pending, error, begin, verify, resend };
+
 }

@@ -1,6 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import type { CosmoportApp } from "../../shared/types/cosmoportApp";
 import { type ProfileStatus } from "../types/profile.types";
+import { isAvatarId, type AvatarId } from "../../app/data/avatarsMedia";
 
 export class CosmoportCoreConfigurationError extends Error {
   constructor() {
@@ -115,4 +116,35 @@ export async function createCosmosProfile(
   return {
     status: rows.length > 0 ? "created" : "already_exists",
   };
+}
+
+
+export async function saveCosmosProfileAvatar(
+  userId: string,
+  avatarId: AvatarId,
+  connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
+): Promise<{ avatarId: AvatarId }> {
+  if (!isAvatarId(avatarId)) {
+    throw new Error("Invalid avatar ID");
+  }
+
+  const sql = getCoreSql(connectionString);
+
+  const rows = await sql`
+    INSERT INTO public.profiles (user_id, avatar_id)
+    VALUES (${userId}, ${avatarId})
+    ON CONFLICT (user_id)
+    DO UPDATE SET
+      avatar_id = EXCLUDED.avatar_id,
+      updated_at = NOW()
+    RETURNING avatar_id
+  `;
+
+  const row = rows[0];
+
+  if (!row) {
+    throw new Error("Failed to save Cosmos profile avatar");
+  }
+
+  return { avatarId: row.avatar_id as AvatarId };
 }
