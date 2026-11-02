@@ -11,6 +11,13 @@ const RATE_LIMIT_RETRY_AFTER_SECONDS = 60;
 // Each prefix is a deliberately reviewed public-artwork namespace. Keep this
 // allowlist narrow; R2 itself remains private.
 const PUBLIC_MEDIA_PREFIXES = ["astro-pop/", "passport-office/", "about/", "grand-concourse/", "sounds/grand-concourse/"];
+// Avatar delivery is limited to the four reviewed presets, not arbitrary uploads.
+const PUBLIC_AVATAR_KEYS = new Set([
+  "avatars/cosmos_avatar_astronaut_transparent.png",
+  "avatars/cosmos_avatar_cat_transparent.png",
+  "avatars/cosmos_avatar_alien_transparent.png",
+  "avatars/cosmos_avatar_robot_transparent.png",
+]);
 const MEDIA_TYPES: Record<string, string> = {
   png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp",
   mp4: "video/mp4", mp3: "audio/mpeg", wav: "audio/wav", ogg: "audio/ogg",
@@ -37,7 +44,7 @@ function mediaKey(url: URL): string | null {
     /[\u0000-\u001f\u007f]/.test(key) || key.split("/").some((part) => !part || part === "." || part === "..")
   ) return null;
 
-  if (!PUBLIC_MEDIA_PREFIXES.some((prefix) => key.startsWith(prefix))) return "";
+  if (!PUBLIC_MEDIA_PREFIXES.some((prefix) => key.startsWith(prefix)) && !PUBLIC_AVATAR_KEYS.has(key)) return "";
   const extension = key.slice(key.lastIndexOf(".") + 1).toLowerCase();
   return Object.hasOwn(MEDIA_TYPES, extension) ? key : "";
 }
