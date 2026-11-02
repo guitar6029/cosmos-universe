@@ -24,7 +24,12 @@ test("keeps navigation auth destinations and Passport Office deep links usable o
   await expect(navigation.getByRole("link", { name: "Register" })).toHaveAttribute("href", "/passport-office?intent=register");
 
   await page.goto("/passport-office?intent=register");
-  await expect(page.getByRole("region", { name: "CosmoPort traveler registration" })).toBeVisible();
+  const registration = page.getByRole("region", { name: "CosmoPort traveler registration" });
+  await expect(registration).toBeVisible();
+  const astronaut = registration.getByRole("radio", { name: "Astronaut" });
+  await expect(astronaut).toBeChecked();
+  await registration.getByRole("radio", { name: "Robot" }).check();
+  await expect(registration.getByRole("radio", { name: "Robot" })).toBeChecked();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 
   await page.goto("/passport-office?intent=sign-in");

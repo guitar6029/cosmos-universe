@@ -1,0 +1,37 @@
+.passport-registration { display: grid; grid-template-columns: minmax(18rem, .9fr) minmax(0, 1.1fr); gap: clamp(1.25rem, 3vw, 3rem); align-items: stretch; margin: 0; }
+.passport-registration__cover { display: grid; min-height: 34rem; place-items: center; overflow: hidden; padding: 0; background: #173c47; }
+.passport-registration__cover img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.passport-registration__cover--fallback { color: #fff3d7; text-align: center; font-weight: 700; }
+.passport-registration__cover--fallback p { padding: 1.5rem; }
+.passport-registration__form { display: grid; gap: .7rem; align-content: start; padding: clamp(.5rem, 1vw, 1rem) clamp(.35rem, 1vw, 1rem); }
+.passport-registration__form p, .passport-registration__form h2 { margin: 0; }
+.passport-registration__form h2 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.5rem, 3vw, 2.15rem); }
+.passport-registration__stamp { color: #b8493a; font-size: .72rem; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+.passport-registration__form label { display: grid; gap: .3rem; font-weight: 800; }
+.passport-registration__form input { border: 2px solid #173c47; border-radius: .45rem; padding: .65rem; background: #fffdf5; color: #173c47; font: inherit; }
+.passport-registration__form button { border: 2px solid #173c47; border-radius: .65rem; padding: .72rem; background: #78c5bf; color: #173c47; font: inherit; font-weight: 800; cursor: pointer; }
+.passport-registration__form button:hover { background: #ee8e71; }
+.passport-registration__form button:focus-visible, .passport-registration__form input:focus-visible { outline: 3px solid #b8493a; outline-offset: 3px; }
+.passport-registration__form button:disabled, .passport-registration__form input:disabled { opacity: .65; cursor: wait; }
+.passport-registration__secondary { background: #fff3d7 !important; }
+.passport-registration__error { color: #912c21; font-weight: 800; }
+.passport-registration__hint { font-weight: 700; }
+.passport-registration__portraits { margin: 0; border: 0; padding: 0; }
+.passport-registration__portraits legend { padding: 0; font-weight: 800; }
+.passport-registration__portrait-hint { color: #4f6870; font-size: .9rem; }
+.passport-registration__portrait-options { display: grid; grid-template-columns: repeat(4, 6rem); gap: .65rem; padding-top: 1.25rem; }
+.passport-registration__portrait-option { position: relative; display: block !important; cursor: pointer; }
+.passport-registration__portrait-option input { position: absolute; width: 1px; height: 1px; margin: -1px; clip: rect(0 0 0 0); clip-path: inset(50%); overflow: hidden; white-space: nowrap; }
+.passport-registration__portrait-tile { position: relative; display: block; border: 2px solid #173c47; border-radius: .45rem; background: #fffdf5; }
+.passport-registration__portrait-tile img { display: block; width: 6rem; height: 6rem; border-radius: .3rem; object-fit: cover; }
+.passport-registration__portrait-option--selected .passport-registration__portrait-tile { border-color: #b8493a; border-width: 3px; border-top-left-radius: 0; box-shadow: 0 0 0 1px #b8493a; }
+.passport-registration__portrait-tab { position: absolute; bottom: calc(100% + .25rem); left: -3px; border: 2px solid #b8493a; border-bottom: 0; border-radius: .35rem .35rem 0 0; padding: .08rem .25rem; background: #b8493a; color: #fff3d7; font-size: .55rem; font-weight: 900; letter-spacing: .08em; line-height: 1.1; text-transform: uppercase; white-space: nowrap; }
+.passport-registration__portrait-option input:focus-visible + .passport-registration__portrait-tile { outline: 3px solid #b8493a; outline-offset: 3px; }
+.passport-registration__portraits:disabled .passport-registration__portrait-option { cursor: wait; opacity: .65; }
+.passport-registration__visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.passport-registration__review dl { display: grid; gap: .55rem; margin: 0; }
+.passport-registration__review dl div { display: grid; gap: .12rem; border-bottom: 1px solid rgb(23 60 71 / .3); padding-bottom: .4rem; }
+.passport-registration__review dt { color: #b8493a; font-size: .76rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.passport-registration__review dd { margin: 0; font-weight: 800; overflow-wrap: anywhere; }
+@media (max-width: 44rem) { .passport-registration { grid-template-columns: 1fr; }.passport-registration__cover { min-height: 18rem; }.passport-registration__form { padding: .5rem 0; } }
+@media (max-width: 24rem) { .passport-registration__portrait-options { grid-template-columns: repeat(2, 6rem); row-gap: 1.15rem; } }
