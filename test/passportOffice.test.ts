@@ -76,6 +76,7 @@ describe("Passport Office", () => {
 
   it("uses native password-manager fields, a password-safe review, and a full-bleed passport interior", async () => {
     const source = await readFile(resolve(process.cwd(), "app/components/passport-office/PassportOfficeRegistration.vue"), "utf8");
+    const styles = await readFile(resolve(process.cwd(), "app/components/passport-office/PassportOfficeRegistration.css"), "utf8");
     expect(source).toContain('name="firstName"');
     expect(source).toContain('name="lastName"');
     expect(source).toContain('name="emailAddress"');
@@ -85,14 +86,15 @@ describe("Passport Office", () => {
     expect(source).toContain("Make corrections");
     expect(source).toContain("will not be displayed here");
     expect(source).toContain("PASSPORT_OFFICE_MEDIA.passportInterior");
-    expect(source).toContain("object-fit:cover");
-    expect(source).not.toContain("border:2px dashed");
+    expect(styles).toMatch(/object-fit\s*:\s*cover\s*;/);
+    expect(styles).toMatch(/@media\s*\(\s*max-width\s*:\s*44rem\s*\)/);
+    expect(styles).not.toMatch(/border\s*:\s*2px\s+dashed/);
     expect(source).toContain("Given Name (First Name)");
     expect(source).toContain("Family Name (Last Name)");
     expect(source).toContain("Contact Signal (Email Address)");
     expect(source).toContain("Secure Launch Phrase (Password)");
     expect(source).toContain("passportCoverFailed = true");
-    expect(source).toContain("@media (max-width:44rem)");
+    expect(source).toContain('src="./PassportOfficeRegistration.css"');
   });
 
   it("keeps Stella's introduction on the main office screen and isolates registration from her dialogue", async () => {

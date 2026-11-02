@@ -24,7 +24,24 @@ test("keeps navigation auth destinations and Passport Office deep links usable o
   await expect(navigation.getByRole("link", { name: "Register" })).toHaveAttribute("href", "/passport-office?intent=register");
 
   await page.goto("/passport-office?intent=register");
-  await expect(page.getByRole("region", { name: "CosmoPort traveler registration" })).toBeVisible();
+  const registration = page.getByRole("region", { name: "CosmoPort traveler registration" });
+  await expect(registration).toBeVisible();
+  const astronaut = registration.getByRole("radio", { name: "Astronaut" });
+  await expect(astronaut).toBeChecked();
+  const astronautOption = registration.locator('.passport-registration__portrait-option:has(input[value="astronaut"])');
+  await expect(astronautOption.locator(".passport-registration__portrait-tab")).toHaveText("Selected");
+
+  const robot = registration.getByRole("radio", { name: "Robot" });
+  await astronaut.focus();
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("ArrowRight");
+  await expect(robot).toBeChecked();
+  await expect(astronaut).not.toBeChecked();
+  await expect(astronautOption.locator(".passport-registration__portrait-tab")).toHaveCount(0);
+  const robotOption = registration.locator('.passport-registration__portrait-option:has(input[value="robot"])');
+  await expect(robotOption.locator(".passport-registration__portrait-tab")).toHaveText("Selected");
+  expect(await registration.locator(".passport-registration__portrait-options").evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 
   await page.goto("/passport-office?intent=sign-in");
