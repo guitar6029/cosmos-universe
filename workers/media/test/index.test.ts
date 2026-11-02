@@ -189,6 +189,43 @@ describe("media worker", () => {
     expect(put).toHaveBeenCalledOnce();
   });
 
+  it.each([
+    "astronaut",
+    "cat",
+    "alien",
+    "robot",
+  ])("serves reviewed %s avatar from R2", async (avatar) => {
+    const key = `avatars/cosmos_avatar_${avatar}_transparent.png`;
+    const { env, get } = enabledEnv({ [key]: "preset-avatar" });
+    const { match, put } = installCache();
+    const { context, pending } = executionContext();
+
+    const response = await dispatch(`/${key}`, env, undefined, context);
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe("image/png");
+    expect(response.headers.get("Cache-Control")).toContain("s-maxage=300");
+    expect(await response.text()).toBe("preset-avatar");
+    expect(get).toHaveBeenCalledWith(key);
+    expect(match).toHaveBeenCalledOnce();
+    await Promise.all(pending);
+    expect(put).toHaveBeenCalledOnce();
+  });
+
+  it.each([
+    "/avatars/custom.png",
+    "/avatars/cosmos_avatar_astronaut_transparent.svg",
+    "/avatars/uploads/user-123.png",
+    "/avatars/cosmos_avatar_astronaut_transparent.png/other.png",
+  ])("rejects unapproved avatar path %s before R2 access", async (path) => {
+    const { env, get, head } = enabledEnv();
+    const response = await dispatch(path, env);
+
+    expect(response.status).toBe(404);
+    expect(get).not.toHaveBeenCalled();
+    expect(head).not.toHaveBeenCalled();
+  });
+
   it("serves reviewed Passport Office artwork from the public prefix", async () => {
     const key = "passport-office/retro-spaceport-passport-bureau.png";
     const { env, get } = enabledEnv({ [key]: "animated-webp" });
