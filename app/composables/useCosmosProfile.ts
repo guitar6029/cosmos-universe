@@ -10,6 +10,8 @@ type AvatarResponse = {
   avatarId: AvatarId | null;
 };
 
+const PROFILE_REQUEST_TIMEOUT_MS = 8_000;
+
 type CosmosProfileState = {
   avatarId: AvatarId | null;
   error: boolean;
@@ -67,6 +69,7 @@ export function useCosmosProfile() {
       try {
         const response = await $fetch<AvatarResponse>(
           "/api/account/profile-avatar",
+          { timeout: PROFILE_REQUEST_TIMEOUT_MS },
         );
 
         if (
