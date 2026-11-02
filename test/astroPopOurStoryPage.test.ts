@@ -1,6 +1,8 @@
 import { createPinia } from "pinia";
 import { createSSRApp, defineComponent, h } from "vue";
 import { renderToString } from "vue/server-renderer";
+// Astro Pop navigation now consumes shared Clerk identity.
+vi.stubGlobal("useUser", () => ({ user: { value: null } }));
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AstroPopOurStoryPage from "../app/pages/app/astro-pop/our-story.vue";
 import { ASTRO_POP_MEDIA } from "../app/data/astroPopMedia";
