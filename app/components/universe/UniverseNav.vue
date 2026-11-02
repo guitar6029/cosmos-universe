@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import UniverseRadioControl from "./UniverseRadioControl.vue";
+import UniverseAvatar from "../shared/UniverseAvatar.vue";
 
 const { isLoaded, isSignedIn, signOut } = useAuth();
 const { user } = useUser();
@@ -25,13 +26,6 @@ const userName = computed(() => (
   || user.value?.primaryEmailAddress?.emailAddress
   || "CosmoPort traveler"
 ));
-
-const fallbackInitials = computed(() => userName.value
-  .split(/[\s@._-]+/)
-  .filter(Boolean)
-  .slice(0, 2)
-  .map((part) => part[0]?.toUpperCase())
-  .join("") || "CP");
 
 const userEmail = computed(() => user.value?.primaryEmailAddress?.emailAddress || "No email address on file");
 
@@ -148,9 +142,7 @@ onBeforeUnmount(() => {
           <button ref="accountToggle" class="universe-nav__account-toggle" type="button"
             :aria-label="'Account for ' + userName" :aria-expanded="accountMenuOpen"
             aria-controls="universe-account-menu" @click="toggleAccountMenu">
-            <img v-if="user?.imageUrl" class="universe-nav__avatar" :src="user.imageUrl" alt="" />
-            <span v-else class="universe-nav__avatar universe-nav__avatar--fallback" aria-hidden="true">{{
-              fallbackInitials }}</span>
+            <UniverseAvatar :image-url="user?.imageUrl" :name="userName" />
             <svg class="universe-nav__chevron" :class="{ 'universe-nav__chevron--open': accountMenuOpen }"
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -165,16 +157,13 @@ onBeforeUnmount(() => {
               <p class="universe-nav__account-email">{{ userEmail }}</p>
             </div>
             <hr class="universe-nav__menu-divider" />
-            <div class="universe-nav__menu-item universe-nav__menu-item--unavailable" aria-disabled="true">
-              <svg class="universe-nav__menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                aria-hidden="true">
+            <NuxtLink to="/account" class="universe-nav__menu-item universe-nav__menu-link" @click="closeAccountMenu()">
+              <svg class="universe-nav__menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="8" r="3.5" />
                 <path d="M5.5 20v-1.5a6.5 6.5 0 0 1 13 0V20" />
               </svg>
-              <span>Account</span>
-              <span class="universe-nav__menu-soon">Soon</span>
-            </div>
+              <span>My Account</span>
+            </NuxtLink>
             <NuxtLink v-if="isAdmin" to="/admin" class="universe-nav__menu-item universe-nav__menu-link"
               @click="closeAccountMenu()">
               <svg class="universe-nav__menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
