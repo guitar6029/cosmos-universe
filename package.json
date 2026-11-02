@@ -13,7 +13,8 @@
     "test:e2e:clerk": "doppler run -p cosmoport-universe -c dev -- node scripts/run-clerk-e2e.mjs",
     "test:e2e:clerk:cleanup": "doppler run -p cosmoport-universe -c dev -- node scripts/cleanup-clerk-test-users.mjs",
     "doppler:dev": "doppler run -p cosmoport-universe -c dev -- npm run dev",
-    "stripe:webhook:dev": "stripe listen --events checkout.session.completed,checkout.session.async_payment_succeeded --forward-to http://localhost:3000/api/astro-pop/stripe-webhook"
+    "stripe:webhook:dev": "stripe listen --events checkout.session.completed,checkout.session.async_payment_succeeded --forward-to http://localhost:3000/api/astro-pop/stripe-webhook",
+    "ngrok:webhook:dev": "ngrok http 3000"
   },
   "dependencies": {
     "@clerk/nuxt": "^3.1.17",
