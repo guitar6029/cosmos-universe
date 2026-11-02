@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import UniverseRadioControl from "./UniverseRadioControl.vue";
 import UniverseAvatar from "../shared/UniverseAvatar.vue";
+import { useCosmosProfile } from "../../composables/useCosmosProfile";
 
 const { isLoaded, isSignedIn, signOut } = useAuth();
 const { user } = useUser();

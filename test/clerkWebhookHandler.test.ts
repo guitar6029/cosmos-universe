@@ -55,15 +55,46 @@ describe("Clerk user.created webhook handler", () => {
       expect.any(Request),
       { signingSecret: "whsec_clerk_test" },
     );
-    expect(mocks.createCosmosProfile).toHaveBeenCalledWith("user_clerk_test");
+    expect(mocks.createCosmosProfile).toHaveBeenCalledWith("user_clerk_test", "astronaut");
   });
+
+  it("persists the valid avatar selected during registration", async () => {
+    mocks.verifyWebhook.mockResolvedValue({
+      type: "user.created",
+      data: {
+        id: "user_clerk_test",
+        unsafe_metadata: { avatarId: "robot" },
+      },
+    });
+
+    await expect(handler({})).resolves.toEqual({ received: true });
+
+    expect(mocks.createCosmosProfile).toHaveBeenCalledWith("user_clerk_test", "robot");
+  });
+
+  it.each([undefined, "pirate", 42])(
+    "uses Astronaut when signup avatar metadata is invalid: %j",
+    async (avatarId) => {
+      mocks.verifyWebhook.mockResolvedValue({
+        type: "user.created",
+        data: {
+          id: "user_clerk_test",
+          unsafe_metadata: { avatarId },
+        },
+      });
+
+      await expect(handler({})).resolves.toEqual({ received: true });
+
+      expect(mocks.createCosmosProfile).toHaveBeenCalledWith("user_clerk_test", "astronaut");
+    },
+  );
 
   it("acknowledges duplicate deliveries", async () => {
     mocks.createCosmosProfile.mockResolvedValue({ status: "already_exists" });
 
     await expect(handler({})).resolves.toEqual({ received: true });
 
-    expect(mocks.createCosmosProfile).toHaveBeenCalledWith("user_clerk_test");
+    expect(mocks.createCosmosProfile).toHaveBeenCalledWith("user_clerk_test", "astronaut");
   });
 
   it("returns HTTP 400 for an invalid webhook signature without touching Neon", async () => {

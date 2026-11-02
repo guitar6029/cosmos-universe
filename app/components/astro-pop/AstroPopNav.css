@@ -83,6 +83,19 @@
   filter: brightness(1.08);
 }
 
+.navigation__avatar-loading {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: .5rem;
+  background: rgba(58, 44, 53, 0.15);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .navigation__avatar-loading {
+    animation: navigation-avatar-pulse 1.2s ease-in-out infinite alternate;
+  }
+}
+
 .navigation__cart {
   display: inline-flex;
   flex: 0 0 auto;
@@ -205,6 +218,16 @@
 @keyframes navigation-drawer-in {
   from { transform: translateX(-100%); }
   to { transform: translateX(0); }
+}
+
+@keyframes navigation-avatar-pulse {
+  from {
+    opacity: .55;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 700px) {

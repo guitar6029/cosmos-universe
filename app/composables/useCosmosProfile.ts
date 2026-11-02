@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, watch } from "vue";
 import {
   AVATARS_MEDIA,
   avatarUrl,
@@ -10,55 +10,90 @@ type AvatarResponse = {
   avatarId: AvatarId | null;
 };
 
+type CosmosProfileState = {
+  avatarId: AvatarId | null;
+  error: boolean;
+  loading: boolean;
+  requestId: number;
+  userId: string | null;
+};
+
 export function useCosmosProfile() {
   const { isLoaded, isSignedIn, userId } = useAuth();
-
-  const avatarId = ref<AvatarId | null>(null);
-  const loading = ref(true);
-  const error = ref(false);
+  const profile = useState<CosmosProfileState>("cosmos-profile", () => ({
+    avatarId: null,
+    error: false,
+    loading: true,
+    requestId: 0,
+    userId: null,
+  }));
 
   watch(
-    [isLoaded, isSignedIn, userId],
-    async ([clerkReady, signedIn, currentUserId], _previous, onCleanup) => {
-      let cancelled = false;
-
-      onCleanup(() => {
-        cancelled = true;
-      });
-
-      // Clear data belonging to any previous session.
-      avatarId.value = null;
-      error.value = false;
+    [isLoaded, isSignedIn, () => userId?.value ?? null],
+    async ([clerkReady, signedIn, currentUserId]) => {
+      const activeUserId = currentUserId?.trim() || null;
 
       if (!clerkReady) {
-        loading.value = true;
+        profile.value.avatarId = null;
+        profile.value.error = false;
+        profile.value.loading = true;
+        profile.value.userId = null;
         return;
       }
 
-      if (!signedIn || !currentUserId) {
-        loading.value = false;
+      if (!signedIn || !activeUserId) {
+        profile.value.avatarId = null;
+        profile.value.error = false;
+        profile.value.loading = false;
+        profile.value.userId = null;
         return;
       }
 
-      loading.value = true;
+      if (profile.value.userId === activeUserId && (
+        profile.value.loading
+        || profile.value.avatarId !== null
+        || profile.value.error
+      )) {
+        return;
+      }
+
+      profile.value.avatarId = null;
+      profile.value.error = false;
+      profile.value.loading = true;
+      profile.value.userId = activeUserId;
+      profile.value.requestId += 1;
+      const requestId = profile.value.requestId;
 
       try {
         const response = await $fetch<AvatarResponse>(
           "/api/account/profile-avatar",
         );
 
-        if (cancelled) return;
+        if (
+          profile.value.userId !== activeUserId
+          || profile.value.requestId !== requestId
+        ) {
+          return;
+        }
 
-        avatarId.value = isAvatarId(response.avatarId)
+        profile.value.avatarId = isAvatarId(response.avatarId)
           ? response.avatarId
           : null;
       } catch {
-        if (cancelled) return;
+        if (
+          profile.value.userId !== activeUserId
+          || profile.value.requestId !== requestId
+        ) {
+          return;
+        }
 
-        error.value = true;
+        profile.value.error = true;
       } finally {
-        if (!cancelled) {
-          loading.value = false;
+        if (
+          profile.value.userId === activeUserId
+          && profile.value.requestId === requestId
+        ) {
+          profile.value.loading = false;
         }
       }
     },
@@ -66,17 +101,17 @@ export function useCosmosProfile() {
   );
 
   const avatarSrc = computed(() => {
-    if (!isLoaded.value || !isSignedIn.value || loading.value) {
+    if (!isLoaded.value || !isSignedIn.value || profile.value.loading) {
       return null;
     }
 
-    return avatarUrl(avatarId.value) ?? AVATARS_MEDIA.astronaut;
+    return avatarUrl(profile.value.avatarId) ?? AVATARS_MEDIA.astronaut;
   });
 
   return {
-    avatarId,
+    avatarId: computed(() => profile.value.avatarId),
     avatarSrc,
-    loading,
-    error,
+    loading: computed(() => profile.value.loading),
+    error: computed(() => profile.value.error),
   };
 }
