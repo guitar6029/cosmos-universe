@@ -62,9 +62,17 @@ Choose a unique branch and path instead of reusing this illustrative example. If
 **Cosmos Universe** is a multi-experience, 1950s Space Age / Atompunk fictional world. The Nuxt 4 application includes:
 
 - **Grand Concourse (`/`):** Universe homepage, shared navigation and account controls, and CosmoPort Radio.
-- **Astro Pop Soda Co. (`/astro-pop`):** fictional storefront with flavor details, crate/cart, Stripe Checkout integration, server-side validation, notifications, and Neon-backed orders via Stripe webhooks.
-- **Passport Office (`/passport-office`):** custom Clerk registration, email verification, and returning-traveler sign-in. Passport issuance and traveler profiles are **not** implemented.
-- **CosmoPort Voyage (`/cosmoport-voyage`):** destination-marketing landing page; trip search, comparison, and booking are **not** implemented. It is currently presented as under construction from the homepage.
+
+- **Astro Pop Soda Co. (`/app/astro-pop`):** fictional storefront with flavor details, crate/cart, Stripe Checkout integration, server-side validation, notifications, and Neon-backed orders via Stripe webhooks.
+
+- **Passport Office (`/passport-office`):** Custom Clerk registration,
+  email verification, and returning-traveler sign-in.
+  Registration supports four curated avatar presets.
+  Universal profile provisioning is implemented through a verified
+  Clerk webhook and Neon PostgreSQL. Avatar preference persistence
+  and passport issuance are not yet implemented.
+
+- **CosmoPort Voyage (`/app/cosmoport-voyage`):** destination-marketing landing page; trip search, comparison, and booking are **not** implemented. It is currently presented as under construction from the homepage.
 - **About (`/about`):** shared world introduction.
 
 Do not describe the repository as a minimal frontend, claim its checkout is real-world fulfillment, or describe planned features as implemented. Keep the [README](README.md) aligned with shipped capabilities.
@@ -89,6 +97,27 @@ Preserve existing systems; **do not introduce new services, authentication mecha
 - Maintain the shared fictional universe's approved retrofuturist visual identity without copying existing franchises.
 - Keep server-side logic authoritative for payments, identity, and persisted orders.
 - Avoid touching unrelated Cloudflare deployment, Stripe settings, Clerk settings, database state, or external resources as part of UI-only tasks.
+
+
+
+### Code formatting and readability
+
+- Write readable, consistently formatted TypeScript, JavaScript, Vue, and CSS.
+- Never minify or compress source code to reduce file length or line counts.
+- Use one statement per line. Do not combine unrelated declarations.
+- Use multiline blocks for functions, conditionals, loops, and try/catch/finally.
+- Break up long parameter lists, objects, and expressions where appropriate.
+- Maintain consistent indentation and spacing.
+- Prefer readability and maintainability over minimizing line count.
+- Never compress CSS declarations to circumvent component style limits.
+- Count CSS lines using conventional formatting, with declarations on separate lines.
+- Do not use `!important` merely to work around poor selector specificity.
+- Preserve existing functionality when making formatting changes.
+- Avoid unrelated mass-formatting changes in feature PRs.
+- Review source readability before committing, even when tests pass.
+- Run repository formatting and lint checks when available.
+
+
 
 ### Vue component styling
 
