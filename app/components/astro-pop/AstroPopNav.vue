@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { ASTRO_POP_MEDIA } from "../../data/astroPopMedia";
 import UniverseAvatar from "../shared/UniverseAvatar.vue";
+import { useCosmosProfile } from "../../composables/useCosmosProfile";
 import { useAstroPopCrateStore } from "../../stores/astroPopCrate";
 
 const route = useRoute();
@@ -23,6 +24,10 @@ const isMobileNavigation = () => isMobileMenu.value;
 
 const { isSignedIn } = useAuth();
 const { user } = useUser();
+const {
+  avatarSrc,
+  loading: profileLoading,
+} = useCosmosProfile();
 const userName = computed(() => user.value?.fullName || user.value?.username || user.value?.primaryEmailAddress?.emailAddress || "Cosmos traveler");
 
 const scrollToTop = () => {
@@ -150,7 +155,9 @@ onBeforeUnmount(() => {
     <div class="flex items-center gap-2">
       <NuxtLink v-if="isSignedIn" class="navigation__account-avatar" to="/app/astro-pop/account"
         aria-label="Account" title="Astro Pop orders">
-        <UniverseAvatar :image-url="user?.imageUrl" :name="userName" />
+        <span v-if="profileLoading" class="navigation__avatar-loading" role="status"
+          aria-label="Loading traveler avatar" />
+        <UniverseAvatar v-else :image-url="avatarSrc" :name="userName" />
       </NuxtLink>
       <NuxtLink to="/app/astro-pop/cart" class="navigation__cart"
         :aria-label="`Cart, ${crateStore.totalBottles} bottles`">

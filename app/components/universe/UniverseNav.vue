@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import UniverseRadioControl from "./UniverseRadioControl.vue";
 import UniverseAvatar from "../shared/UniverseAvatar.vue";
+import { useCosmosProfile } from "../../composables/useCosmosProfile";
 
 const { isLoaded, isSignedIn, signOut } = useAuth();
 const { user } = useUser();
@@ -13,6 +14,12 @@ const accountToggle = ref<HTMLButtonElement>();
 const signOutButton = ref<HTMLButtonElement>();
 
 const hasAdminAccess = ref(false);
+
+
+const {
+  avatarSrc,
+  loading: profileLoading,
+} = useCosmosProfile();
 
 withDefaults(defineProps<{
   presentation?: "overlay" | "surface";
@@ -142,7 +149,11 @@ onBeforeUnmount(() => {
           <button ref="accountToggle" class="universe-nav__account-toggle" type="button"
             :aria-label="'Account for ' + userName" :aria-expanded="accountMenuOpen"
             aria-controls="universe-account-menu" @click="toggleAccountMenu">
-            <UniverseAvatar :image-url="user?.imageUrl" :name="userName" />
+            <span v-if="profileLoading"
+              class="inline-block size-10 rounded-full bg-current/15 motion-safe:animate-pulse" role="status"
+              aria-label="Loading traveler avatar" />
+
+            <UniverseAvatar v-else :image-url="avatarSrc" :name="userName" />
             <svg class="universe-nav__chevron" :class="{ 'universe-nav__chevron--open': accountMenuOpen }"
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -158,7 +169,9 @@ onBeforeUnmount(() => {
             </div>
             <hr class="universe-nav__menu-divider" />
             <NuxtLink to="/account" class="universe-nav__menu-item universe-nav__menu-link" @click="closeAccountMenu()">
-              <svg class="universe-nav__menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <svg class="universe-nav__menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
                 <circle cx="12" cy="8" r="3.5" />
                 <path d="M5.5 20v-1.5a6.5 6.5 0 0 1 13 0V20" />
               </svg>

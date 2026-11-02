@@ -18,7 +18,7 @@ describe("createCosmosProfile", () => {
     neonMock.mockReturnValue(sql);
 
     await expect(
-      createCosmosProfile("user_test_123", "postgresql://test.example/cosmos"),
+      createCosmosProfile("user_test_123", "cat", "postgresql://test.example/cosmos"),
     ).resolves.toEqual({ status: "created" });
 
     expect(neonMock).toHaveBeenCalledWith("postgresql://test.example/cosmos");
@@ -28,21 +28,21 @@ describe("createCosmosProfile", () => {
     neonMock.mockReturnValue(vi.fn().mockResolvedValue([]));
 
     await expect(
-      createCosmosProfile("user_existing", "postgresql://test.example/cosmos"),
+      createCosmosProfile("user_existing", "astronaut", "postgresql://test.example/cosmos"),
     ).resolves.toEqual({ status: "already_exists" });
   });
 
-  it("uses a parameterized user ID and an idempotent conflict clause", async () => {
+  it("uses a parameterized user ID and preserves an existing avatar on duplicate webhooks", async () => {
     const sql = vi.fn().mockResolvedValue([{ id: "profile_test_123" }]);
     neonMock.mockReturnValue(sql);
 
-    await createCosmosProfile("user_parameterized", "postgresql://test.example/cosmos");
+    await createCosmosProfile("user_parameterized", "alien", "postgresql://test.example/cosmos");
 
     expect(sql).toHaveBeenCalledOnce();
     expect(sql.mock.calls[0]?.[0].raw.join(" ")).toContain(
       "ON CONFLICT (user_id) DO NOTHING",
     );
-    expect(sql.mock.calls[0]?.slice(1)).toEqual(["user_parameterized"]);
+    expect(sql.mock.calls[0]?.slice(1)).toEqual(["user_parameterized", "alien"]);
   });
 
   it("propagates database errors", async () => {
@@ -50,7 +50,7 @@ describe("createCosmosProfile", () => {
     neonMock.mockReturnValue(vi.fn().mockRejectedValue(databaseError));
 
     await expect(
-      createCosmosProfile("user_database_failure", "postgresql://test.example/cosmos"),
+      createCosmosProfile("user_database_failure", "robot", "postgresql://test.example/cosmos"),
     ).rejects.toBe(databaseError);
   });
 });

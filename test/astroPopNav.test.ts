@@ -15,6 +15,12 @@ vi.stubGlobal("useAuth", () => ({
   isSignedIn: ref(true),
   signOut: vi.fn(),
 }));
+vi.mock("../app/composables/useCosmosProfile", () => ({
+  useCosmosProfile: () => ({
+    avatarSrc: ref("https://media.cosmos-universe.com/avatars/cosmos_avatar_robot_transparent.png"),
+    loading: ref(false),
+  }),
+}));
 
 const renderNavigation = async (bottles = 0, path = "/app/astro-pop") => {
   route.path = path;
@@ -53,7 +59,7 @@ describe("AstroPop navigation", () => {
     expect(html).toContain('href="/app/astro-pop/account"');
     expect(html).toMatch(/>\s*Orders\s*<\/a>/);
     expect(html).toContain('aria-label="Account"');
-    expect(html).toContain("https://example.test/nova.png");
+    expect(html).toContain("cosmos_avatar_robot_transparent.png");
     expect(html).not.toContain("<svg");
   });
 

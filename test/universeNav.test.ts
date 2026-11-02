@@ -25,6 +25,12 @@ vi.stubGlobal("useAuth", () => ({
 vi.stubGlobal("useUser", () => ({ user }));
 vi.stubGlobal("useSeoMeta", vi.fn());
 vi.stubGlobal("$fetch", adminAccess);
+vi.mock("../app/composables/useCosmosProfile", () => ({
+  useCosmosProfile: () => ({
+    avatarSrc: ref("https://media.cosmos-universe.com/avatars/cosmos_avatar_robot_transparent.png"),
+    loading: ref(false),
+  }),
+}));
 vi.stubGlobal("useFetch", () => ({
   data: ref({ apps: [
     { id: "astro-pop", title: "Astro Pop Soda Co.", description: "Your neighborhood soda shop, now serving the stars.", enabled: true },
@@ -95,10 +101,10 @@ describe("CosmoPort Universe navigation", () => {
     expect(html).not.toContain("UserButton");
   });
 
-  it("shows a custom Clerk-image Account control to signed-in visitors", async () => {
+  it("shows the saved Cosmos avatar in the Account control", async () => {
     const html = await renderWithAccountState(UniverseNav, "signed-in");
 
-    expect(html).toContain('src="https://example.test/nova.png"');
+    expect(html).toContain("cosmos_avatar_robot_transparent.png");
     expect(html).toContain('aria-expanded="false"');
     expect(html).not.toContain('aria-haspopup="menu"');
     expect(html).toContain("Account");
@@ -208,15 +214,15 @@ describe("CosmoPort Universe navigation", () => {
     app.unmount();
   });
 
-  it("uses a branded fallback avatar when Clerk has no image", async () => {
+  it("uses the saved avatar when Clerk has no image", async () => {
     authState.value = "signed-in";
     user.value = { fullName: "Nova Ray" };
     const app = createSSRApp({ render: () => h(UniverseNav) });
     app.component("NuxtLink", NuxtLink);
     const html = await renderToString(app);
 
-    expect(html).toContain("NR");
-    expect(html).toContain("universe-avatar__initials");
+    expect(html).toContain("cosmos_avatar_robot_transparent.png");
+    expect(html).not.toContain("universe-avatar__initials");
   });
 
   it("opens an Account menu with identity details and requests a Clerk sign-out to the Universe root", async () => {

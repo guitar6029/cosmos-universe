@@ -1,6 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import type { CosmoportApp } from "../../shared/types/cosmoportApp";
 import { type ProfileStatus } from "../types/profile.types";
+import { isAvatarId, type AvatarId } from "../../app/data/avatarsMedia";
 
 export class CosmoportCoreConfigurationError extends Error {
   constructor() {
@@ -61,12 +62,12 @@ export async function updateCosmoportAppStatus(
   connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
 ): Promise<CosmoportApp | null> {
   const sql = getCoreSql(connectionString);
-  const rows = await sql`
+  const rows = (await sql`
     UPDATE public.apps
     SET enabled = ${enabled}
     WHERE id = ${id}
     RETURNING id, title, description, enabled
-  ` as CosmoportApp[];
+  `) as CosmoportApp[];
 
   return rows[0] ?? null;
 }
@@ -86,7 +87,6 @@ export async function getCosmoportAppEnabled(
   return (rows[0]?.enabled as boolean | undefined) ?? null;
 }
 
-
 /**
  * Creates a Cosmos Universe profile for a Clerk user.
  *
@@ -94,6 +94,7 @@ export async function getCosmoportAppEnabled(
  * Clerk delivers the same webhook event multiple times.
  *
  * @param userId - The verified Clerk user ID.
+ * @param avatarId - the avatar id selected from the registeration form
  * @param connectionString - Neon PostgreSQL connection string.
  * @returns "created" if a new profile was inserted, or
  *          "already_exists" if the profile was previously created.
@@ -101,13 +102,18 @@ export async function getCosmoportAppEnabled(
  */
 export async function createCosmosProfile(
   userId: string,
+  avatarId: AvatarId = "astronaut",
   connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
 ): Promise<{ status: ProfileStatus }> {
   const sql = getCoreSql(connectionString);
 
+  if (!isAvatarId(avatarId)) {
+    throw new Error("Invalid avatar ID");
+  }
+
   const rows = await sql`
-    INSERT INTO public.profiles (user_id)
-    VALUES (${userId})
+    INSERT INTO public.profiles (user_id, avatar_id)
+    VALUES (${userId}, ${avatarId})
     ON CONFLICT (user_id) DO NOTHING
     RETURNING id;
   `;
@@ -115,4 +121,56 @@ export async function createCosmosProfile(
   return {
     status: rows.length > 0 ? "created" : "already_exists",
   };
+}
+
+export async function saveCosmosProfileAvatar(
+  userId: string,
+  avatarId: AvatarId,
+  connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
+): Promise<{ avatarId: AvatarId }> {
+  if (!isAvatarId(avatarId)) {
+    throw new Error("Invalid avatar ID");
+  }
+
+  const sql = getCoreSql(connectionString);
+
+  const rows = await sql`
+    INSERT INTO public.profiles (user_id, avatar_id)
+    VALUES (${userId}, ${avatarId})
+    ON CONFLICT (user_id)
+    DO UPDATE SET
+      avatar_id = EXCLUDED.avatar_id,
+      updated_at = NOW()
+    RETURNING avatar_id
+  `;
+
+  const row = rows[0];
+
+  if (!row) {
+    throw new Error("Failed to save Cosmos profile avatar");
+  }
+
+  return { avatarId: row.avatar_id as AvatarId };
+}
+
+export async function getProfileAvatar(
+  userId: string,
+  connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
+): Promise<AvatarId | null> {
+  const sql = getCoreSql(connectionString);
+
+  const rows = await sql`
+    SELECT avatar_id
+    FROM public.profiles
+    WHERE user_id = ${userId}
+    LIMIT 1
+  `;
+
+  const row = rows[0];
+
+  if (!row) {
+    return null;
+  }
+
+  return isAvatarId(row.avatar_id) ? row.avatar_id : null;
 }
