@@ -124,8 +124,8 @@ describe("CosmoPort Universe navigation", () => {
     const menu = container.querySelector('[role="group"]');
     expect(menu?.textContent).toContain("Account");
     expect(menu?.textContent).toContain("Settings");
-    expect(menu?.querySelectorAll('[aria-disabled="true"]')).toHaveLength(2);
-    expect(menu?.querySelectorAll("a")).toHaveLength(0);
+    expect(menu?.querySelectorAll('[aria-disabled="true"]')).toHaveLength(1);
+    expect(menu?.querySelector('a[href="/account"]')?.textContent).toContain("My Account");
     expect(container.querySelector(".universe-nav__chevron--open")).not.toBeNull();
     app.unmount();
   });
@@ -215,7 +215,7 @@ describe("CosmoPort Universe navigation", () => {
     const html = await renderToString(app);
 
     expect(html).toContain("NR");
-    expect(html).toContain("universe-nav__avatar--fallback");
+    expect(html).toContain("universe-avatar__initials");
   });
 
   it("opens an Account menu with identity details and requests a Clerk sign-out to the Universe root", async () => {
@@ -369,7 +369,7 @@ describe("CosmoPort Universe navigation", () => {
     expect(source).toContain('role="group"');
     expect(source).toContain('aria-label="Account details"');
     expect(source).not.toContain('aria-haspopup="menu"');
-    expect(source).not.toContain('to="/account"');
+    expect(source).toContain('to="/account"');
     expect(source).not.toContain("SignInButton");
     expect(source).not.toContain("SignUpButton");
     expect(source).not.toContain("UserButton");
