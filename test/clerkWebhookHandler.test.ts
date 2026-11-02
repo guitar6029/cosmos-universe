@@ -104,17 +104,18 @@ describe("Clerk user.created webhook handler", () => {
     mocks.createCosmosProfile.mockRejectedValue(databaseError);
 
     await expect(handler({})).rejects.toBe(databaseError);
+    expect(databaseError).not.toMatchObject({ statusCode: 400 });
   });
 
-  it("fails safely when the webhook signing secret is missing", async () => {
+  it("returns HTTP 500 without verifying or accessing Neon when the signing secret is missing", async () => {
     vi.stubEnv("CLERK_WEBHOOK_SIGNING_SECRET", "");
-    mocks.verifyWebhook.mockRejectedValue(new Error("signing secret is required"));
 
     await expect(handler({})).rejects.toMatchObject({
-      statusCode: 400,
-      statusMessage: "Invalid webhook signature",
+      statusCode: 500,
+      statusMessage: "Clerk webhook signing secret is not configured",
     });
 
+    expect(mocks.verifyWebhook).not.toHaveBeenCalled();
     expect(mocks.createCosmosProfile).not.toHaveBeenCalled();
   });
 });
