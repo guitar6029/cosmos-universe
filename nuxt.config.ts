@@ -53,22 +53,27 @@ export default defineNuxtConfig({
     optimizeDeps: {
       exclude: ["@clerk/vue", "@clerk/shared", "@clerk/clerk-js"],
     },
+    server: {
+      allowedHosts: [
+        "trilogy-plant-unrefined.ngrok-free.dev"
+      ]
+    },
     resolve: usePlaywrightAuthMock
       ? {
-          alias: {
-            "@clerk/nuxt/composables": playwrightAuthMock,
-            "@clerk/nuxt/server": playwrightServerAuthMock,
-          },
-        }
+        alias: {
+          "@clerk/nuxt/composables": playwrightAuthMock,
+          "@clerk/nuxt/server": playwrightServerAuthMock,
+        },
+      }
       : undefined,
   },
   imports: usePlaywrightAuthMock
     ? {
-        imports: [
-          { from: playwrightAuthMock, name: "useAuth" },
-          { from: playwrightAuthMock, name: "useUser" },
-        ],
-      }
+      imports: [
+        { from: playwrightAuthMock, name: "useAuth" },
+        { from: playwrightAuthMock, name: "useUser" },
+      ],
+    }
     : undefined,
   nitro: {
     alias: usePlaywrightAuthMock

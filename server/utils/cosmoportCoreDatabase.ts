@@ -1,5 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import type { CosmoportApp } from "../../shared/types/cosmoportApp";
+import { type ProfileStatus } from "../types/profile.types";
 
 export class CosmoportCoreConfigurationError extends Error {
   constructor() {
@@ -17,6 +18,11 @@ function getCoreSql(connectionString: string | undefined) {
 }
 
 /** Minimal connectivity check; does not inspect application tables. */
+/**
+ *
+ * @param connectionString
+ * @returns
+ */
 export async function getCosmoportCoreDatabaseHealth(
   connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
 ) {
@@ -25,6 +31,11 @@ export async function getCosmoportCoreDatabaseHealth(
   return { status: "ok" } as const;
 }
 
+/**
+ *
+ * @param connectionString
+ * @returns
+ */
 export async function getCosmoportApps(
   connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
 ): Promise<CosmoportApp[]> {
@@ -37,6 +48,13 @@ export async function getCosmoportApps(
   return rows as CosmoportApp[];
 }
 
+/**
+ *
+ * @param id
+ * @param enabled
+ * @param connectionString
+ * @returns
+ */
 export async function updateCosmoportAppStatus(
   id: string,
   enabled: boolean,
@@ -66,4 +84,35 @@ export async function getCosmoportAppEnabled(
   `;
 
   return (rows[0]?.enabled as boolean | undefined) ?? null;
+}
+
+
+/**
+ * Creates a Cosmos Universe profile for a Clerk user.
+ *
+ * Uses an idempotent insert to prevent duplicate profiles when
+ * Clerk delivers the same webhook event multiple times.
+ *
+ * @param userId - The verified Clerk user ID.
+ * @param connectionString - Neon PostgreSQL connection string.
+ * @returns "created" if a new profile was inserted, or
+ *          "already_exists" if the profile was previously created.
+ * @throws If the database connection or insert fails.
+ */
+export async function createCosmosProfile(
+  userId: string,
+  connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
+): Promise<{ status: ProfileStatus }> {
+  const sql = getCoreSql(connectionString);
+
+  const rows = await sql`
+    INSERT INTO public.profiles (user_id)
+    VALUES (${userId})
+    ON CONFLICT (user_id) DO NOTHING
+    RETURNING id;
+  `;
+
+  return {
+    status: rows.length > 0 ? "created" : "already_exists",
+  };
 }
