@@ -16,7 +16,7 @@ const applicantName = computed(() => `${firstName.value.trim()} ${lastName.value
 const { verifying, pending, error, begin: beginRegistration, verify: verifyCode, resend } = usePassportOfficeRegistration(signUp, setActive, isLoaded, () => emit("complete"));
 function reviewApplication() { stage.value = "review"; }
 function correctApplication() { stage.value = "details"; }
-async function fileApplication() { emit("begin"); await beginRegistration({ firstName: firstName.value, lastName: lastName.value, emailAddress: emailAddress.value, password: password.value }); }
+async function fileApplication() { emit("begin"); await beginRegistration({ firstName: firstName.value, lastName: lastName.value, emailAddress: emailAddress.value, password: password.value, avatarId: selectedAvatar.value }); }
 
 
 const fileApplicationStatus = computed(() => {
@@ -90,7 +90,7 @@ const fileApplicationStatus = computed(() => {
       <p>Your secure launch phrase is protected and will not be displayed here.</p>
       <p v-if="error" class="passport-registration__error" role="alert">{{ error }}</p>
       <button type="button" :disabled="pending || !isLoaded" @click="fileApplication">{{ fileApplicationStatus
-        }}</button>
+      }}</button>
       <button type="button" class="passport-registration__secondary" :disabled="pending"
         @click="correctApplication">Make corrections</button>
       <button type="button" class="passport-registration__secondary" :disabled="pending" @click="emit('cancel')">Cancel
