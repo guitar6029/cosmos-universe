@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import UniverseAvatar from "../components/shared/UniverseAvatar.vue";
 
 definePageMeta({ middleware: ["universe-account-auth"] });
 useSeoMeta({ title: "My Account | Cosmos Universe", robots: "noindex, nofollow" });
