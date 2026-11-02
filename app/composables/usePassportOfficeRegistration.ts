@@ -1,5 +1,6 @@
 import type { SignUpResource } from "@clerk/nuxt/types";
 import { ref, type Ref } from "vue";
+import type { AvatarId } from "../data/avatarsMedia";
 
 type SetActive = (input: { session: string }) => Promise<void>;
 type Application = {
@@ -7,7 +8,7 @@ type Application = {
   lastName: string;
   emailAddress: string;
   password: string;
-  avatarId: string;
+  avatarId: AvatarId;
 };
 type RegistrationSignUp = Pick<
   SignUpResource,
@@ -28,10 +29,15 @@ export function usePassportOfficeRegistration(
   const verifying = ref(false);
   const pending = ref(false);
   const error = ref("");
+
   async function begin(application: Application) {
-    if (!isLoaded.value || !signUp.value || pending.value) return;
+    if (!isLoaded.value || !signUp.value || pending.value) {
+      return;
+    }
+
     pending.value = true;
     error.value = "";
+
     try {
       const attempt = await signUp.value.create({
         firstName: application.firstName.trim(),
@@ -50,10 +56,15 @@ export function usePassportOfficeRegistration(
       pending.value = false;
     }
   }
+
   async function verify(code: string) {
-    if (!isLoaded.value || !signUp.value || pending.value) return;
+    if (!isLoaded.value || !signUp.value || pending.value) {
+      return;
+    }
+
     pending.value = true;
     error.value = "";
+
     try {
       const attempt = await signUp.value.attemptEmailAddressVerification({
         code: code.trim(),
@@ -76,10 +87,15 @@ export function usePassportOfficeRegistration(
       pending.value = false;
     }
   }
+
   async function resend() {
-    if (!signUp.value || pending.value) return;
+    if (!signUp.value || pending.value) {
+      return;
+    }
+
     pending.value = true;
     error.value = "";
+
     try {
       await signUp.value.prepareEmailAddressVerification({
         strategy: "email_code",
@@ -90,5 +106,6 @@ export function usePassportOfficeRegistration(
       pending.value = false;
     }
   }
+
   return { verifying, pending, error, begin, verify, resend };
 }

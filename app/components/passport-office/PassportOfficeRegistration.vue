@@ -9,20 +9,55 @@ const emit = defineEmits<{ begin: []; cancel: []; complete: [] }>();
 const { isLoaded, signUp, setActive } = useSignUp();
 const stage = ref<"details" | "review">("details");
 const passportCoverFailed = ref(false);
-const firstName = ref(""); const lastName = ref(""); const emailAddress = ref(""); const password = ref(""); const code = ref("");
+const firstName = ref("");
+const lastName = ref("");
+const emailAddress = ref("");
+const password = ref("");
+const code = ref("");
 const selectedAvatar = ref<AvatarId>("astronaut");
-const avatarLabels: Record<AvatarId, string> = { astronaut: "Astronaut", cat: "Cat", alien: "Alien", robot: "Robot" };
+const avatarLabels: Record<AvatarId, string> = {
+  astronaut: "Astronaut",
+  cat: "Cat",
+  alien: "Alien",
+  robot: "Robot",
+};
 const applicantName = computed(() => `${firstName.value.trim()} ${lastName.value.trim()}`.trim());
-const { verifying, pending, error, begin: beginRegistration, verify: verifyCode, resend } = usePassportOfficeRegistration(signUp, setActive, isLoaded, () => emit("complete"));
-function reviewApplication() { stage.value = "review"; }
-function correctApplication() { stage.value = "details"; }
-async function fileApplication() { emit("begin"); await beginRegistration({ firstName: firstName.value, lastName: lastName.value, emailAddress: emailAddress.value, password: password.value, avatarId: selectedAvatar.value }); }
+const {
+  verifying,
+  pending,
+  error,
+  begin: beginRegistration,
+  verify: verifyCode,
+  resend,
+} = usePassportOfficeRegistration(
+  signUp,
+  setActive,
+  isLoaded,
+  () => emit("complete"),
+);
 
+function reviewApplication() {
+  stage.value = "review";
+}
+
+function correctApplication() {
+  stage.value = "details";
+}
+
+async function fileApplication() {
+  emit("begin");
+  await beginRegistration({
+    firstName: firstName.value,
+    lastName: lastName.value,
+    emailAddress: emailAddress.value,
+    password: password.value,
+    avatarId: selectedAvatar.value,
+  });
+}
 
 const fileApplicationStatus = computed(() => {
   return pending.value ? "Filing…" : "File application";
-})
-
+});
 
 </script>
 
