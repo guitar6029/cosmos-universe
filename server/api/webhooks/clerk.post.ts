@@ -1,13 +1,16 @@
 
-import { verifyWebhook } from "@clerk/nuxt/webhooks";
+import { verifyWebhook } from "@clerk/backend/webhooks";
 import { createCosmosProfile } from "../../utils/cosmoportCoreDatabase";
 
 export default defineEventHandler(async (event) => {
-    // Only signature verification belongs in this catch.
     let evt;
 
     try {
-        evt = await verifyWebhook(event);
+        const request = toWebRequest(event);
+
+        evt = await verifyWebhook(request, {
+            signingSecret: process.env.CLERK_WEBHOOK_SIGNING_SECRET,
+        });
     } catch {
         throw createError({
             statusCode: 400,
@@ -15,7 +18,6 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    // Ignore event types this endpoint does not process.
     if (evt.type !== "user.created") {
         return { received: true };
     }
@@ -29,8 +31,6 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    // A database failure propagates as a server error.
-    // A duplicate profile is a successful no-op.
     await createCosmosProfile(userId);
 
     return { received: true };
