@@ -9,6 +9,7 @@ import { useAstroPopCrateStore } from "../app/stores/astroPopCrate";
 const route = { path: "/app/astro-pop" };
 
 vi.stubGlobal("useRoute", () => route);
+vi.stubGlobal("useUser", () => ({ user: ref({ fullName: "Nova Ray", imageUrl: "https://example.test/nova.png" }) }));
 vi.stubGlobal("useAuth", () => ({
   isLoaded: ref(true),
   isSignedIn: ref(true),
@@ -51,7 +52,9 @@ describe("AstroPop navigation", () => {
     const html = await renderNavigation(0, "/app/astro-pop/account");
     expect(html).toContain('href="/app/astro-pop/account"');
     expect(html).toMatch(/>\s*Orders\s*<\/a>/);
-    expect(html).not.toContain(">Account</a>");
+    expect(html).toContain('aria-label="Account"');
+    expect(html).toContain("https://example.test/nova.png");
+    expect(html).not.toContain("<svg");
   });
 
   it("uses the current Pinia crate quantity in the cart label", async () => {

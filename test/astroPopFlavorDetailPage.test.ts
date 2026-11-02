@@ -1,6 +1,8 @@
 // @vitest-environment jsdom
 import { createApp as createVueApp, createSSRApp, h, nextTick } from "vue";
 import { renderToString } from "vue/server-renderer";
+// Astro Pop navigation now consumes shared Clerk identity.
+vi.stubGlobal("useUser", () => ({ user: { value: null } }));
 import { createPinia, setActivePinia } from "pinia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ASTROPOP_FLAVORS } from "../app/data/astroPopFlavors";

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { ASTRO_POP_MEDIA } from "../../data/astroPopMedia";
+import UniverseAvatar from "../shared/UniverseAvatar.vue";
 import { useAstroPopCrateStore } from "../../stores/astroPopCrate";
 
 const route = useRoute();
@@ -20,7 +21,9 @@ let mobileQuery: MediaQueryList | undefined;
 
 const isMobileNavigation = () => isMobileMenu.value;
 
-const { isLoaded, isSignedIn, signOut } = useAuth();
+const { isSignedIn } = useAuth();
+const { user } = useUser();
+const userName = computed(() => user.value?.fullName || user.value?.username || user.value?.primaryEmailAddress?.emailAddress || "Cosmos traveler");
 
 const scrollToTop = () => {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -145,14 +148,10 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="flex items-center gap-2">
-      <div class="flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="8" r="3.5" />
-          <path d="M5.5 20v-1.5a6.5 6.5 0 0 1 13 0V20" />
-        </svg>
-        <NuxtLink v-if="isSignedIn && !isAccountPage" to="/app/astro-pop/account">Account</NuxtLink>
-      </div>
+      <NuxtLink v-if="isSignedIn" class="navigation__account-avatar" to="/app/astro-pop/account"
+        aria-label="Account" title="Astro Pop orders">
+        <UniverseAvatar :image-url="user?.imageUrl" :name="userName" />
+      </NuxtLink>
       <NuxtLink to="/app/astro-pop/cart" class="navigation__cart"
         :aria-label="`Cart, ${crateStore.totalBottles} bottles`">
         <img :src="ASTRO_POP_MEDIA.cartCrate" alt="" aria-hidden="true" loading="lazy" />
