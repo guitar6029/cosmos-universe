@@ -70,6 +70,19 @@
   outline-offset: 3px;
 }
 
+.navigation__account-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: .6rem;
+  text-decoration: none;
+}
+
+.navigation__account-avatar:hover {
+  filter: brightness(1.08);
+}
+
 .navigation__cart {
   display: inline-flex;
   flex: 0 0 auto;
