@@ -152,3 +152,25 @@ export async function saveCosmosProfileAvatar(
 
   return { avatarId: row.avatar_id as AvatarId };
 }
+
+export async function getProfileAvatar(
+  userId: string,
+  connectionString = process.env.COSMOPORT_CORE_POOLED_URL,
+): Promise<AvatarId | null> {
+  const sql = getCoreSql(connectionString);
+
+  const rows = await sql`
+    SELECT avatar_id
+    FROM public.profiles
+    WHERE user_id = ${userId}
+    LIMIT 1
+  `;
+
+  const row = rows[0];
+
+  if (!row) {
+    return null;
+  }
+
+  return isAvatarId(row.avatar_id) ? row.avatar_id : null;
+}
