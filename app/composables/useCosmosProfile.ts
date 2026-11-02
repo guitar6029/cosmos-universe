@@ -10,95 +10,146 @@ type AvatarResponse = {
   avatarId: AvatarId | null;
 };
 
-const PROFILE_REQUEST_TIMEOUT_MS = 8_000;
+type ProfileRequest = {
+  requestId: number;
+};
+
+type ProfileStatus = "idle" | "loading" | "success" | "error";
 
 type CosmosProfileState = {
   avatarId: AvatarId | null;
   error: boolean;
   loading: boolean;
   requestId: number;
+  status: ProfileStatus;
   userId: string | null;
 };
 
+const inFlightProfiles = new WeakMap<object, Map<string, ProfileRequest>>();
+
+function requestsFor(nuxtApp: object) {
+  let requests = inFlightProfiles.get(nuxtApp);
+
+  if (!requests) {
+    requests = new Map<string, ProfileRequest>();
+    inFlightProfiles.set(nuxtApp, requests);
+  }
+
+  return requests;
+}
+
+function resetProfile(
+  profile: { value: CosmosProfileState },
+  loading: boolean,
+) {
+  profile.value.avatarId = null;
+  profile.value.error = false;
+  profile.value.loading = loading;
+  profile.value.requestId += 1;
+  profile.value.status = "idle";
+  profile.value.userId = null;
+}
+
 export function useCosmosProfile() {
   const { isLoaded, isSignedIn, userId } = useAuth();
+  const requests = requestsFor(useNuxtApp());
   const profile = useState<CosmosProfileState>("cosmos-profile", () => ({
     avatarId: null,
     error: false,
     loading: true,
     requestId: 0,
+    status: "idle",
     userId: null,
   }));
 
   watch(
     [isLoaded, isSignedIn, () => userId?.value ?? null],
-    async ([clerkReady, signedIn, currentUserId]) => {
+    ([clerkReady, signedIn, currentUserId]) => {
       const activeUserId = currentUserId?.trim() || null;
 
       if (!clerkReady) {
-        profile.value.avatarId = null;
-        profile.value.error = false;
-        profile.value.loading = true;
-        profile.value.userId = null;
+        if (profile.value.userId !== null || !profile.value.loading) {
+          resetProfile(profile, true);
+        }
+
         return;
       }
 
       if (!signedIn || !activeUserId) {
-        profile.value.avatarId = null;
-        profile.value.error = false;
-        profile.value.loading = false;
-        profile.value.userId = null;
+        if (profile.value.userId) {
+          requests.delete(profile.value.userId);
+        }
+
+        resetProfile(profile, false);
         return;
       }
 
-      if (profile.value.userId === activeUserId && (
-        profile.value.loading
-        || profile.value.avatarId !== null
-        || profile.value.error
-      )) {
+      if (
+        profile.value.userId === activeUserId
+        && (profile.value.status === "success" || profile.value.status === "error")
+      ) {
+        return;
+      }
+
+      const pending = requests.get(activeUserId);
+
+      if (
+        profile.value.userId === activeUserId
+        && profile.value.status === "loading"
+        && pending?.requestId === profile.value.requestId
+      ) {
         return;
       }
 
       profile.value.avatarId = null;
       profile.value.error = false;
       profile.value.loading = true;
-      profile.value.userId = activeUserId;
       profile.value.requestId += 1;
+      profile.value.status = "loading";
+      profile.value.userId = activeUserId;
       const requestId = profile.value.requestId;
 
-      try {
-        const response = await $fetch<AvatarResponse>(
-          "/api/account/profile-avatar",
-          { timeout: PROFILE_REQUEST_TIMEOUT_MS },
-        );
+      void $fetch<AvatarResponse>(
+        "/api/account/profile-avatar",
+      )
+        .then((response) => {
+          if (
+            profile.value.userId !== activeUserId
+            || profile.value.requestId !== requestId
+          ) {
+            return;
+          }
 
-        if (
-          profile.value.userId !== activeUserId
-          || profile.value.requestId !== requestId
-        ) {
-          return;
-        }
+          profile.value.avatarId = isAvatarId(response.avatarId)
+            ? response.avatarId
+            : null;
+          profile.value.status = "success";
+        })
+        .catch(() => {
+          if (
+            profile.value.userId !== activeUserId
+            || profile.value.requestId !== requestId
+          ) {
+            return;
+          }
 
-        profile.value.avatarId = isAvatarId(response.avatarId)
-          ? response.avatarId
-          : null;
-      } catch {
-        if (
-          profile.value.userId !== activeUserId
-          || profile.value.requestId !== requestId
-        ) {
-          return;
-        }
+          profile.value.error = true;
+          profile.value.status = "error";
+        })
+        .finally(() => {
+          if (requests.get(activeUserId)?.requestId === requestId) {
+            requests.delete(activeUserId);
+          }
 
-        profile.value.error = true;
-      } finally {
-        if (
-          profile.value.userId === activeUserId
-          && profile.value.requestId === requestId
-        ) {
-          profile.value.loading = false;
-        }
-      }
+          if (
+            profile.value.userId === activeUserId
+            && profile.value.requestId === requestId
+          ) {
+            profile.value.loading = false;
+          }
+        });
+
+      requests.set(activeUserId, { requestId });
     },
     { immediate: true },
   );

@@ -8,10 +8,12 @@ const isSignedIn = ref(false);
 const userId = ref<string | null>(null);
 const state = new Map<string, Ref<unknown>>();
 const fetchProfile = vi.fn();
+let nuxtApp = {};
 let scope: EffectScope;
 
 vi.stubGlobal("useAuth", () => ({ isLoaded, isSignedIn, userId }));
 vi.stubGlobal("$fetch", fetchProfile);
+vi.stubGlobal("useNuxtApp", () => nuxtApp);
 vi.stubGlobal("useState", <T>(key: string, init: () => T) => {
   if (!state.has(key)) {
     state.set(key, ref(init()));
@@ -31,6 +33,7 @@ describe("useCosmosProfile", () => {
     scope?.stop();
     scope = effectScope();
     state.clear();
+    nuxtApp = {};
     fetchProfile.mockReset();
     isLoaded.value = true;
     isSignedIn.value = false;
@@ -56,6 +59,54 @@ describe("useCosmosProfile", () => {
 
     expect(profile.avatarId.value).toBeNull();
     expect(profile.avatarSrc.value).toBeNull();
+  });
+
+  it("starts one request after Clerk finishes loading for two waiting consumers", async () => {
+    let resolveProfile: (value: { avatarId: string }) => void = () => undefined;
+    fetchProfile.mockReturnValue(new Promise((resolve) => {
+      resolveProfile = resolve;
+    }));
+    isLoaded.value = false;
+
+    const first = scope.run(useCosmosProfile)!;
+    const second = scope.run(useCosmosProfile)!;
+    await flush();
+
+    expect(fetchProfile).not.toHaveBeenCalled();
+    expect(first.loading.value).toBe(true);
+    expect(second.loading.value).toBe(true);
+
+    isSignedIn.value = true;
+    userId.value = "user_after_clerk";
+    isLoaded.value = true;
+    await nextTick();
+
+    expect(fetchProfile).toHaveBeenCalledOnce();
+    resolveProfile({ avatarId: "alien" });
+    await flush();
+
+    expect(first.loading.value).toBe(false);
+    expect(second.avatarSrc.value).toBe(AVATARS_MEDIA.alien);
+  });
+
+  it("reissues a request after hydration when shared loading has no client request", async () => {
+    fetchProfile.mockReturnValueOnce(new Promise(() => undefined));
+    isSignedIn.value = true;
+    userId.value = "user_hydrated";
+
+    scope.run(useCosmosProfile);
+    await nextTick();
+    scope.stop();
+    nuxtApp = {};
+    fetchProfile.mockResolvedValueOnce({ avatarId: "alien" });
+    scope = effectScope();
+
+    const profile = scope.run(useCosmosProfile)!;
+    await flush();
+
+    expect(fetchProfile).toHaveBeenCalledTimes(2);
+    expect(profile.loading.value).toBe(false);
+    expect(profile.avatarSrc.value).toBe(AVATARS_MEDIA.alien);
   });
 
   it("shares one pending request and exposes the saved avatar to each consumer", async () => {
@@ -93,6 +144,28 @@ describe("useCosmosProfile", () => {
     expect(profile.loading.value).toBe(false);
     expect(profile.error.value).toBe(true);
     expect(profile.avatarSrc.value).toBe(AVATARS_MEDIA.astronaut);
+  });
+
+  it("clears the shared profile when signing out during a pending request", async () => {
+    let resolveProfile: (value: { avatarId: string }) => void = () => undefined;
+    fetchProfile.mockReturnValue(new Promise((resolve) => {
+      resolveProfile = resolve;
+    }));
+    isSignedIn.value = true;
+    userId.value = "user_signing_out";
+
+    const profile = scope.run(useCosmosProfile)!;
+    await nextTick();
+
+    isSignedIn.value = false;
+    userId.value = null;
+    await flush();
+    resolveProfile({ avatarId: "cat" });
+    await flush();
+
+    expect(profile.loading.value).toBe(false);
+    expect(profile.avatarId.value).toBeNull();
+    expect(profile.avatarSrc.value).toBeNull();
   });
 
   it("ignores a stale response after the Clerk user changes", async () => {
