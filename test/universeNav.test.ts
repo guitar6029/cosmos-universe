@@ -113,7 +113,8 @@ describe("CosmoPort Universe navigation", () => {
     expect(html).toContain('universe-nav__chevron');
     expect(html).not.toContain("<span>Account</span>");
     const styles = await readFile(resolve(process.cwd(), "app/components/universe/UniverseNav.css"), "utf8");
-    expect(styles).toContain("border-radius: .5rem");
+    const avatarStyles = await readFile(resolve(process.cwd(), "app/components/shared/UniverseAvatar.vue"), "utf8");
+    expect(avatarStyles).toContain("border-radius: .5rem");
     expect(styles).toContain("width: min(14.5rem, calc(100vw - 1rem))");
   });
 
