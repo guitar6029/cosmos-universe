@@ -6,4 +6,5 @@
 @utility decorative-container {
   position: relative;
   overflow: hidden;
+  padding: 1rem;
 }
