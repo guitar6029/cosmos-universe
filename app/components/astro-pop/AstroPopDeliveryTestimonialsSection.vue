@@ -15,7 +15,8 @@ const setTestimonialAvatar = (name: string, avatar: AnimatedAvatar | null) => {
   if (avatar) {
     animatedAvatars.value[name] = avatar;
   } else {
-    delete animatedAvatars.value[name];
+    const { [name]: _removedAvatar, ...remainingAvatars } = animatedAvatars.value;
+    animatedAvatars.value = remainingAvatars;
   }
 };
 

@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
-import { createSSRApp, h, ref } from "vue";
-import { createApp as createVueApp, nextTick } from "vue";
+import { createApp as createVueApp, createSSRApp, h, nextTick, ref } from "vue";
 import { renderToString } from "vue/server-renderer";
 import { createPinia, setActivePinia } from "pinia";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -34,7 +33,7 @@ describe("AstroPop bottle selection card", () => {
 
     expect(html).toContain("bottle-selection-card");
     expect(html).toContain(flavor.bottleImage);
-    expect(html).toContain(`alt=\"${flavor.name} AstroPop bottle\"`);
+    expect(html).toContain(`alt="${flavor.name} AstroPop bottle"`);
     expect(html).toContain(flavor.name.split(" ")[0]);
     expect(html).toContain(flavor.name.split(" ").slice(1).join(" "));
     expect(html).toContain("View Details");

@@ -1,5 +1,6 @@
 <script lang="ts">
 import { ABOUT_MEDIA } from "../../data/aboutMedia";
+import { ref } from "vue";
 
 export const MULTIVERSE_ARTWORK = [
   { id: "midcentury-cartoon", src: ABOUT_MEDIA.midcenturyCartoon, x: 4, y: 17, zIndex: 2 },
@@ -12,8 +13,6 @@ export const MULTIVERSE_ARTWORK = [
 </script>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
 const failedArtwork = ref<string[]>([]);
 const markArtworkFailed = (id: string) => {
   if (!failedArtwork.value.includes(id)) failedArtwork.value.push(id);

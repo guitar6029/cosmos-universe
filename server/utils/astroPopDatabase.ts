@@ -1,10 +1,10 @@
 import { neon } from "@neondatabase/serverless";
-import {
-  type AstroPopOrderDetail,
-  type AstroPopOrderHistory,
-  type AstroPopOrder,
-  type AstroPopOrderHistoryItem,
-} from "../types/astro-pop.types"
+import type {
+  AstroPopOrderDetail,
+  AstroPopOrderHistory,
+  AstroPopOrder,
+  AstroPopOrderHistoryItem,
+} from "../types/astro-pop.types";
 
 export class AstroPopDatabaseConfigurationError extends Error {
   constructor() {

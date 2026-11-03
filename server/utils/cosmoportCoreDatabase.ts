@@ -1,6 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import type { CosmoportApp } from "../../shared/types/cosmoportApp";
-import { type ProfileStatus } from "../types/profile.types";
+import type { ProfileStatus } from "../types/profile.types";
 import { isAvatarId, type AvatarId } from "../../app/data/avatarsMedia";
 
 export class CosmoportCoreConfigurationError extends Error {

@@ -21,11 +21,9 @@ const mocks = vi.hoisted(() => {
 });
 
 vi.mock("stripe", () => ({
-  default: class MockStripe {
-    constructor(...args: unknown[]) {
-      mocks.stripeConstructor(...args);
-      return mocks.stripeClient;
-    }
+  default: function MockStripe(...args: unknown[]) {
+    mocks.stripeConstructor(...args);
+    return mocks.stripeClient;
   },
 }));
 

@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const neonMock = vi.hoisted(() => vi.fn());
-vi.mock("@neondatabase/serverless", () => ({ neon: neonMock }));
-
 import {
   CosmoportCoreConfigurationError,
   getCosmoportApps,
   getCosmoportCoreDatabaseHealth,
   updateCosmoportAppStatus,
 } from "../server/utils/cosmoportCoreDatabase";
+
+const neonMock = vi.hoisted(() => vi.fn());
+vi.mock("@neondatabase/serverless", () => ({ neon: neonMock }));
 
 const url = "postgresql://test.example/cosmoport_core";
 const astro = {

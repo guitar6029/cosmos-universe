@@ -1,5 +1,4 @@
-import type { AstroPopCrateItem } from "../stores/astroPopCrate";
-import type { useAstroPopCrateStore } from "../stores/astroPopCrate";
+import type { AstroPopCrateItem, useAstroPopCrateStore } from "../stores/astroPopCrate";
 
 export const PENDING_ASTROPOP_CHECKOUT_STORAGE_KEY =
   "astropop-pending-checkout";

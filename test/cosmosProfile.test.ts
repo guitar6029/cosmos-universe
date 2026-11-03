@@ -1,12 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createCosmosProfile } from "../server/utils/cosmoportCoreDatabase";
 
 const neonMock = vi.hoisted(() => vi.fn());
 
 vi.mock("@neondatabase/serverless", () => ({
   neon: neonMock,
 }));
-
-import { createCosmosProfile } from "../server/utils/cosmoportCoreDatabase";
 
 describe("createCosmosProfile", () => {
   beforeEach(() => {

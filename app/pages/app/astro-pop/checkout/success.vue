@@ -92,8 +92,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <AstroPopNotificationContainer v-if="hasMounted" />
   <main class="astropop-checkout-success">
+    <AstroPopNotificationContainer v-if="hasMounted" />
     <p v-if="status === 'checking'" role="status">{{ message }}</p>
     <template v-else>
       <h1>{{ status === "confirmed" ? "Thank you for your order" : "Checkout update" }}</h1>

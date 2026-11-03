@@ -34,11 +34,9 @@ vi.mock("nuxt/server", () => ({
 
 vi.mock("stripe", () => ({
   default: Object.assign(
-    class MockStripe {
-      constructor(...args: unknown[]) {
-        mocks.stripeConstructor(...args);
-        return mocks.stripeClient;
-      }
+    function MockStripe(...args: unknown[]) {
+      mocks.stripeConstructor(...args);
+      return mocks.stripeClient;
     },
     { errors: { StripeInvalidRequestError: mocks.StripeInvalidRequestError } },
   ),

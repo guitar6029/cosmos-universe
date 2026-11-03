@@ -1,9 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { createSSRApp, defineComponent, h } from "vue";
+import { createSSRApp, defineComponent, h, ref } from "vue";
 import { renderToString } from "vue/server-renderer";
 import { describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
 import { dialogueFor, openingDialogueStep, PASSPORT_OFFICE_DIALOGUE } from "../app/data/passportOfficeDialogue";
 import { PASSPORT_OFFICE_MEDIA, PASSPORT_OFFICE_MEDIA_BASE_URL } from "../app/data/passportOfficeMedia";
 import PassportOfficePage from "../app/pages/passport-office/index.vue";

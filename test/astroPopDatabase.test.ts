@@ -1,11 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-
-const neonMock = vi.hoisted(() => vi.fn());
-
-vi.mock("@neondatabase/serverless", () => ({
-  neon: neonMock,
-}));
-
 import {
   AstroPopDatabaseConfigurationError,
   getAstroPopDatabaseHealth,
@@ -14,6 +7,12 @@ import {
   isAstroPopOrderRecorded,
   persistAstroPopOrder,
 } from "../server/utils/astroPopDatabase";
+
+const neonMock = vi.hoisted(() => vi.fn());
+
+vi.mock("@neondatabase/serverless", () => ({
+  neon: neonMock,
+}));
 
 describe("Astro Pop database health", () => {
   beforeEach(() => {

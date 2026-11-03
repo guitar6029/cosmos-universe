@@ -1,10 +1,6 @@
 import type Stripe from "stripe";
 import { z } from "zod";
-import type {
-  AstroPopCheckoutStatus,
-  AstroPopOrderStatus,
-  AstroPopPaymentStatus,
-} from "../../shared/astroPopCheckoutStatus";
+import type { AstroPopCheckoutStatus } from "../../shared/astroPopCheckoutStatus";
 
 export type {
   AstroPopCheckoutStatus,

@@ -31,10 +31,8 @@ vi.mock("../server/utils/cosmoportCoreDatabase", () => ({
 }));
 
 vi.mock("stripe", () => ({
-  default: class MockStripe {
-    constructor() {
-      return mocks.stripeClient;
-    }
+  default: function MockStripe() {
+    return mocks.stripeClient;
   },
 }));
 

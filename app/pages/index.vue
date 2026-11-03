@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { GRAND_CONCOURSE_MEDIA } from "../data/grandConcourseMedia";
 
 const heroFailed = ref(false);
@@ -20,15 +20,7 @@ useSeoMeta({
   ogTitle: "CosmoPort Universe",
   ogDescription: "Welcome to the Grand Concourse, your gateway to the CosmoPort Universe.",
 });
-
-
 const { data, status, error, refresh } = useFetch("/api/apps");
-
-
-const noApps = computed(() =>
-  status.value === "success" && data.value?.apps.length === 0,
-);
-
 </script>
 
 <template>

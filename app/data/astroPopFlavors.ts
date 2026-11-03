@@ -1,10 +1,10 @@
+import { ASTRO_POP_MEDIA } from "./astroPopMedia";
+
 export type AstroPopTheme =
   | "atomic-cherry"
   | "solar-citrus"
   | "lunar-lime"
   | "neptune-berry";
-
-import { ASTRO_POP_MEDIA } from "./astroPopMedia";
 
 export interface AstroPopArtwork {
   label: string;

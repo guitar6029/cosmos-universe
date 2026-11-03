@@ -2,11 +2,12 @@ import { existsSync } from "node:fs";
 import { createPinia } from "pinia";
 import { createSSRApp, defineComponent, h } from "vue";
 import { renderToString } from "vue/server-renderer";
-// Astro Pop navigation now consumes shared Clerk identity.
-vi.stubGlobal("useUser", () => ({ user: { value: null } }));
 import { describe, expect, it, vi } from "vitest";
 import AstroPopFooter from "../app/components/astro-pop/AstroPopFooter.vue";
 import AstroPopPage from "../app/pages/app/astro-pop/index.vue";
+
+// Astro Pop navigation now consumes shared Clerk identity.
+vi.stubGlobal("useUser", () => ({ user: { value: null } }));
 
 vi.stubGlobal("useRoute", () => ({ path: "/app/astro-pop" }));
 
