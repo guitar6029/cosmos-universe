@@ -9,9 +9,7 @@ const announcement = ref("");
 
 const cartItems = computed(() =>
   crateStore.items.flatMap((item) => {
-    const flavor = ASTROPOP_FLAVORS.find(
-      (candidate) => candidate.id === item.flavorId,
-    );
+    const flavor = ASTROPOP_FLAVORS.find((candidate) => candidate.id === item.flavorId);
     return flavor ? [{ ...item, flavor }] : [];
   }),
 );
@@ -71,12 +69,8 @@ const removeItem = (flavorId: AstroPopFlavorId, name: string) => {
 <template>
   <main class="astropop-cart-page">
     <header class="astropop-cart-page__header">
-      <NuxtLink class="astropop-cart-page__back" to="/app/astro-pop"
-        >← Back to AstroPop</NuxtLink
-      >
-      <p class="astropop-eyebrow astropop-cart-page__eyebrow">
-        Cosmoport Soda Service
-      </p>
+      <NuxtLink class="astropop-cart-page__back" to="/app/astro-pop">← Back to AstroPop</NuxtLink>
+      <p class="astropop-eyebrow astropop-cart-page__eyebrow">Cosmoport Soda Service</p>
       <h1>Order Manifest</h1>
       <p>Reserve a seat in the six-bottle rocket crate.</p>
     </header>
@@ -90,12 +84,8 @@ const removeItem = (flavorId: AstroPopFlavorId, name: string) => {
     >
       <p class="astropop-eyebrow astropop-cart-empty__stamp">Manifest clear</p>
       <h2 id="empty-cart-title">Your rocket crate is ready for liftoff.</h2>
-      <p>
-        Choose a few fizzy passengers and we’ll keep the bottle caps polished.
-      </p>
-      <NuxtLink
-        class="astropop-cart-page__button"
-        to="/app/astro-pop#pack-your-pop-title"
+      <p>Choose a few fizzy passengers and we’ll keep the bottle caps polished.</p>
+      <NuxtLink class="astropop-cart-page__button" to="/app/astro-pop#pack-your-pop-title"
         >Choose your flavors</NuxtLink
       >
     </section>
@@ -103,15 +93,8 @@ const removeItem = (flavorId: AstroPopFlavorId, name: string) => {
     <div v-else class="astropop-cart-page__layout">
       <section class="astropop-cart-items" aria-labelledby="cart-items-title">
         <h2 id="cart-items-title">Bottle roster</h2>
-        <article
-          v-for="item in cartItems"
-          :key="item.flavorId"
-          class="astropop-cart-item"
-        >
-          <img
-            :src="item.flavor.bottleImage"
-            :alt="`${item.flavor.name} AstroPop bottle`"
-          />
+        <article v-for="item in cartItems" :key="item.flavorId" class="astropop-cart-item">
+          <img :src="item.flavor.bottleImage" :alt="`${item.flavor.name} AstroPop bottle`" />
           <div class="astropop-cart-item__details">
             <h3>{{ item.flavor.name }}</h3>
             <p>{{ item.flavor.slogan }}</p>
@@ -143,14 +126,7 @@ const removeItem = (flavorId: AstroPopFlavorId, name: string) => {
                 :max="item.quantity + crateStore.remainingCapacity"
                 :value="item.quantity"
                 :disabled="crateStore.isCheckoutLocked"
-                @change="
-                  updateQuantity(
-                    $event,
-                    item.flavorId,
-                    item.quantity,
-                    item.flavor.name,
-                  )
-                "
+                @change="updateQuantity($event, item.flavorId, item.quantity, item.flavor.name)"
               />
               <button
                 type="button"
@@ -166,16 +142,9 @@ const removeItem = (flavorId: AstroPopFlavorId, name: string) => {
       </section>
 
       <aside class="astropop-cart-summary" aria-labelledby="cart-summary-title">
-        <p class="astropop-eyebrow astropop-cart-summary__eyebrow">
-          Crate capacity
-        </p>
-        <h2 id="cart-summary-title">
-          {{ crateStore.totalBottles }} of 6 bottles
-        </h2>
-        <div
-          class="astropop-cart-summary__meter"
-          aria-label="Six-bottle capacity indicator"
-        >
+        <p class="astropop-eyebrow astropop-cart-summary__eyebrow">Crate capacity</p>
+        <h2 id="cart-summary-title">{{ crateStore.totalBottles }} of 6 bottles</h2>
+        <div class="astropop-cart-summary__meter" aria-label="Six-bottle capacity indicator">
           <span
             v-for="slot in 6"
             :key="slot"
@@ -184,22 +153,16 @@ const removeItem = (flavorId: AstroPopFlavorId, name: string) => {
         </div>
         <p>
           {{ crateStore.remainingCapacity }}
-          {{
-            crateStore.remainingCapacity === 1
-              ? "space remains"
-              : "spaces remain"
-          }}
+          {{ crateStore.remainingCapacity === 1 ? "space remains" : "spaces remain" }}
           in your rocket crate.
         </p>
         <p class="astropop-cart-summary__note">
           Bottle prices will appear when the soda counter opens.
         </p>
-        <NuxtLink
-          class="astropop-cart-summary__continue"
-          to="/app/astro-pop#pack-your-pop-title"
+        <NuxtLink class="astropop-cart-summary__continue" to="/app/astro-pop#pack-your-pop-title"
           >Continue shopping</NuxtLink
         >
-       <AstroPopCheckoutButton />
+        <AstroPopCheckoutButton />
       </aside>
     </div>
   </main>

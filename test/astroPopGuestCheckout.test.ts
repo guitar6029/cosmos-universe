@@ -1,4 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  createAstroPopGuestCredential,
+  getAstroPopGuestCredential,
+  getAstroPopGuestFingerprint,
+  getOrCreateAstroPopGuestCredential,
+  isAstroPopGuestCheckoutAuthorized,
+} from "../server/utils/astroPopGuestCheckout";
 
 const mocks = vi.hoisted(() => ({
   getCookie: vi.fn(),
@@ -9,14 +16,6 @@ vi.mock("nuxt/server", () => ({
   getCookie: mocks.getCookie,
   setCookie: mocks.setCookie,
 }));
-
-import {
-  createAstroPopGuestCredential,
-  getAstroPopGuestCredential,
-  getAstroPopGuestFingerprint,
-  getOrCreateAstroPopGuestCredential,
-  isAstroPopGuestCheckoutAuthorized,
-} from "../server/utils/astroPopGuestCheckout";
 
 const validCredential = "a".repeat(43);
 const event = {};

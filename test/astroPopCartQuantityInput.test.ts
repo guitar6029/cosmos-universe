@@ -19,12 +19,15 @@ const mountCart = (quantity = 2, otherQuantity = 0) => {
   const container = document.createElement("div");
   const app = createApp(AstroPopCartPage);
   app.use(pinia);
-  app.component("NuxtLink", defineComponent({
-    props: { to: { type: String, required: true } },
-    setup(props, { slots }) {
-      return () => h("a", { href: props.to }, slots.default?.());
-    },
-  }));
+  app.component(
+    "NuxtLink",
+    defineComponent({
+      props: { to: { type: String, required: true } },
+      setup(props, { slots }) {
+        return () => h("a", { href: props.to }, slots.default?.());
+      },
+    }),
+  );
   document.body.appendChild(container);
   app.mount(container);
 
@@ -72,18 +75,25 @@ describe("AstroPop cart manual quantity input", () => {
     store.lockCheckout();
     await nextTick();
 
-    expect(container.querySelector<HTMLInputElement>("#quantity-atomic-cherry-fizz")?.disabled).toBe(true);
+    expect(
+      container.querySelector<HTMLInputElement>("#quantity-atomic-cherry-fizz")?.disabled,
+    ).toBe(true);
     expect(
       container.querySelector<HTMLButtonElement>(".astropop-cart-item__remove")?.disabled,
     ).toBe(true);
     expect(
-      [...container.querySelectorAll<HTMLButtonElement>(".astropop-cart-item__quantity-controls button")]
-        .every((button) => button.disabled),
+      [
+        ...container.querySelectorAll<HTMLButtonElement>(
+          ".astropop-cart-item__quantity-controls button",
+        ),
+      ].every((button) => button.disabled),
     ).toBe(true);
 
     store.unlockCheckout();
     await nextTick();
-    expect(container.querySelector<HTMLInputElement>("#quantity-atomic-cherry-fizz")?.disabled).toBe(false);
+    expect(
+      container.querySelector<HTMLInputElement>("#quantity-atomic-cherry-fizz")?.disabled,
+    ).toBe(false);
 
     app.unmount();
     container.remove();

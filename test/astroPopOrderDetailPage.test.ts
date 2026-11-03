@@ -18,11 +18,20 @@ vi.stubGlobal("useFetch", () => fetchResult);
 vi.stubGlobal("definePageMeta", () => undefined);
 vi.stubGlobal("useSeoMeta", () => undefined);
 
-const NuxtLinkStub = { props: { to: { type: String, required: true } }, template: '<a :href="to"><slot /></a>' };
-const renderPage = () => renderToString(createSSRApp({ render: () => h(AstroPopOrderDetailPage) })
-  .component("NuxtLink", NuxtLinkStub)
-  .component("AstroPopNav", { template: "<nav>Astro Pop</nav>" })
-  .component("AstroPopLoader", { props: ["message"], template: '<div role="status">{{ message }}</div>' }));
+const NuxtLinkStub = {
+  props: { to: { type: String, required: true } },
+  template: '<a :href="to"><slot /></a>',
+};
+const renderPage = () =>
+  renderToString(
+    createSSRApp({ render: () => h(AstroPopOrderDetailPage) })
+      .component("NuxtLink", NuxtLinkStub)
+      .component("AstroPopNav", { template: "<nav>Astro Pop</nav>" })
+      .component("AstroPopLoader", {
+        props: ["message"],
+        template: '<div role="status">{{ message }}</div>',
+      }),
+  );
 
 describe("Astro Pop order detail page", () => {
   beforeEach(() => {
@@ -47,7 +56,14 @@ describe("Astro Pop order detail page", () => {
       totalCents: 357,
       status: "PLACED",
       paymentStatus: "PARTIALLY_REFUNDED",
-      items: [{ flavorId: "atomic-cherry-fizz", flavorName: "Atomic Cherry Fizz", quantity: 3, unitPriceCents: 119 }],
+      items: [
+        {
+          flavorId: "atomic-cherry-fizz",
+          flavorName: "Atomic Cherry Fizz",
+          quantity: 3,
+          unitPriceCents: 119,
+        },
+      ],
     };
     const html = await renderPage();
     expect(html).toContain("Atomic Cherry Fizz");

@@ -11,12 +11,15 @@ const renderCart = async (addBottles = false) => {
   const pinia = createPinia();
   const app = createSSRApp({ render: () => h(AstroPopCartPage) });
   app.use(pinia);
-  app.component("NuxtLink", defineComponent({
-    props: { to: { type: String, required: true } },
-    setup(props, { slots }) {
-      return () => h("a", { href: props.to }, slots.default?.());
-    },
-  }));
+  app.component(
+    "NuxtLink",
+    defineComponent({
+      props: { to: { type: String, required: true } },
+      setup(props, { slots }) {
+        return () => h("a", { href: props.to }, slots.default?.());
+      },
+    }),
+  );
   app.component("AstroPopCheckoutButton", AstroPopCheckoutButton);
 
   if (addBottles) {

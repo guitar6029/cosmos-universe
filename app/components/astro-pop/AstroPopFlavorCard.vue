@@ -19,8 +19,12 @@ defineProps<{
     </header>
 
     <div class="flavor-card__artwork">
-      <span class="flavor-card__artwork-burst flavor-card__artwork-burst--one" aria-hidden="true">✦</span>
-      <span class="flavor-card__artwork-burst flavor-card__artwork-burst--two" aria-hidden="true">✦</span>
+      <span class="flavor-card__artwork-burst flavor-card__artwork-burst--one" aria-hidden="true"
+        >✦</span
+      >
+      <span class="flavor-card__artwork-burst flavor-card__artwork-burst--two" aria-hidden="true"
+        >✦</span
+      >
       <img
         class="flavor-card__artwork-image"
         :src="flavor.artwork.src"

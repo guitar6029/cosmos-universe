@@ -8,14 +8,21 @@ import UniverseNav from "../app/components/universe/UniverseNav.vue";
 import UniverseMultiverseCollage from "../app/components/universe/UniverseMultiverseCollage.vue";
 import UniverseHomePage from "../app/pages/index.vue";
 import UniverseAboutPage from "../app/pages/about.vue";
-import { GRAND_CONCOURSE_MEDIA, GRAND_CONCOURSE_MEDIA_BASE_URL } from "../app/data/grandConcourseMedia";
+import {
+  GRAND_CONCOURSE_MEDIA,
+  GRAND_CONCOURSE_MEDIA_BASE_URL,
+} from "../app/data/grandConcourseMedia";
 
 type AccountState = "signed-in" | "signed-out" | "loading";
 
 const signOut = vi.fn();
 const adminAccess = vi.fn<() => Promise<{ authorized: boolean }>>();
 const authState = ref<AccountState>("loading");
-const user = ref<{ fullName?: string; imageUrl?: string; primaryEmailAddress?: { emailAddress: string } } | null>(null);
+const user = ref<{
+  fullName?: string;
+  imageUrl?: string;
+  primaryEmailAddress?: { emailAddress: string };
+} | null>(null);
 
 vi.stubGlobal("useAuth", () => ({
   isLoaded: ref(authState.value !== "loading"),
@@ -32,10 +39,22 @@ vi.mock("../app/composables/useCosmosProfile", () => ({
   }),
 }));
 vi.stubGlobal("useFetch", () => ({
-  data: ref({ apps: [
-    { id: "astro-pop", title: "Astro Pop Soda Co.", description: "Your neighborhood soda shop, now serving the stars.", enabled: true },
-    { id: "cosmoport-voyage", title: "CosmoPort Voyage", description: "Our next departure is still under construction.", enabled: false },
-  ] }),
+  data: ref({
+    apps: [
+      {
+        id: "astro-pop",
+        title: "Astro Pop Soda Co.",
+        description: "Your neighborhood soda shop, now serving the stars.",
+        enabled: true,
+      },
+      {
+        id: "cosmoport-voyage",
+        title: "CosmoPort Voyage",
+        description: "Our next departure is still under construction.",
+        enabled: false,
+      },
+    ],
+  }),
   status: ref("success"),
   error: ref(null),
   refresh: vi.fn(),
@@ -43,7 +62,11 @@ vi.stubGlobal("useFetch", () => ({
 
 const mountSignedInNavigation = () => {
   authState.value = "signed-in";
-  user.value = { fullName: "Nova Ray", imageUrl: "https://example.test/nova.png", primaryEmailAddress: { emailAddress: "nova@example.test" } };
+  user.value = {
+    fullName: "Nova Ray",
+    imageUrl: "https://example.test/nova.png",
+    primaryEmailAddress: { emailAddress: "nova@example.test" },
+  };
   const container = document.createElement("div");
   const app = createApp(UniverseNav);
 
@@ -66,12 +89,25 @@ const flushAdminAccess = async () => {
 
 const NuxtLink = defineComponent({
   props: { to: { type: String, required: true } },
-  setup: (props, { slots }) => () => h("a", { href: props.to }, slots.default?.()),
+  setup:
+    (props, { slots }) =>
+    () =>
+      h("a", { href: props.to }, slots.default?.()),
 });
 
-const renderWithAccountState = (component: typeof UniverseNav | typeof UniverseHomePage | typeof UniverseAboutPage, accountState: AccountState) => {
+const renderWithAccountState = (
+  component: typeof UniverseNav | typeof UniverseHomePage | typeof UniverseAboutPage,
+  accountState: AccountState,
+) => {
   authState.value = accountState;
-  user.value = accountState === "signed-in" ? { fullName: "Nova Ray", imageUrl: "https://example.test/nova.png", primaryEmailAddress: { emailAddress: "nova@example.test" } } : null;
+  user.value =
+    accountState === "signed-in"
+      ? {
+          fullName: "Nova Ray",
+          imageUrl: "https://example.test/nova.png",
+          primaryEmailAddress: { emailAddress: "nova@example.test" },
+        }
+      : null;
   const app = createSSRApp({ render: () => h(component) });
   app.component("NuxtLink", NuxtLink);
   app.component("UniverseNav", UniverseNav);
@@ -116,11 +152,17 @@ describe("CosmoPort Universe navigation", () => {
   it("uses a compact avatar-only trigger with a chevron and accessible name", async () => {
     const html = await renderWithAccountState(UniverseNav, "signed-in");
     expect(html).toContain('aria-label="Account for Nova Ray"');
-    expect(html).toContain('universe-nav__chevron');
+    expect(html).toContain("universe-nav__chevron");
     expect(html).not.toContain("<span>Account</span>");
-    const styles = await readFile(resolve(process.cwd(), "app/components/universe/UniverseNav.css"), "utf8");
-    const avatarStyles = await readFile(resolve(process.cwd(), "app/components/shared/UniverseAvatar.vue"), "utf8");
-    expect(avatarStyles).toContain("border-radius: .5rem");
+    const styles = await readFile(
+      resolve(process.cwd(), "app/components/universe/UniverseNav.css"),
+      "utf8",
+    );
+    const avatarStyles = await readFile(
+      resolve(process.cwd(), "app/components/shared/UniverseAvatar.vue"),
+      "utf8",
+    );
+    expect(avatarStyles).toContain("border-radius: 0.5rem");
     expect(styles).toContain("width: min(14.5rem, calc(100vw - 1rem))");
   });
 
@@ -228,7 +270,9 @@ describe("CosmoPort Universe navigation", () => {
   it("opens an Account menu with identity details and requests a Clerk sign-out to the Universe root", async () => {
     signOut.mockResolvedValue(undefined);
     const { app, container } = mountSignedInNavigation();
-    const accountButton = container.querySelector<HTMLButtonElement>(".universe-nav__account-toggle");
+    const accountButton = container.querySelector<HTMLButtonElement>(
+      ".universe-nav__account-toggle",
+    );
     accountButton?.click();
     await nextTick();
     expect(container.querySelector('[role="group"]')?.textContent).toContain("Nova Ray");
@@ -247,9 +291,12 @@ describe("CosmoPort Universe navigation", () => {
 
   it("shows a safe error after sign-out fails, resets loading, and permits a retry", async () => {
     let rejectSignOut: (reason?: unknown) => void = () => undefined;
-    signOut.mockImplementationOnce(() => new Promise<void>((_resolve, reject) => {
-      rejectSignOut = reject;
-    }));
+    signOut.mockImplementationOnce(
+      () =>
+        new Promise<void>((_resolve, reject) => {
+          rejectSignOut = reject;
+        }),
+    );
     signOut.mockResolvedValueOnce(undefined);
     const { app, container } = mountSignedInNavigation();
     container.querySelector<HTMLButtonElement>(".universe-nav__account-toggle")?.click();
@@ -295,8 +342,12 @@ describe("CosmoPort Universe navigation", () => {
     button?.click();
     await nextTick();
     expect(container.querySelector('[role="group"]')).not.toBeNull();
-    expect(document.activeElement).toBe(container.querySelector<HTMLButtonElement>(".universe-nav__menu-sign-out"));
-    container.querySelector<HTMLButtonElement>(".universe-nav__menu-sign-out")?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    expect(document.activeElement).toBe(
+      container.querySelector<HTMLButtonElement>(".universe-nav__menu-sign-out"),
+    );
+    container
+      .querySelector<HTMLButtonElement>(".universe-nav__menu-sign-out")
+      ?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
     await nextTick();
     expect(container.querySelector('[role="group"]')).toBeNull();
     expect(document.activeElement).toBe(button);
@@ -323,8 +374,12 @@ describe("CosmoPort Universe navigation", () => {
   it("uses the reviewed Grand Concourse CDN artwork with a motion-safe fallback", async () => {
     const source = await readFile(resolve(process.cwd(), "app/pages/index.vue"), "utf8");
 
-    expect(GRAND_CONCOURSE_MEDIA_BASE_URL).toBe("https://media.cosmos-universe.com/grand-concourse");
-    expect(GRAND_CONCOURSE_MEDIA.hero).toBe(`${GRAND_CONCOURSE_MEDIA_BASE_URL}/cosmoport-grand-concourse.png`);
+    expect(GRAND_CONCOURSE_MEDIA_BASE_URL).toBe(
+      "https://media.cosmos-universe.com/grand-concourse",
+    );
+    expect(GRAND_CONCOURSE_MEDIA.hero).toBe(
+      `${GRAND_CONCOURSE_MEDIA_BASE_URL}/cosmoport-grand-concourse.png`,
+    );
     expect(source).toContain("GRAND_CONCOURSE_MEDIA.hero");
     expect(source).toContain("heroFailed = ref(false)");
     expect(source).toContain("heroImage.value?.complete && heroImage.value.naturalWidth === 0");
@@ -365,7 +420,10 @@ describe("CosmoPort Universe navigation", () => {
   });
 
   it("uses Clerk composables and an SDK sign-out redirect without prebuilt Clerk UI", async () => {
-    const source = await readFile(resolve(process.cwd(), "app/components/universe/UniverseNav.vue"), "utf8");
+    const source = await readFile(
+      resolve(process.cwd(), "app/components/universe/UniverseNav.vue"),
+      "utf8",
+    );
 
     expect(source).toContain("useAuth()");
     expect(source).toContain("useUser()");

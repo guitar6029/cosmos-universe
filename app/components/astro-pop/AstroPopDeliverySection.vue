@@ -30,23 +30,34 @@ import DecorativeImage from "../shared/DecorativeImage.vue";
     <DecorativeImage
       class="astropop-flavor-section__cap"
       :src="ASTRO_POP_MEDIA.sodaCap"
-      style="top: 90%; left: -5rem; width: 150px; opacity: 0.45; transform: rotate(-15deg); z-index: 0;"
+      style="
+        top: 90%;
+        left: -5rem;
+        width: 150px;
+        opacity: 0.45;
+        transform: rotate(-15deg);
+        z-index: 0;
+      "
     />
 
     <DecorativeImage
       class="astropop-flavor-section__cap"
       :src="ASTRO_POP_MEDIA.sodaCap"
-      style="top: 10%; left: 95%; width: 150px; opacity: 0.45; transform: rotate(-15deg); z-index: 0;"
+      style="
+        top: 10%;
+        left: 95%;
+        width: 150px;
+        opacity: 0.45;
+        transform: rotate(-15deg);
+        z-index: 0;
+      "
     />
 
     <DecorativeImage
       class="astropop-flavor-section__delivery_card"
       :src="ASTRO_POP_MEDIA.deliveryNote"
-      style="top: 10%; left: 5%; width: 550px; opacity: 0.45; transform: rotate(-45deg); z-index: 0;"
+      style="top: 10%; left: 5%; width: 550px; opacity: 0.45; transform: rotate(-45deg); z-index: 0"
     />
-
-
-
   </div>
 </template>
 

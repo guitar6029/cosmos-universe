@@ -1,4 +1,4 @@
-import { env } from 'node:process'
+import { env } from "node:process";
 import { defineConfig, devices } from "@playwright/test";
 
 const port = env.PLAYWRIGHT_PORT ?? "3000";

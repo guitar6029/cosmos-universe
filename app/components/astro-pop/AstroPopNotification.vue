@@ -23,7 +23,11 @@ function handleFocusOut(event: FocusEvent) {
   const nextTarget = event.relatedTarget;
   const currentTarget = event.currentTarget;
 
-  if (nextTarget instanceof Node && currentTarget instanceof HTMLElement && currentTarget.contains(nextTarget)) {
+  if (
+    nextTarget instanceof Node &&
+    currentTarget instanceof HTMLElement &&
+    currentTarget.contains(nextTarget)
+  ) {
     return;
   }
 
@@ -47,7 +51,7 @@ function handleFocusOut(event: FocusEvent) {
       :src="notificationImages[props.notification.type]"
       alt=""
       class="astro-pop-notification__portrait"
-    >
+    />
     <div class="astro-pop-notification__content" tabindex="0">
       <p class="astro-pop-notification__title">{{ props.notification.title }}</p>
       <p class="astro-pop-notification__message">{{ props.notification.message }}</p>

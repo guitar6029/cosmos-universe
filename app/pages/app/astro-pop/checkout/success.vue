@@ -2,17 +2,23 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import AstroPopNotificationContainer from "../../../../components/astro-pop/AstroPopNotificationContainer.vue";
-import { useAstroPopNotifications, type AstroPopNotificationOptions } from "../../../../composables/astro-pop/useAstroPopNotifications";
-import { useAstroPopCheckoutConfirmation, type AstroPopCheckoutFinalOutcome } from "../../../../composables/useAstroPopCheckoutConfirmation";
+import {
+  useAstroPopNotifications,
+  type AstroPopNotificationOptions,
+} from "../../../../composables/astro-pop/useAstroPopNotifications";
+import {
+  useAstroPopCheckoutConfirmation,
+  type AstroPopCheckoutFinalOutcome,
+} from "../../../../composables/useAstroPopCheckoutConfirmation";
 import { useAstroPopCrateStore } from "../../../../stores/astroPopCrate";
 
 const route = useRoute();
 const crateStore = useAstroPopCrateStore();
-const sessionId =
-  typeof route.query.session_id === "string"
-    ? route.query.session_id
-    : undefined;
-const { status, finalOutcome, cartCompletion, start } = useAstroPopCheckoutConfirmation({ sessionId, crateStore });
+const sessionId = typeof route.query.session_id === "string" ? route.query.session_id : undefined;
+const { status, finalOutcome, cartCompletion, start } = useAstroPopCheckoutConfirmation({
+  sessionId,
+  crateStore,
+});
 const { show } = useAstroPopNotifications();
 const hasMounted = ref(false);
 let notificationShown = false;
@@ -65,7 +71,8 @@ const messages = {
   confirmed: "Your payment and order are confirmed.",
   "payment-pending": "Your payment has not been confirmed yet. Your cart is still saved.",
   "payment-received": "Your payment was received. We’re finalizing your order.",
-  "payment-received-recording-unknown": "Your payment was received, but order recording is temporarily unavailable.",
+  "payment-received-recording-unknown":
+    "Your payment was received, but order recording is temporarily unavailable.",
   unpaid: "This checkout was not completed. Your cart is still saved.",
   unavailable: "Checkout status is temporarily unavailable. Your cart is still saved.",
   unauthorized: "This browser cannot access that checkout.",
@@ -74,7 +81,8 @@ const messages = {
 const message = computed(() => messages[status.value]);
 const cartMessage = computed(() => {
   if (cartCompletion.value === "cleared") return "Your checkout cart has been cleared.";
-  if (cartCompletion.value === "preserved") return "Your cart changed while checkout was in progress, so the updated cart was preserved.";
+  if (cartCompletion.value === "preserved")
+    return "Your cart changed while checkout was in progress, so the updated cart was preserved.";
   if (cartCompletion.value === "untouched") return "Your current cart was left untouched.";
   return "";
 });
@@ -92,8 +100,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <AstroPopNotificationContainer v-if="hasMounted" />
   <main class="astropop-checkout-success">
+    <AstroPopNotificationContainer v-if="hasMounted" />
     <p v-if="status === 'checking'" role="status">{{ message }}</p>
     <template v-else>
       <h1>{{ status === "confirmed" ? "Thank you for your order" : "Checkout update" }}</h1>

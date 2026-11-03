@@ -9,13 +9,7 @@ const { notifications, dismiss, pause, resume } = useAstroPopNotifications();
   <TransitionGroup
     name="astro-pop-notification"
     tag="div"
-    class="
-      pointer-events-none
-      fixed bottom-4 right-4 z-50
-      flex w-[calc(100vw-2rem)] max-w-lg
-      flex-col gap-3
-      sm:bottom-6 sm:right-6
-    "
+    class="pointer-events-none fixed bottom-4 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-lg flex-col gap-3 sm:bottom-6 sm:right-6"
   >
     <AstroPopNotification
       v-for="notification in notifications"
@@ -32,7 +26,9 @@ const { notifications, dismiss, pause, resume } = useAstroPopNotifications();
 .astro-pop-notification-enter-active,
 .astro-pop-notification-leave-active,
 .astro-pop-notification-move {
-  transition: opacity 225ms ease, transform 225ms ease;
+  transition:
+    opacity 225ms ease,
+    transform 225ms ease;
 }
 
 .astro-pop-notification-enter-from,

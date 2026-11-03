@@ -93,5 +93,17 @@ export function useUniverseRadio() {
     playbackState.value = "idle";
   }
 
-  return { volume, muted, playbackState, errorMessage, isPlaying, play, pause, toggleMute, setVolume, stopForMiniApp, dispose };
+  return {
+    volume,
+    muted,
+    playbackState,
+    errorMessage,
+    isPlaying,
+    play,
+    pause,
+    toggleMute,
+    setVolume,
+    stopForMiniApp,
+    dispose,
+  };
 }

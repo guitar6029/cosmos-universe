@@ -14,12 +14,16 @@ describe("universal profile schema migration", () => {
     expect(migration).toMatch(/id UUID PRIMARY KEY DEFAULT gen_random_uuid\(\)/i);
     expect(migration).toMatch(/user_id TEXT NOT NULL UNIQUE/i);
     expect(migration).toMatch(/COMMIT\s*;/i);
-    expect(migration).not.toMatch(/DROP TABLE|ALTER TABLE public\.apps|ALTER TABLE public\.orders/i);
+    expect(migration).not.toMatch(
+      /DROP TABLE|ALTER TABLE public\.apps|ALTER TABLE public\.orders/i,
+    );
   });
 
   it("defaults to a reviewed astronaut avatar and limits persisted values to four presets", () => {
     expect(migration).toMatch(/avatar_id TEXT NOT NULL DEFAULT 'astronaut'/i);
-    expect(migration).toMatch(/CHECK\s*\(\s*avatar_id IN\s*\(\s*'astronaut',\s*'cat',\s*'alien',\s*'robot'\s*\)\s*\)/i);
+    expect(migration).toMatch(
+      /CHECK\s*\(\s*avatar_id IN\s*\(\s*'astronaut',\s*'cat',\s*'alien',\s*'robot'\s*\)\s*\)/i,
+    );
     expect(migration).toMatch(/created_at TIMESTAMPTZ NOT NULL DEFAULT NOW\(\)/i);
     expect(migration).toMatch(/updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW\(\)/i);
   });

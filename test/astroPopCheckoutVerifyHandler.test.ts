@@ -24,10 +24,8 @@ vi.mock("nuxt/server", () => ({
 
 vi.mock("stripe", () => ({
   default: Object.assign(
-    class MockStripe {
-      constructor() {
-        return mocks.stripeClient;
-      }
+    function MockStripe() {
+      return mocks.stripeClient;
     },
     { errors: { StripeInvalidRequestError: mocks.StripeInvalidRequestError } },
   ),
@@ -55,7 +53,8 @@ describe("Astro Pop checkout verification handler", () => {
   let handler: VerifyHandler;
 
   beforeAll(async () => {
-    handler = (await import("../server/api/astro-pop/checkout/verify.get")).default as VerifyHandler;
+    handler = (await import("../server/api/astro-pop/checkout/verify.get"))
+      .default as VerifyHandler;
   });
 
   beforeEach(() => {
@@ -77,7 +76,7 @@ describe("Astro Pop checkout verification handler", () => {
     });
   });
 
-  it.each(["missing", "incorrect"]) ("rejects %s guest authorization", async () => {
+  it.each(["missing", "incorrect"])("rejects %s guest authorization", async () => {
     mocks.isGuestAuthorized.mockReturnValue(false);
 
     await expect(handler({})).rejects.toMatchObject({ statusCode: 403 });
@@ -108,7 +107,9 @@ describe("Astro Pop checkout verification handler", () => {
     );
     await expect(handler({})).rejects.toMatchObject({ statusCode: 404 });
 
-    mocks.stripeClient.checkout.sessions.retrieve.mockRejectedValue(new Error("Stripe unavailable"));
+    mocks.stripeClient.checkout.sessions.retrieve.mockRejectedValue(
+      new Error("Stripe unavailable"),
+    );
     await expect(handler({})).rejects.toMatchObject({ statusCode: 502 });
   });
 });

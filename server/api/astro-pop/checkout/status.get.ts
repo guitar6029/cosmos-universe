@@ -12,9 +12,7 @@ import { isAstroPopGuestCheckoutAuthorized } from "../../../utils/astroPopGuestC
  * by the Stripe webhook, without changing either external system.
  */
 export default defineEventHandler(async (event) => {
-  const parsedQuery = checkoutSessionIdSchema.safeParse(
-    getQuery(event).session_id,
-  );
+  const parsedQuery = checkoutSessionIdSchema.safeParse(getQuery(event).session_id);
 
   if (!parsedQuery.success) {
     throw createError({ status: 400, statusText: "Invalid checkout session ID" });
@@ -39,17 +37,12 @@ export default defineEventHandler(async (event) => {
       throw createError({ status: 404, statusText: "Checkout session not found" });
     }
 
-
     throw createError({ status: 502, statusText: "Unable to retrieve checkout session" });
   }
 
-  if (
-    session.mode !== "payment" ||
-    session.metadata?.astro_pop_order !== "true"
-  ) {
+  if (session.mode !== "payment" || session.metadata?.astro_pop_order !== "true") {
     throw createError({ status: 404, statusText: "Checkout session not found" });
   }
-
 
   /**
    * Verify that this browser initiated the checkout.
@@ -67,9 +60,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-
-  const paymentIsComplete =
-    session.status === "complete" && session.payment_status === "paid";
+  const paymentIsComplete = session.status === "complete" && session.payment_status === "paid";
   if (!paymentIsComplete) {
     // Unpaid checkouts cannot have a webhook-persisted order, so skip Neon.
     return getAstroPopCheckoutStatus(session);

@@ -9,7 +9,12 @@
   min-height: 100svh;
   background:
     radial-gradient(circle at 15% 18%, rgba(113, 214, 208, 0.16), transparent 28rem),
-    linear-gradient(135deg, var(--destination-background-start) 0%, var(--destination-teal) 48%, var(--destination-background-end) 100%);
+    linear-gradient(
+      135deg,
+      var(--destination-background-start) 0%,
+      var(--destination-teal) 48%,
+      var(--destination-background-end) 100%
+    );
   color: var(--destination-ivory);
   overflow: hidden;
 }
@@ -219,7 +224,9 @@
   border-radius: 44% 5% 7% 7% / 9% 7% 6% 12%;
   background: var(--destination-deep-teal);
   box-shadow: 0.7rem 0.7rem 0 rgba(4, 25, 34, 0.18);
-  transition: border-color 180ms ease, transform 180ms ease;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .destination-card.is-selected {

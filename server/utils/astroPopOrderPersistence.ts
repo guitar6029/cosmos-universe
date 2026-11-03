@@ -12,11 +12,10 @@ export class AstroPopOrderValidationError extends Error {
 }
 
 const isPositiveInteger = (value: number | null | undefined): value is number => {
-
   if (value === undefined || value === null) return false;
 
   return Number.isInteger(value) && value > 0;
-}
+};
 
 const getPaymentIntentId = (paymentIntent: Stripe.Checkout.Session["payment_intent"]) => {
   if (!paymentIntent) {
@@ -60,16 +59,18 @@ export function getAstroPopOrderFromStripe(
     const product = lineItem.price?.product;
 
     const flavorId =
-      typeof product === "object" &&
-        product !== null &&
-        "metadata" in product
+      typeof product === "object" && product !== null && "metadata" in product
         ? product.metadata?.[ASTROPOP_FLAVOR_METADATA_KEY]
         : undefined;
 
-    if (!flavorId || !lineItem.description || !isPositiveInteger(lineItem.quantity) || !isPositiveInteger(lineItem.price?.unit_amount)) {
+    if (
+      !flavorId ||
+      !lineItem.description ||
+      !isPositiveInteger(lineItem.quantity) ||
+      !isPositiveInteger(lineItem.price?.unit_amount)
+    ) {
       throw new AstroPopOrderValidationError("Paid checkout session contains an invalid line item");
     }
-
 
     return {
       flavorId,
@@ -80,7 +81,9 @@ export function getAstroPopOrderFromStripe(
   });
 
   if (items.length === 0 || new Set(items.map((item) => item.flavorId)).size !== items.length) {
-    throw new AstroPopOrderValidationError("Paid checkout session contains invalid AstroPop flavors");
+    throw new AstroPopOrderValidationError(
+      "Paid checkout session contains invalid AstroPop flavors",
+    );
   }
 
   const lineItemTotal = items.reduce(

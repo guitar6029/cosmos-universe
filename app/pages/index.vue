@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { GRAND_CONCOURSE_MEDIA } from "../data/grandConcourseMedia";
 
 const heroFailed = ref(false);
@@ -11,7 +11,9 @@ onMounted(() => {
     return;
   }
 
-  void heroImage.value?.decode().catch(() => { heroFailed.value = true; });
+  void heroImage.value?.decode().catch(() => {
+    heroFailed.value = true;
+  });
 });
 
 useSeoMeta({
@@ -20,15 +22,7 @@ useSeoMeta({
   ogTitle: "CosmoPort Universe",
   ogDescription: "Welcome to the Grand Concourse, your gateway to the CosmoPort Universe.",
 });
-
-
 const { data, status, error, refresh } = useFetch("/api/apps");
-
-
-const noApps = computed(() =>
-  status.value === "success" && data.value?.apps.length === 0,
-);
-
 </script>
 
 <template>
@@ -39,14 +33,22 @@ const noApps = computed(() =>
     <main>
       <section class="grand-concourse__hero" aria-label="CosmoPort Grand Concourse">
         <div class="grand-concourse__hero-art">
-          <div class="grand-concourse__hero-fallback" aria-hidden="true"><span>CosmoPort</span><strong>Grand
-              Concourse</strong><small>Arrivals from tomorrow</small></div>
-          <img v-if="!heroFailed" ref="heroImage" :src="GRAND_CONCOURSE_MEDIA.hero"
+          <div class="grand-concourse__hero-fallback" aria-hidden="true">
+            <span>CosmoPort</span><strong>Grand Concourse</strong
+            ><small>Arrivals from tomorrow</small>
+          </div>
+          <img
+            v-if="!heroFailed"
+            ref="heroImage"
+            :src="GRAND_CONCOURSE_MEDIA.hero"
             alt="Illustrated CosmoPort Grand Concourse terminal, with travelers, a central CosmoPort sign, and the AstroPop Soda Co. storefront."
-            fetchpriority="high" @error="heroFailed = true">
+            fetchpriority="high"
+            @error="heroFailed = true"
+          />
         </div>
-        <a class="grand-concourse__scroll-link" href="#concourse">Explore the Concourse <span
-            aria-hidden="true">↓</span></a>
+        <a class="grand-concourse__scroll-link" href="#concourse"
+          >Explore the Concourse <span aria-hidden="true">↓</span></a
+        >
       </section>
 
       <section id="concourse" class="concourse-experiences" aria-labelledby="concourse-title">
@@ -65,13 +67,10 @@ const noApps = computed(() =>
               Enter {{ app.title }}
             </NuxtLink>
 
-            <span v-else class="concourse-card__unavailable">
-              Under Construction
-            </span>
+            <span v-else class="concourse-card__unavailable"> Under Construction </span>
           </div>
         </div>
       </section>
-
     </main>
   </div>
 </template>

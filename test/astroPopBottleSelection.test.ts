@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
-import { createSSRApp, h, ref } from "vue";
-import { createApp as createVueApp, nextTick } from "vue";
+import { createApp as createVueApp, createSSRApp, h, nextTick, ref } from "vue";
 import { renderToString } from "vue/server-renderer";
 import { createPinia, setActivePinia } from "pinia";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -34,7 +33,7 @@ describe("AstroPop bottle selection card", () => {
 
     expect(html).toContain("bottle-selection-card");
     expect(html).toContain(flavor.bottleImage);
-    expect(html).toContain(`alt=\"${flavor.name} AstroPop bottle\"`);
+    expect(html).toContain(`alt="${flavor.name} AstroPop bottle"`);
     expect(html).toContain(flavor.name.split(" ")[0]);
     expect(html).toContain(flavor.name.split(" ").slice(1).join(" "));
     expect(html).toContain("View Details");
@@ -76,7 +75,8 @@ describe("AstroPop bottle selection card", () => {
     const successToken = ref(0);
     const container = document.createElement("div");
     const app = createTestApp({
-      setup: () => () => h(AstroPopBottleSelectionCard, { flavor, successToken: successToken.value }),
+      setup: () => () =>
+        h(AstroPopBottleSelectionCard, { flavor, successToken: successToken.value }),
     });
 
     document.body.appendChild(container);
@@ -112,9 +112,7 @@ describe("AstroPop Pack Your Pop section", () => {
       withNuxtLink(createSSRApp({ render: () => h(AstroPopPackYourPopSection) })),
     );
 
-    expect(html.match(/class="bottle-selection-card /g)).toHaveLength(
-      ASTROPOP_FLAVORS.length,
-    );
+    expect(html.match(/class="bottle-selection-card /g)).toHaveLength(ASTROPOP_FLAVORS.length);
 
     for (const flavor of ASTROPOP_FLAVORS) {
       expect(html).toContain(flavor.name);
@@ -133,9 +131,7 @@ describe("AstroPop Pack Your Pop section", () => {
     document.body.appendChild(container);
     app.mount(container);
 
-    const buttons = Array.from(
-      container.querySelectorAll<HTMLButtonElement>("button"),
-    );
+    const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>("button"));
 
     buttons[0]?.click();
     buttons[0]?.click();
@@ -173,9 +169,7 @@ describe("AstroPop Pack Your Pop section", () => {
     document.body.appendChild(container);
     app.mount(container);
 
-    const buttons = Array.from(
-      container.querySelectorAll<HTMLButtonElement>("button"),
-    );
+    const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>("button"));
 
     for (let index = 0; index < 6; index += 1) {
       buttons[0]?.click();

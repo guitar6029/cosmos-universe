@@ -259,8 +259,7 @@ a:focus-visible {
     color: var(--astropop-red);
     transform: translateY(-1px);
   }
-  .astropop-cart-item__quantity-controls
-    button:hover:not(:disabled):not(:active) {
+  .astropop-cart-item__quantity-controls button:hover:not(:disabled):not(:active) {
     background: #9bd4cb;
   }
 }

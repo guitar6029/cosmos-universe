@@ -10,7 +10,10 @@ const crateStore = useAstroPopCrateStore();
 const announcement = ref("");
 const confirmation = ref("");
 const addedTokens = ref<Record<AstroPopFlavorId, number>>(
-  Object.fromEntries(ASTROPOP_FLAVORS.map((flavor) => [flavor.id, 0])) as Record<AstroPopFlavorId, number>,
+  Object.fromEntries(ASTROPOP_FLAVORS.map((flavor) => [flavor.id, 0])) as Record<
+    AstroPopFlavorId,
+    number
+  >,
 );
 
 onMounted(() => {
@@ -28,10 +31,7 @@ const addBottle = (flavorId: AstroPopFlavorId) => {
 </script>
 
 <template>
-  <section
-    class="astropop-pack-your-pop-section"
-    aria-labelledby="pack-your-pop-title"
-  >
+  <section class="astropop-pack-your-pop-section" aria-labelledby="pack-your-pop-title">
     <h2 id="pack-your-pop-title" class="sr-only">Pack Your Pop!</h2>
     <p class="sr-only" aria-live="polite">{{ announcement }}</p>
 

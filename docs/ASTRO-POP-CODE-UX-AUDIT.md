@@ -73,13 +73,13 @@ No confirmed horizontal overflow was found in browser-based checks at the reques
 
 These are a modest local foundation, not a new design system:
 
-| Token family | Suggested examples | Current repeated use |
-| --- | --- | --- |
-| Core ink/paper | `--ap-ink: #3a2c35`, `--ap-deep-ink: #5e2730`, `--ap-paper: #fff3d6`, `--ap-cream: #fff8e5` | Page, cart, buttons, cards, testimonials |
-| Brand accents | `--ap-red: #a83f2e`, `--ap-teal: #167c89`, `--ap-mint: #9bd4cb`, `--ap-gold: #e6c486` | Headings, focus states, pills, footer |
-| Typography | `--ap-font-body`, `--ap-font-display`, `--ap-font-label` | Repeated Barlow/Fraunces/Barlow Condensed stacks in every section |
-| Shape/elevation | `--ap-border: 2px`, `--ap-card-radius`, `--ap-hard-shadow` | Flavor, bottle, delivery-plan, cart surfaces |
-| Flavor theme | `--ap-flavor-accent`, `--ap-flavor-ink`, `--ap-flavor-paper` | Four duplicated theme blocks noted in CQ-1 |
+| Token family    | Suggested examples                                                                          | Current repeated use                                              |
+| --------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Core ink/paper  | `--ap-ink: #3a2c35`, `--ap-deep-ink: #5e2730`, `--ap-paper: #fff3d6`, `--ap-cream: #fff8e5` | Page, cart, buttons, cards, testimonials                          |
+| Brand accents   | `--ap-red: #a83f2e`, `--ap-teal: #167c89`, `--ap-mint: #9bd4cb`, `--ap-gold: #e6c486`       | Headings, focus states, pills, footer                             |
+| Typography      | `--ap-font-body`, `--ap-font-display`, `--ap-font-label`                                    | Repeated Barlow/Fraunces/Barlow Condensed stacks in every section |
+| Shape/elevation | `--ap-border: 2px`, `--ap-card-radius`, `--ap-hard-shadow`                                  | Flavor, bottle, delivery-plan, cart surfaces                      |
+| Flavor theme    | `--ap-flavor-accent`, `--ap-flavor-ink`, `--ap-flavor-paper`                                | Four duplicated theme blocks noted in CQ-1                        |
 
 Tailwind is already installed and `bg-[#efd099]` is used at `AstroPopDeliverySection.vue:6`. Prefer semantic CSS variables for the repeatable brand vocabulary rather than proliferating arbitrary-value utilities. Ordinary one-off layout declarations (grid, flex, gap, width constraints) could use utilities if that matches future project convention, but converting all scoped art direction to utility strings would reduce readability.
 
@@ -179,10 +179,10 @@ The Astro Pop landing page was opened in a local Nuxt development server and che
 
 The cart route was also checked in the same browser at **360, 390, 768, 1024, 1440, and 1920 px**, in both states below:
 
-| State | What was verified | Result |
-| --- | --- | --- |
-| Empty cart | Header/back link, empty-message card, and “Choose your flavors” CTA | No horizontal overflow at all six widths. At 360/390 px, the back link correctly switches from absolute to normal flow; CTA rendered 48 px high. |
-| Populated cart (one bottle added through the site’s Add Bottle control) | Roster, quantity stepper, summary, and disabled checkout button | No horizontal overflow at all six widths. At 360/390 px, content remains a single column and the 136 px quantity control fits. At 768 px and above, the roster and summary use the intended two-column layout. A populated 360 px full-page capture was visually reviewed. |
+| State                                                                   | What was verified                                                   | Result                                                                                                                                                                                                                                                                     |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Empty cart                                                              | Header/back link, empty-message card, and “Choose your flavors” CTA | No horizontal overflow at all six widths. At 360/390 px, the back link correctly switches from absolute to normal flow; CTA rendered 48 px high.                                                                                                                           |
+| Populated cart (one bottle added through the site’s Add Bottle control) | Roster, quantity stepper, summary, and disabled checkout button     | No horizontal overflow at all six widths. At 360/390 px, content remains a single column and the 136 px quantity control fits. At 768 px and above, the roster and summary use the intended two-column layout. A populated 360 px full-page capture was visually reviewed. |
 
 **Limitations:** This verifies local-browser rendering and structural measurements, not real-device touch behavior, screen-reader output, zoom/reflow at 200%, or keyboard traversal of every control. The populated case used one line item; it does not verify a full six-bottle/multiple-flavor roster. Lazy below-the-fold imagery was not judged from full-page screenshots until it entered the viewport.
 

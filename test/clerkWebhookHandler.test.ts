@@ -51,10 +51,9 @@ describe("Clerk user.created webhook handler", () => {
     await expect(handler(event)).resolves.toEqual({ received: true });
 
     expect(toWebRequest).toHaveBeenCalledWith(event);
-    expect(mocks.verifyWebhook).toHaveBeenCalledWith(
-      expect.any(Request),
-      { signingSecret: "whsec_clerk_test" },
-    );
+    expect(mocks.verifyWebhook).toHaveBeenCalledWith(expect.any(Request), {
+      signingSecret: "whsec_clerk_test",
+    });
     expect(mocks.createCosmosProfile).toHaveBeenCalledWith("user_clerk_test", "astronaut");
   });
 
@@ -108,16 +107,19 @@ describe("Clerk user.created webhook handler", () => {
     expect(mocks.createCosmosProfile).not.toHaveBeenCalled();
   });
 
-  it.each([undefined, "", "   ", 42])("returns HTTP 400 when user.created has invalid user ID %j", async (id) => {
-    mocks.verifyWebhook.mockResolvedValue({ type: "user.created", data: { id } });
+  it.each([undefined, "", "   ", 42])(
+    "returns HTTP 400 when user.created has invalid user ID %j",
+    async (id) => {
+      mocks.verifyWebhook.mockResolvedValue({ type: "user.created", data: { id } });
 
-    await expect(handler({})).rejects.toMatchObject({
-      statusCode: 400,
-      statusMessage: "Missing user ID",
-    });
+      await expect(handler({})).rejects.toMatchObject({
+        statusCode: 400,
+        statusMessage: "Missing user ID",
+      });
 
-    expect(mocks.createCosmosProfile).not.toHaveBeenCalled();
-  });
+      expect(mocks.createCosmosProfile).not.toHaveBeenCalled();
+    },
+  );
 
   it("acknowledges other verified event types without database writes", async () => {
     mocks.verifyWebhook.mockResolvedValue({

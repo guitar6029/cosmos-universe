@@ -21,11 +21,9 @@ const mocks = vi.hoisted(() => {
 });
 
 vi.mock("stripe", () => ({
-  default: class MockStripe {
-    constructor(...args: unknown[]) {
-      mocks.stripeConstructor(...args);
-      return mocks.stripeClient;
-    }
+  default: function MockStripe(...args: unknown[]) {
+    mocks.stripeConstructor(...args);
+    return mocks.stripeClient;
   },
 }));
 
@@ -81,7 +79,8 @@ describe("Astro Pop Stripe webhook handler", () => {
       }),
     );
 
-    handler = (await import("../server/api/astro-pop/stripe-webhook.post")).default as WebhookHandler;
+    handler = (await import("../server/api/astro-pop/stripe-webhook.post"))
+      .default as WebhookHandler;
   });
 
   beforeEach(() => {
@@ -122,10 +121,9 @@ describe("Astro Pop Stripe webhook handler", () => {
       paidSession.id,
       { expand: ["data.price.product"] },
     );
-    expect(mocks.getOrderFromStripe).toHaveBeenCalledWith(
-      paidSession,
-      [{ id: "li_test_astro_pop" }],
-    );
+    expect(mocks.getOrderFromStripe).toHaveBeenCalledWith(paidSession, [
+      { id: "li_test_astro_pop" },
+    ]);
     expect(mocks.persistOrder).toHaveBeenCalledWith(paidOrder);
   });
 

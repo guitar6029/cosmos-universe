@@ -1,71 +1,68 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import { useAstroPopCrateStore } from "../../stores/astroPopCrate";
+import { savePendingAstroPopCheckout } from "../../utils/astroPopCheckout";
 
-import {ref} from 'vue';
-import { useAstroPopCrateStore } from '../../stores/astroPopCrate';
-import { savePendingAstroPopCheckout } from '../../utils/astroPopCheckout';
-
-const crateStore  = useAstroPopCrateStore();
+const crateStore = useAstroPopCrateStore();
 
 const isCheckingOut = ref(false);
-const checkoutError = ref('');
-
+const checkoutError = ref("");
 
 const handleCheckout = async () => {
-    if (crateStore.isEmpty || isCheckingOut.value || crateStore.isCheckoutLocked) return
+  if (crateStore.isEmpty || isCheckingOut.value || crateStore.isCheckoutLocked) return;
 
-    const checkoutItems = Object.freeze(
-        crateStore.items.map((item) => Object.freeze({
-            flavorId: item.flavorId,
-            quantity: item.quantity,
-        })),
-    )
+  const checkoutItems = Object.freeze(
+    crateStore.items.map((item) =>
+      Object.freeze({
+        flavorId: item.flavorId,
+        quantity: item.quantity,
+      }),
+    ),
+  );
 
-    if (!crateStore.lockCheckout()) return
-    isCheckingOut.value = true;
-    checkoutError.value = '';
+  if (!crateStore.lockCheckout()) return;
+  isCheckingOut.value = true;
+  checkoutError.value = "";
 
-    try {
-        const response = await $fetch('/api/astro-pop/checkout', {
-            method: "POST",
-            body: {
-                items: checkoutItems,
-            },
-        })
+  try {
+    const response = await $fetch("/api/astro-pop/checkout", {
+      method: "POST",
+      body: {
+        items: checkoutItems,
+      },
+    });
 
-        if (!response.url || !response.sessionId){
-            // noty here TODO
-            throw new Error('Checkout URL missing');
-        }
-
-        savePendingAstroPopCheckout(response.sessionId, checkoutItems)
-        window.location.assign(response.url)
-    } catch {
-        // noty TODO
-        checkoutError.value = 'Unable to start checkout. Please try again.'
-        isCheckingOut.value = false;
-        crateStore.unlockCheckout()
+    if (!response.url || !response.sessionId) {
+      // noty here TODO
+      throw new Error("Checkout URL missing");
     }
-}
 
-
+    savePendingAstroPopCheckout(response.sessionId, checkoutItems);
+    window.location.assign(response.url);
+  } catch {
+    // noty TODO
+    checkoutError.value = "Unable to start checkout. Please try again.";
+    isCheckingOut.value = false;
+    crateStore.unlockCheckout();
+  }
+};
 </script>
 <template>
- <button
-  class="astropop-cart-page__button"
-  type="button"
-  :disabled="crateStore.isEmpty || isCheckingOut || crateStore.isCheckoutLocked"
-  @click="handleCheckout"
->
-  {{ isCheckingOut ? 'Preparing checkout...' : 'Proceed to Checkout' }}
-</button>
+  <button
+    class="astropop-cart-page__button"
+    type="button"
+    :disabled="crateStore.isEmpty || isCheckingOut || crateStore.isCheckoutLocked"
+    @click="handleCheckout"
+  >
+    {{ isCheckingOut ? "Preparing checkout..." : "Proceed to Checkout" }}
+  </button>
 
-<p v-if="checkoutError" role="alert">
-  {{ checkoutError }}
-</p>
+  <p v-if="checkoutError" role="alert">
+    {{ checkoutError }}
+  </p>
 </template>
 
 <style scoped>
-
 .astropop-cart-page__button {
   display: inline-flex;
   min-height: 2.8rem;

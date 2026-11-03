@@ -10,14 +10,14 @@ Retrofuturism / Atompunk describes the **world**: mid-century optimism, Googie a
 
 A separate set of choices determines **how we see that world**:
 
-| Dimension | Questions to decide | Useful vocabulary |
-| --- | --- | --- |
-| Medium / rendering | Is this gouache or ink on paper, a digital painting, a photographic/CG render, or a simulated film frame? | Hand-painted, screen-printed, digital illustration, editorial photography, photorealistic 3D, cinematic still |
-| Surface finish / gloss | Which objects are matte, satin, lacquered, reflective, or weathered? | Paper grain, brush marks, soft sheen, polished enamel, chrome, roughness, specular highlights |
-| Light / exposure | Where is the light coming from? How hard, soft, warm, bright, or contrasty is it? | Diffuse daylight, directional sunlight, studio softbox, practical tungsten lights, rim light, high-key, low-key |
-| Camera / composition | What point of view, framing, lens behavior, and depth separation should the image imply? | Poster composition, eye-level, low angle, portrait framing, wide establishing shot, 35mm lens, shallow depth of field |
-| Color / finishing | How saturated, aged, and film-like is the result? | Limited print palette, pastel turquoise/coral/cream, warm color grade, halation, subtle film grain |
-| Texture / believability | Do we want idealized forms or signs of use and physical material? | Simplified painted shadows, paper aging, fabric weave, fingerprints, surface wear, atmospheric haze |
+| Dimension               | Questions to decide                                                                                       | Useful vocabulary                                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Medium / rendering      | Is this gouache or ink on paper, a digital painting, a photographic/CG render, or a simulated film frame? | Hand-painted, screen-printed, digital illustration, editorial photography, photorealistic 3D, cinematic still         |
+| Surface finish / gloss  | Which objects are matte, satin, lacquered, reflective, or weathered?                                      | Paper grain, brush marks, soft sheen, polished enamel, chrome, roughness, specular highlights                         |
+| Light / exposure        | Where is the light coming from? How hard, soft, warm, bright, or contrasty is it?                         | Diffuse daylight, directional sunlight, studio softbox, practical tungsten lights, rim light, high-key, low-key       |
+| Camera / composition    | What point of view, framing, lens behavior, and depth separation should the image imply?                  | Poster composition, eye-level, low angle, portrait framing, wide establishing shot, 35mm lens, shallow depth of field |
+| Color / finishing       | How saturated, aged, and film-like is the result?                                                         | Limited print palette, pastel turquoise/coral/cream, warm color grade, halation, subtle film grain                    |
+| Texture / believability | Do we want idealized forms or signs of use and physical material?                                         | Simplified painted shadows, paper aging, fabric weave, fingerprints, surface wear, atmospheric haze                   |
 
 **Important:** "Glossy" is not itself a medium or a realism level. A hand-painted chrome car can be glossy; a photorealistic paper brochure can be matte. Likewise, "cinematic lighting" alone does not turn an illustration into a convincing film still: the rendering medium, materials, lens treatment, and finishing must also change.
 
@@ -25,11 +25,11 @@ A separate set of choices determines **how we see that world**:
 
 The five shared inspiration images discussed on 2026-10-19 illustrate these families. Their source images remain inspiration only; do not add third-party reference assets to the repository without appropriate rights.
 
-| Treatment | Character | Suggested CosmoPort use |
-| --- | --- | --- |
-| **A. Vintage commercial illustration** | Mid-century gouache/paint and ink, visible print/paper texture, simplified shading, slightly imperfect registration, matte look. Like the illustrated train passengers reference (image 7). | In-universe period brochures, sponsor advertisements, fictional packaging, travel posters |
-| **B. Polished retro illustration** | Digitally refined mid-century illustration with smooth gradients, luminous pastels, confident shapes, selective reflections, and readable scenes. Like the futuristic family diner reference (image 8). | Main landing-page hero, vacation finder artwork, illustrated destination cards and campaign materials |
-| **C. Retro editorial / studio photography** | Stylized but materially convincing fashion/product imagery; controlled studio light, sculpted face and product lighting, glossy helmet/chrome or lacquer details. Like the mint space-helmet portrait (image 10). | Character portraits, product reveals, Starline Motors or other in-universe premium campaigns |
+| Treatment                                           | Character                                                                                                                                                                                                                                              | Suggested CosmoPort use                                                                                           |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| **A. Vintage commercial illustration**              | Mid-century gouache/paint and ink, visible print/paper texture, simplified shading, slightly imperfect registration, matte look. Like the illustrated train passengers reference (image 7).                                                            | In-universe period brochures, sponsor advertisements, fictional packaging, travel posters                         |
+| **B. Polished retro illustration**                  | Digitally refined mid-century illustration with smooth gradients, luminous pastels, confident shapes, selective reflections, and readable scenes. Like the futuristic family diner reference (image 8).                                                | Main landing-page hero, vacation finder artwork, illustrated destination cards and campaign materials             |
+| **C. Retro editorial / studio photography**         | Stylized but materially convincing fashion/product imagery; controlled studio light, sculpted face and product lighting, glossy helmet/chrome or lacquer details. Like the mint space-helmet portrait (image 10).                                      | Character portraits, product reveals, Starline Motors or other in-universe premium campaigns                      |
 | **D. Cinematic environmental realism / film still** | Photorealistic or near-photorealistic locations, physically plausible materials, atmosphere, motivated/practical lights, filmic color grade, depth of field. Like the mint-green sky pod (image 9) and the orange robot diner scene (final reference). | Destination feature imagery, immersive location previews, narrative scenes, future image-to-video starting frames |
 
 **Film still versus studio photograph:** A studio photograph typically feels staged and controlled, with isolated subjects and intentionally sculpted light. A film still suggests a moment within a larger story: people interacting, motivated set lighting, environment detail, depth separation, and a camera situated inside the action. Both can be photorealistic, and both may be produced with AI or 3D rather than a physical camera.
@@ -110,4 +110,4 @@ Avoid generic instructions like "make it more retro," "make it glossy," or "make
 - A comprehensive asset-management backend or complicated Sanity schemas
 - Video production before the important static image masters are settled
 
-**Working principle:** *One universe, recognizable designs, deliberately different lenses on the same world.*
+**Working principle:** _One universe, recognizable designs, deliberately different lenses on the same world._

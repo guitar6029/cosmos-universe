@@ -11,15 +11,11 @@ export interface AstroPopCrateItem {
 
 const CRATE_CAPACITY = 6;
 const STORAGE_KEY = "astropop-crate";
-const flavorIds = new Set<AstroPopFlavorId>(
-  ASTROPOP_FLAVORS.map((flavor) => flavor.id),
-);
+const flavorIds = new Set<AstroPopFlavorId>(ASTROPOP_FLAVORS.map((flavor) => flavor.id));
 
-const isValidFlavorId = (flavorId: AstroPopFlavorId) =>
-  flavorIds.has(flavorId);
+const isValidFlavorId = (flavorId: AstroPopFlavorId) => flavorIds.has(flavorId);
 
-const isValidQuantity = (quantity: number) =>
-  Number.isInteger(quantity) && quantity > 0;
+const isValidQuantity = (quantity: number) => Number.isInteger(quantity) && quantity > 0;
 
 export const useAstroPopCrateStore = defineStore("astroPopCrate", () => {
   const items = ref<AstroPopCrateItem[]>([]);
@@ -47,9 +43,7 @@ export const useAstroPopCrateStore = defineStore("astroPopCrate", () => {
       return false;
     }
 
-    const existingItem = items.value.find(
-      (item) => item.flavorId === flavorId,
-    );
+    const existingItem = items.value.find((item) => item.flavorId === flavorId);
 
     if (existingItem) {
       existingItem.quantity += quantity;
@@ -65,9 +59,7 @@ export const useAstroPopCrateStore = defineStore("astroPopCrate", () => {
       return false;
     }
 
-    const itemIndex = items.value.findIndex(
-      (item) => item.flavorId === flavorId,
-    );
+    const itemIndex = items.value.findIndex((item) => item.flavorId === flavorId);
 
     if (itemIndex === -1) {
       return false;
@@ -93,9 +85,7 @@ export const useAstroPopCrateStore = defineStore("astroPopCrate", () => {
       return false;
     }
 
-    const itemIndex = items.value.findIndex(
-      (item) => item.flavorId === flavorId,
-    );
+    const itemIndex = items.value.findIndex((item) => item.flavorId === flavorId);
 
     if (itemIndex === -1) {
       return false;
@@ -105,10 +95,7 @@ export const useAstroPopCrateStore = defineStore("astroPopCrate", () => {
     return true;
   };
 
-  const setItemQuantity = (
-    flavorId: AstroPopFlavorId,
-    quantity: number,
-  ): boolean => {
+  const setItemQuantity = (flavorId: AstroPopFlavorId, quantity: number): boolean => {
     if (isCheckoutLocked.value) {
       return false;
     }
@@ -117,9 +104,7 @@ export const useAstroPopCrateStore = defineStore("astroPopCrate", () => {
       return false;
     }
 
-    const itemIndex = items.value.findIndex(
-      (item) => item.flavorId === flavorId,
-    );
+    const itemIndex = items.value.findIndex((item) => item.flavorId === flavorId);
 
     if (itemIndex === -1) {
       return quantity === 0;
@@ -165,9 +150,7 @@ export const useAstroPopCrateStore = defineStore("astroPopCrate", () => {
     hasRestored.value = true;
 
     try {
-      const savedItems: unknown = JSON.parse(
-        window.localStorage.getItem(STORAGE_KEY) ?? "[]",
-      );
+      const savedItems: unknown = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "[]");
 
       if (!Array.isArray(savedItems)) {
         return false;

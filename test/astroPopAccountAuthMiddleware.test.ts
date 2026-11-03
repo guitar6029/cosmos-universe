@@ -11,7 +11,8 @@ describe("Astro Pop account route middleware", () => {
   let middleware: () => Promise<unknown>;
 
   beforeAll(async () => {
-    middleware = (await import("../app/middleware/astro-pop-account-auth")).default as typeof middleware;
+    middleware = (await import("../app/middleware/astro-pop-account-auth"))
+      .default as typeof middleware;
   });
 
   beforeEach(() => {

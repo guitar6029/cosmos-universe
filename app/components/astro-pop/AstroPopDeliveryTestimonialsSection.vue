@@ -15,7 +15,8 @@ const setTestimonialAvatar = (name: string, avatar: AnimatedAvatar | null) => {
   if (avatar) {
     animatedAvatars.value[name] = avatar;
   } else {
-    delete animatedAvatars.value[name];
+    const { [name]: _removedAvatar, ...remainingAvatars } = animatedAvatars.value;
+    animatedAvatars.value = remainingAvatars;
   }
 };
 
@@ -55,7 +56,9 @@ const testimonials = [
     id="astropop-delivery-testimonials"
     class="astropop-testimonials"
     aria-labelledby="astropop-testimonials-title"
-    :style="{ backgroundImage: `linear-gradient(180deg, rgba(255, 244, 214, 0.18), rgba(255, 244, 214, 0.08)), url(${ASTRO_POP_MEDIA.testimonials.backdrop})` }"
+    :style="{
+      backgroundImage: `linear-gradient(180deg, rgba(255, 244, 214, 0.18), rgba(255, 244, 214, 0.08)), url(${ASTRO_POP_MEDIA.testimonials.backdrop})`,
+    }"
   >
     <img
       class="astropop-testimonials__sign"
@@ -65,7 +68,9 @@ const testimonials = [
     />
     <div class="astropop-testimonials__content">
       <header class="astropop-testimonials__header">
-        <h2 id="astropop-testimonials-title" class="astropop-testimonials__title">The Neighborhood Is Talking!</h2>
+        <h2 id="astropop-testimonials-title" class="astropop-testimonials__title">
+          The Neighborhood Is Talking!
+        </h2>
         <p class="astropop-eyebrow astropop-testimonials__eyebrow">GOOD NEWS TRAVELS FAST!</p>
         <p class="astropop-testimonials__subtitle">Everybody's buzzing about AstroPop!</p>
       </header>
@@ -80,7 +85,9 @@ const testimonials = [
           <div class="astropop-testimonial__portrait">
             <AstroPopAnimatedTestimonialAvatar
               v-if="testimonial.portraitVideo"
-              :ref="(avatar) => setTestimonialAvatar(testimonial.name, avatar as AnimatedAvatar | null)"
+              :ref="
+                (avatar) => setTestimonialAvatar(testimonial.name, avatar as AnimatedAvatar | null)
+              "
               :image-src="testimonial.portrait"
               :image-alt="testimonial.portraitAlt"
               :video-src="testimonial.portraitVideo"

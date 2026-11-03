@@ -13,11 +13,16 @@ vi.stubGlobal("useFetch", fetchMock);
 
 const NuxtLink = defineComponent({
   props: { to: { type: String, required: true } },
-  setup: (props, { slots }) => () => h("a", { href: props.to }, slots.default?.()),
+  setup:
+    (props, { slots }) =>
+    () =>
+      h("a", { href: props.to }, slots.default?.()),
 });
 
 async function renderDashboard() {
-  const app = createSSRApp({ render: () => h(AdminLayout, null, { default: () => h(AdminDashboardPage) }) });
+  const app = createSSRApp({
+    render: () => h(AdminLayout, null, { default: () => h(AdminDashboardPage) }),
+  });
   app.component("NuxtLink", NuxtLink);
   return renderToString(app);
 }
@@ -27,7 +32,9 @@ describe("Admin Dashboard", () => {
     pageMeta.mockClear();
     fetchMock.mockReset();
     fetchMock.mockResolvedValue({
-      data: ref({ apps: [{ id: "astro-pop", title: "Astro Pop", description: "Soda", enabled: true }] }),
+      data: ref({
+        apps: [{ id: "astro-pop", title: "Astro Pop", description: "Soda", enabled: true }],
+      }),
       status: ref("success"),
       error: ref(null),
       refresh: vi.fn(),
@@ -53,14 +60,20 @@ describe("Admin Dashboard", () => {
 
   it("shows the empty state only after a successful empty request", async () => {
     fetchMock.mockResolvedValueOnce({
-      data: ref({ apps: [] }), status: ref("success"), error: ref(null), refresh: vi.fn(),
+      data: ref({ apps: [] }),
+      status: ref("success"),
+      error: ref(null),
+      refresh: vi.fn(),
     });
     expect(await renderDashboard()).toContain("No applications registered yet.");
   });
 
   it("shows an error instead of claiming no apps exist when fetching fails", async () => {
     fetchMock.mockResolvedValueOnce({
-      data: ref(null), status: ref("error"), error: ref(new Error("Failed")), refresh: vi.fn(),
+      data: ref(null),
+      status: ref("error"),
+      error: ref(new Error("Failed")),
+      refresh: vi.fn(),
     });
     const html = await renderDashboard();
     expect(html).toContain("Unable to load applications");

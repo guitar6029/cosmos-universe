@@ -1,12 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createCosmosProfile } from "../server/utils/cosmoportCoreDatabase";
 
 const neonMock = vi.hoisted(() => vi.fn());
 
 vi.mock("@neondatabase/serverless", () => ({
   neon: neonMock,
 }));
-
-import { createCosmosProfile } from "../server/utils/cosmoportCoreDatabase";
 
 describe("createCosmosProfile", () => {
   beforeEach(() => {
@@ -39,9 +38,7 @@ describe("createCosmosProfile", () => {
     await createCosmosProfile("user_parameterized", "alien", "postgresql://test.example/cosmos");
 
     expect(sql).toHaveBeenCalledOnce();
-    expect(sql.mock.calls[0]?.[0].raw.join(" ")).toContain(
-      "ON CONFLICT (user_id) DO NOTHING",
-    );
+    expect(sql.mock.calls[0]?.[0].raw.join(" ")).toContain("ON CONFLICT (user_id) DO NOTHING");
     expect(sql.mock.calls[0]?.slice(1)).toEqual(["user_parameterized", "alien"]);
   });
 

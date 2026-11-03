@@ -14,10 +14,18 @@
           <h3 id="astropop-footer-explore-title">Explore AstroPop</h3>
           <ul>
             <li><NuxtLink to="/app/astro-pop/our-story">Our Story</NuxtLink></li>
-            <li><NuxtLink to="/app/astro-pop/#astropop-flavors-title">Our Marvelous Flavors</NuxtLink></li>
+            <li>
+              <NuxtLink to="/app/astro-pop/#astropop-flavors-title">Our Marvelous Flavors</NuxtLink>
+            </li>
             <li><NuxtLink to="/app/astro-pop/#pack-your-pop-title">Pack Your Pop</NuxtLink></li>
-            <li><NuxtLink to="/app/astro-pop/#astropop-delivery-plans">Delivery Plans</NuxtLink></li>
-            <li><NuxtLink to="/app/astro-pop/#astropop-delivery-testimonials">Happy Neighbors</NuxtLink></li>
+            <li>
+              <NuxtLink to="/app/astro-pop/#astropop-delivery-plans">Delivery Plans</NuxtLink>
+            </li>
+            <li>
+              <NuxtLink to="/app/astro-pop/#astropop-delivery-testimonials"
+                >Happy Neighbors</NuxtLink
+              >
+            </li>
           </ul>
         </nav>
 

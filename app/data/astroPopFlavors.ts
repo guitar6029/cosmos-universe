@@ -1,10 +1,6 @@
-export type AstroPopTheme =
-  | "atomic-cherry"
-  | "solar-citrus"
-  | "lunar-lime"
-  | "neptune-berry";
-
 import { ASTRO_POP_MEDIA } from "./astroPopMedia";
+
+export type AstroPopTheme = "atomic-cherry" | "solar-citrus" | "lunar-lime" | "neptune-berry";
 
 export interface AstroPopArtwork {
   label: string;
@@ -57,8 +53,7 @@ export const ASTROPOP_FLAVORS = [
   {
     id: "lunar-lime-lift",
     name: "Lunar Lime Lift",
-    description:
-      "A cool mint-lime fizz with a crisp, refreshing lift for high-flying afternoons.",
+    description: "A cool mint-lime fizz with a crisp, refreshing lift for high-flying afternoons.",
     slogan: "A Little Lift in Every Bottle!",
     theme: "lunar-lime",
     bottleImage: ASTRO_POP_MEDIA.flavors.lunarLime.bottle,

@@ -10,7 +10,13 @@ const playwrightServerAuthMock = fileURLToPath(
 );
 
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/sanity", "@nuxt/fonts", "@pinia/nuxt", ...(usePlaywrightAuthMock ? [] : ["@clerk/nuxt"])],
+  modules: [
+    "@nuxtjs/sanity",
+    "@nuxt/fonts",
+    "@pinia/nuxt",
+    "@nuxt/eslint",
+    ...(usePlaywrightAuthMock ? [] : ["@clerk/nuxt"]),
+  ],
   clerk: {
     afterSignOutUrl: "/",
     // Playwright exercises existing guest flows without Doppler credentials in CI.
@@ -41,7 +47,7 @@ export default defineNuxtConfig({
         name: "Barlow Condensed",
         provider: "google",
         weights: [700],
-      }
+      },
     ],
   },
   css: ["~/assets/css/main.css"],
@@ -54,31 +60,27 @@ export default defineNuxtConfig({
       exclude: ["@clerk/vue", "@clerk/shared", "@clerk/clerk-js"],
     },
     server: {
-      allowedHosts: [
-        "trilogy-plant-unrefined.ngrok-free.dev"
-      ]
+      allowedHosts: ["trilogy-plant-unrefined.ngrok-free.dev"],
     },
     resolve: usePlaywrightAuthMock
       ? {
-        alias: {
-          "@clerk/nuxt/composables": playwrightAuthMock,
-          "@clerk/nuxt/server": playwrightServerAuthMock,
-        },
-      }
+          alias: {
+            "@clerk/nuxt/composables": playwrightAuthMock,
+            "@clerk/nuxt/server": playwrightServerAuthMock,
+          },
+        }
       : undefined,
   },
   imports: usePlaywrightAuthMock
     ? {
-      imports: [
-        { from: playwrightAuthMock, name: "useAuth" },
-        { from: playwrightAuthMock, name: "useUser" },
-      ],
-    }
+        imports: [
+          { from: playwrightAuthMock, name: "useAuth" },
+          { from: playwrightAuthMock, name: "useUser" },
+        ],
+      }
     : undefined,
   nitro: {
-    alias: usePlaywrightAuthMock
-      ? { "@clerk/nuxt/server": playwrightServerAuthMock }
-      : undefined,
+    alias: usePlaywrightAuthMock ? { "@clerk/nuxt/server": playwrightServerAuthMock } : undefined,
     devHandlers: [
       {
         route: "/api/astro-pop/db-health",
@@ -93,7 +95,9 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      ...(process.env.NODE_ENV === "production" ? { script: [{ src: "/_vercel/insights/script.js", defer: true }] } : {}),
+      ...(process.env.NODE_ENV === "production"
+        ? { script: [{ src: "/_vercel/insights/script.js", defer: true }] }
+        : {}),
       title: SITE_TITLE,
       meta: [
         { name: "description", content: SITE_DESCRIPTION },

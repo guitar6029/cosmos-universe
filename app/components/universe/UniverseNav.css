@@ -110,11 +110,11 @@
 .universe-nav__account-toggle {
   display: inline-flex;
   align-items: center;
-  gap: .45rem;
+  gap: 0.45rem;
   min-height: 2.75rem;
   border: 1px solid transparent;
-  border-radius: .6rem;
-  padding: .15rem .45rem .15rem .15rem;
+  border-radius: 0.6rem;
+  padding: 0.15rem 0.45rem 0.15rem 0.15rem;
   background: transparent;
   color: var(--cp-universe-gold);
   cursor: pointer;
@@ -146,19 +146,19 @@
   position: absolute;
   z-index: 2;
   right: 0;
-  top: calc(100% + .5rem);
+  top: calc(100% + 0.5rem);
   display: grid;
   width: min(14.5rem, calc(100vw - 1rem));
   border: 1px solid var(--cp-universe-gold);
-  border-radius: .65rem;
-  padding: .45rem;
+  border-radius: 0.65rem;
+  padding: 0.45rem;
   background: var(--cp-universe-space-teal);
   box-shadow: var(--cp-universe-plaque-shadow);
   color: var(--cp-universe-cream);
 }
 
 .universe-nav__account-identity {
-  padding: .4rem .55rem .5rem;
+  padding: 0.4rem 0.55rem 0.5rem;
 }
 
 .universe-nav__account-name,
@@ -168,21 +168,21 @@
 }
 
 .universe-nav__account-name {
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: 800;
 }
 
 .universe-nav__account-email {
-  margin-top: .15rem;
+  margin-top: 0.15rem;
   color: var(--cp-universe-muted-teal);
-  font-size: .73rem;
+  font-size: 0.73rem;
   line-height: 1.4;
 }
 
 .universe-nav__menu-divider {
   width: 100%;
   height: 1px;
-  margin: .3rem 0;
+  margin: 0.3rem 0;
   border: 0;
   background: color-mix(in srgb, var(--cp-universe-gold) 36%, transparent);
 }
@@ -190,14 +190,14 @@
 .universe-nav__menu-item {
   display: flex;
   align-items: center;
-  gap: .6rem;
+  gap: 0.6rem;
   width: 100%;
   min-height: 2.75rem;
   border: 0;
-  border-radius: .35rem;
-  padding: .5rem .55rem;
+  border-radius: 0.35rem;
+  padding: 0.5rem 0.55rem;
   font: inherit;
-  font-size: .81rem;
+  font-size: 0.81rem;
   font-weight: 700;
   text-align: left;
 }
@@ -211,7 +211,7 @@
 
 .universe-nav__menu-item--unavailable {
   color: var(--cp-universe-cream);
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .universe-nav__menu-link {
@@ -237,9 +237,9 @@
 .universe-nav__menu-soon {
   margin-left: auto;
   color: var(--cp-universe-muted-teal);
-  font-size: .62rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -260,17 +260,17 @@
 
 .universe-nav__menu-sign-out:disabled {
   cursor: wait;
-  opacity: .65;
+  opacity: 0.65;
 }
 
 .universe-nav__sign-out-error {
-  margin: .4rem .4rem .25rem;
+  margin: 0.4rem 0.4rem 0.25rem;
   border: 1px solid var(--cp-universe-rust);
-  border-radius: .35rem;
-  padding: .5rem .55rem;
+  border-radius: 0.35rem;
+  padding: 0.5rem 0.55rem;
   background: var(--cp-universe-cream);
   color: #8d301e;
-  font-size: .74rem;
+  font-size: 0.74rem;
   font-weight: 700;
   line-height: 1.3;
 }

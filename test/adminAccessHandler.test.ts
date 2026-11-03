@@ -44,7 +44,9 @@ describe("Mission Control access handler", () => {
   });
 
   it("returns 401 when a user ID is present but Clerk marks the session unauthenticated", async () => {
-    await expect(handler(eventFor("user_not_authenticated", false))).rejects.toMatchObject({ statusCode: 401 });
+    await expect(handler(eventFor("user_not_authenticated", false))).rejects.toMatchObject({
+      statusCode: 401,
+    });
     expect(mocks.getUser).not.toHaveBeenCalled();
   });
 

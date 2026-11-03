@@ -16,9 +16,7 @@ describe("DecorativeImage", () => {
     );
 
     expect(html).toContain("decorative-image");
-    expect(html).toContain(
-      ASTRO_POP_MEDIA.sodaCap,
-    );
+    expect(html).toContain(ASTRO_POP_MEDIA.sodaCap);
     expect(html).toContain('alt aria-hidden="true"');
   });
 });

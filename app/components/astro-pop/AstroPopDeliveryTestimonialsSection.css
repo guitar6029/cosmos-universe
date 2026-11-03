@@ -103,7 +103,9 @@
   border: clamp(0.3rem, 0.8vw, 0.5rem) solid #f7c656;
   border-radius: 50%;
   background: #1b7987;
-  box-shadow: 0.25rem 0.3rem 0 #5e2730, inset 0 0 0 0.18rem #fff4da;
+  box-shadow:
+    0.25rem 0.3rem 0 #5e2730,
+    inset 0 0 0 0.18rem #fff4da;
 }
 
 .astropop-testimonial__portrait img {

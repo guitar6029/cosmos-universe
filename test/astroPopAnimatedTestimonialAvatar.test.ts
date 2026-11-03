@@ -34,7 +34,10 @@ class MockIntersectionObserver {
   }
 
   trigger(isIntersecting: boolean, ratio = 0.7) {
-    this.callback([{ isIntersecting, intersectionRatio: ratio } as IntersectionObserverEntry], this as unknown as IntersectionObserver);
+    this.callback(
+      [{ isIntersecting, intersectionRatio: ratio } as IntersectionObserverEntry],
+      this as unknown as IntersectionObserver,
+    );
   }
 }
 
@@ -42,13 +45,14 @@ const mountAvatar = () => {
   const container = document.createElement("div");
   const avatar = ref<{ replayOnHover: () => void } | null>(null);
   const app = createApp({
-    render: () => h(AstroPopAnimatedTestimonialAvatar, {
-      ref: avatar,
-      imageSrc,
-      imageAlt: "Dorothy Miller holding a bottle of AstroPop soda",
-      videoSrc,
-      replayLabel: "Replay Dorothy Miller's animation",
-    }),
+    render: () =>
+      h(AstroPopAnimatedTestimonialAvatar, {
+        ref: avatar,
+        imageSrc,
+        imageAlt: "Dorothy Miller holding a bottle of AstroPop soda",
+        videoSrc,
+        replayLabel: "Replay Dorothy Miller's animation",
+      }),
   });
 
   app.mount(container);
@@ -99,11 +103,15 @@ describe("AstroPop animated testimonial avatar", () => {
 
     video?.dispatchEvent(new Event("playing"));
     await nextTick();
-    expect(video?.classList.contains("astropop-animated-testimonial-avatar__video--playing")).toBe(true);
+    expect(video?.classList.contains("astropop-animated-testimonial-avatar__video--playing")).toBe(
+      true,
+    );
 
     video?.dispatchEvent(new Event("ended"));
     await nextTick();
-    expect(video?.classList.contains("astropop-animated-testimonial-avatar__video--playing")).toBe(false);
+    expect(video?.classList.contains("astropop-animated-testimonial-avatar__video--playing")).toBe(
+      false,
+    );
     expect(container.querySelector(`img[src="${imageSrc}"]`)).not.toBeNull();
 
     MockIntersectionObserver.instances[0].trigger(true);
@@ -116,7 +124,10 @@ describe("AstroPop animated testimonial avatar", () => {
   it("replays after a completed hover cycle without interrupting active playback", async () => {
     const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
-    vi.stubGlobal("matchMedia", vi.fn((query: string) => ({ matches: query === "(hover: hover)" })));
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn((query: string) => ({ matches: query === "(hover: hover)" })),
+    );
     const { app, avatar, container } = mountAvatar();
 
     avatar.value?.replayOnHover();
@@ -150,7 +161,10 @@ describe("AstroPop animated testimonial avatar", () => {
   it("starts a replay from Dorothy's testimonial container and ignores active re-entry", async () => {
     const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
-    vi.stubGlobal("matchMedia", vi.fn((query: string) => ({ matches: query === "(hover: hover)" })));
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn((query: string) => ({ matches: query === "(hover: hover)" })),
+    );
     const { app, container } = mountTestimonials();
 
     const dorothyTestimonial = container.querySelector(".astropop-testimonial");
@@ -183,7 +197,10 @@ describe("AstroPop animated testimonial avatar", () => {
   it("autoplays and replays every testimonial avatar with the shared lifecycle", async () => {
     const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
-    vi.stubGlobal("matchMedia", vi.fn((query: string) => ({ matches: query === "(hover: hover)" })));
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn((query: string) => ({ matches: query === "(hover: hover)" })),
+    );
     const { app, container } = mountTestimonials();
 
     expect(MockIntersectionObserver.instances).toHaveLength(3);
@@ -224,11 +241,18 @@ describe("AstroPop animated testimonial avatar", () => {
   it("offers tap replay on touch devices without restarting an active video", async () => {
     const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
-    vi.stubGlobal("matchMedia", vi.fn((query: string) => ({ matches: query === "(hover: none) and (pointer: coarse)" })));
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn((query: string) => ({ matches: query === "(hover: none) and (pointer: coarse)" })),
+    );
     const { app, container } = mountTestimonials();
     await nextTick();
 
-    const buttons = [...container.querySelectorAll<HTMLButtonElement>(".astropop-animated-testimonial-avatar__replay")];
+    const buttons = [
+      ...container.querySelectorAll<HTMLButtonElement>(
+        ".astropop-animated-testimonial-avatar__replay",
+      ),
+    ];
     expect(buttons).toHaveLength(3);
     expect(buttons.map((button) => button.getAttribute("aria-label"))).toEqual([
       "Replay Dorothy Miller's animation",
@@ -271,7 +295,10 @@ describe("AstroPop animated testimonial avatar", () => {
   it("autoplays on touch devices only after 60% of the avatar is visible", async () => {
     const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
-    vi.stubGlobal("matchMedia", vi.fn((query: string) => ({ matches: query === "(hover: none) and (pointer: coarse)" })));
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn((query: string) => ({ matches: query === "(hover: none) and (pointer: coarse)" })),
+    );
     const { app, container } = mountAvatar();
     await nextTick();
 
@@ -289,9 +316,14 @@ describe("AstroPop animated testimonial avatar", () => {
   });
 
   it("retains the static image if playback fails", async () => {
-    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockRejectedValue(new Error("Playback blocked"));
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, "play")
+      .mockRejectedValue(new Error("Playback blocked"));
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
-    vi.stubGlobal("matchMedia", vi.fn((query: string) => ({ matches: query === "(hover: hover)" })));
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn((query: string) => ({ matches: query === "(hover: hover)" })),
+    );
     const { app, avatar, container } = mountAvatar();
 
     avatar.value?.replayOnHover();
@@ -300,7 +332,11 @@ describe("AstroPop animated testimonial avatar", () => {
 
     expect(play).toHaveBeenCalledTimes(1);
     expect(container.querySelector(`img[src="${imageSrc}"]`)).not.toBeNull();
-    expect(container.querySelector("video")?.classList.contains("astropop-animated-testimonial-avatar__video--playing")).toBe(false);
+    expect(
+      container
+        .querySelector("video")
+        ?.classList.contains("astropop-animated-testimonial-avatar__video--playing"),
+    ).toBe(false);
 
     app.unmount();
   });
@@ -308,7 +344,10 @@ describe("AstroPop animated testimonial avatar", () => {
   it("does not replay for reduced motion or devices without hover", () => {
     const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
-    vi.stubGlobal("matchMedia", vi.fn((query: string) => ({ matches: query === "(prefers-reduced-motion: reduce)" })));
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn((query: string) => ({ matches: query === "(prefers-reduced-motion: reduce)" })),
+    );
     const { app, avatar, container } = mountAvatar();
 
     avatar.value?.replayOnHover();

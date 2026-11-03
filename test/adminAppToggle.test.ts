@@ -15,19 +15,28 @@ const updated = {
 
 function mount(initialEnabled = true) {
   const enabled = ref(initialEnabled);
-  const onUpdated = vi.fn((app: typeof updated) => { enabled.value = app.enabled; });
+  const onUpdated = vi.fn((app: typeof updated) => {
+    enabled.value = app.enabled;
+  });
   const element = document.createElement("div");
   const app = createApp({
-    render: () => h(Toggle, {
-      appId: "astro-pop",
-      appTitle: "Astro Pop Soda Co.",
-      enabled: enabled.value,
-      onUpdated,
-    }),
+    render: () =>
+      h(Toggle, {
+        appId: "astro-pop",
+        appTitle: "Astro Pop Soda Co.",
+        enabled: enabled.value,
+        onUpdated,
+      }),
   });
   document.body.appendChild(element);
   app.mount(element);
-  return { element, app, enabled, onUpdated, checkbox: element.querySelector<HTMLInputElement>("input")! };
+  return {
+    element,
+    app,
+    enabled,
+    onUpdated,
+    checkbox: element.querySelector<HTMLInputElement>("input")!,
+  };
 }
 
 async function flush() {
@@ -44,13 +53,16 @@ describe("Admin app toggle", () => {
     fetchMock.mockResolvedValue({ app: updated });
     const view = mount();
     expect(view.checkbox.checked).toBe(true);
-    expect(view.checkbox.getAttribute("aria-label")).toBe("Public availability for Astro Pop Soda Co.");
+    expect(view.checkbox.getAttribute("aria-label")).toBe(
+      "Public availability for Astro Pop Soda Co.",
+    );
     expect(view.element.textContent).toContain("Public availability");
     expect(view.element.textContent).toContain("On");
     view.checkbox.click();
     await flush();
     expect(fetchMock).toHaveBeenCalledWith("/api/admin/apps/astro-pop", {
-      method: "PATCH", body: { enabled: false },
+      method: "PATCH",
+      body: { enabled: false },
     });
     expect(view.onUpdated).toHaveBeenCalledWith(updated);
     expect(view.checkbox.checked).toBe(false);
@@ -68,7 +80,8 @@ describe("Admin app toggle", () => {
     view.checkbox.click();
     await flush();
     expect(fetchMock).toHaveBeenCalledWith("/api/admin/apps/astro-pop", {
-      method: "PATCH", body: { enabled: true },
+      method: "PATCH",
+      body: { enabled: true },
     });
     expect(view.onUpdated).toHaveBeenCalledWith(enabledApp);
     expect(view.checkbox.checked).toBe(true);
@@ -78,7 +91,11 @@ describe("Admin app toggle", () => {
 
   it("blocks concurrent writes while the request is pending", async () => {
     let resolve!: (value: unknown) => void;
-    fetchMock.mockReturnValue(new Promise((done) => { resolve = done; }));
+    fetchMock.mockReturnValue(
+      new Promise((done) => {
+        resolve = done;
+      }),
+    );
     const view = mount();
     view.checkbox.click();
     await nextTick();
@@ -97,7 +114,9 @@ describe("Admin app toggle", () => {
     view.checkbox.click();
     await vi.waitFor(() => {
       expect(view.checkbox.checked).toBe(true);
-      expect(view.element.querySelector('[role="alert"]')?.textContent).toContain("Unable to update");
+      expect(view.element.querySelector('[role="alert"]')?.textContent).toContain(
+        "Unable to update",
+      );
     });
     expect(view.element.textContent).toContain("On");
     expect(view.onUpdated).not.toHaveBeenCalled();

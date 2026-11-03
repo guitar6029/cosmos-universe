@@ -1,7 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const neonMock = vi.hoisted(() => vi.fn());
-vi.mock("@neondatabase/serverless", () => ({ neon: neonMock }));
-
 import {
   CosmoportCoreConfigurationError,
   getCosmoportApps,
@@ -9,14 +6,22 @@ import {
   updateCosmoportAppStatus,
 } from "../server/utils/cosmoportCoreDatabase";
 
+const neonMock = vi.hoisted(() => vi.fn());
+vi.mock("@neondatabase/serverless", () => ({ neon: neonMock }));
+
 const url = "postgresql://test.example/cosmoport_core";
 const astro = {
-  id: "astro-pop", title: "Astro Pop Soda Co.",
-  description: "Soda shop", enabled: true,
+  id: "astro-pop",
+  title: "Astro Pop Soda Co.",
+  description: "Soda shop",
+  enabled: true,
 };
 
 describe("CosmoPort Core database", () => {
-  beforeEach(() => { neonMock.mockReset(); vi.unstubAllEnvs(); });
+  beforeEach(() => {
+    neonMock.mockReset();
+    vi.unstubAllEnvs();
+  });
 
   it("checks database connectivity without writing", async () => {
     const sql = vi.fn().mockResolvedValue([{ connected: 1 }]);
@@ -27,7 +32,9 @@ describe("CosmoPort Core database", () => {
 
   it("fails closed when the pooled connection is missing", async () => {
     await expect(getCosmoportApps("")).rejects.toBeInstanceOf(CosmoportCoreConfigurationError);
-    await expect(updateCosmoportAppStatus("astro-pop", false, "")).rejects.toBeInstanceOf(CosmoportCoreConfigurationError);
+    await expect(updateCosmoportAppStatus("astro-pop", false, "")).rejects.toBeInstanceOf(
+      CosmoportCoreConfigurationError,
+    );
     expect(neonMock).not.toHaveBeenCalled();
   });
 
@@ -42,9 +49,14 @@ describe("CosmoPort Core database", () => {
   it("updates only the requested app using SQL parameters, returning the saved record", async () => {
     const sql = vi.fn().mockResolvedValue([{ ...astro, enabled: false }]);
     neonMock.mockReturnValue(sql);
-    await expect(updateCosmoportAppStatus("astro-pop", false, url)).resolves.toEqual({ ...astro, enabled: false });
+    await expect(updateCosmoportAppStatus("astro-pop", false, url)).resolves.toEqual({
+      ...astro,
+      enabled: false,
+    });
     expect(sql.mock.calls[0]?.[0].raw.join(" ")).toContain("UPDATE public.apps");
-    expect(sql.mock.calls[0]?.[0].raw.join(" ")).toContain("RETURNING id, title, description, enabled");
+    expect(sql.mock.calls[0]?.[0].raw.join(" ")).toContain(
+      "RETURNING id, title, description, enabled",
+    );
     expect(sql.mock.calls[0]?.slice(1)).toEqual([false, "astro-pop"]);
   });
 

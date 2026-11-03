@@ -1,10 +1,6 @@
 import type Stripe from "stripe";
 import { z } from "zod";
-import type {
-  AstroPopCheckoutStatus,
-  AstroPopOrderStatus,
-  AstroPopPaymentStatus,
-} from "../../shared/astroPopCheckoutStatus";
+import type { AstroPopCheckoutStatus } from "../../shared/astroPopCheckoutStatus";
 
 export type {
   AstroPopCheckoutStatus,
@@ -28,10 +24,7 @@ export const getCheckoutVerificationResult = (
     session.payment_status === "paid",
 });
 
-type CheckoutStatusSession = Pick<
-  Stripe.Checkout.Session,
-  "status" | "payment_status"
->;
+type CheckoutStatusSession = Pick<Stripe.Checkout.Session, "status" | "payment_status">;
 
 /**
  * Maps Stripe's Checkout state and the optional Neon lookup result into the

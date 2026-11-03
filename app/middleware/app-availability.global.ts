@@ -4,7 +4,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (namespace !== "app") return;
 
   if (!appId || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(appId) || appId.length > 64) {
-    return abortNavigation(createError({ statusCode: 404, statusMessage: "Application not found" }));
+    return abortNavigation(
+      createError({ statusCode: 404, statusMessage: "Application not found" }),
+    );
   }
 
   let allowed: boolean | null;
@@ -15,10 +17,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
     allowed = response.allowed;
   } catch {
     // Availability cannot be established. Never show a managed app by default.
-    return abortNavigation(createError({
-      statusCode: 503,
-      statusMessage: "Application availability unavailable",
-    }));
+    return abortNavigation(
+      createError({
+        statusCode: 503,
+        statusMessage: "Application availability unavailable",
+      }),
+    );
   }
 
   if (allowed === true) return;

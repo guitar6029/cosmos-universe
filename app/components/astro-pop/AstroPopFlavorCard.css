@@ -44,8 +44,7 @@
   border-radius: 48% 52% 45% 55% / 15% 18% 12% 16%;
   padding: 0;
   background:
-    radial-gradient(circle at 50% 55%, rgba(255, 250, 222, 0.7), transparent 40%),
-    var(--card-art);
+    radial-gradient(circle at 50% 55%, rgba(255, 250, 222, 0.7), transparent 40%), var(--card-art);
   text-align: center;
   transform: rotate(-1deg);
 }

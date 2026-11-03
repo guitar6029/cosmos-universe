@@ -34,11 +34,9 @@ vi.mock("nuxt/server", () => ({
 
 vi.mock("stripe", () => ({
   default: Object.assign(
-    class MockStripe {
-      constructor(...args: unknown[]) {
-        mocks.stripeConstructor(...args);
-        return mocks.stripeClient;
-      }
+    function MockStripe(...args: unknown[]) {
+      mocks.stripeConstructor(...args);
+      return mocks.stripeClient;
     },
     { errors: { StripeInvalidRequestError: mocks.StripeInvalidRequestError } },
   ),
@@ -70,7 +68,8 @@ describe("Astro Pop checkout status handler", () => {
   let handler: StatusHandler;
 
   beforeAll(async () => {
-    handler = (await import("../server/api/astro-pop/checkout/status.get")).default as StatusHandler;
+    handler = (await import("../server/api/astro-pop/checkout/status.get"))
+      .default as StatusHandler;
   });
 
   beforeEach(() => {
@@ -109,7 +108,9 @@ describe("Astro Pop checkout status handler", () => {
   });
 
   it("maps Stripe retrieval failures to 502", async () => {
-    mocks.stripeClient.checkout.sessions.retrieve.mockRejectedValue(new Error("Stripe unavailable"));
+    mocks.stripeClient.checkout.sessions.retrieve.mockRejectedValue(
+      new Error("Stripe unavailable"),
+    );
 
     await expect(handler({})).rejects.toMatchObject({ statusCode: 502 });
   });
@@ -152,18 +153,21 @@ describe("Astro Pop checkout status handler", () => {
     expect(mocks.isOrderRecorded).not.toHaveBeenCalled();
   });
 
-  it.each(["open", "expired"]) ("reports an unpaid %s Checkout without querying Neon", async (status) => {
-    mocks.stripeClient.checkout.sessions.retrieve.mockResolvedValue(
-      session({ status, payment_status: "unpaid" }),
-    );
+  it.each(["open", "expired"])(
+    "reports an unpaid %s Checkout without querying Neon",
+    async (status) => {
+      mocks.stripeClient.checkout.sessions.retrieve.mockResolvedValue(
+        session({ status, payment_status: "unpaid" }),
+      );
 
-    await expect(handler({})).resolves.toEqual({
-      paymentStatus: "unpaid",
-      orderStatus: "not_checked",
-      orderConfirmed: false,
-    });
-    expect(mocks.isOrderRecorded).not.toHaveBeenCalled();
-  });
+      await expect(handler({})).resolves.toEqual({
+        paymentStatus: "unpaid",
+        orderStatus: "not_checked",
+        orderConfirmed: false,
+      });
+      expect(mocks.isOrderRecorded).not.toHaveBeenCalled();
+    },
+  );
 
   it("confirms an order only when paid and recorded", async () => {
     await expect(handler({})).resolves.toEqual({
@@ -172,10 +176,7 @@ describe("Astro Pop checkout status handler", () => {
       orderConfirmed: true,
     });
     expect(mocks.isOrderRecorded).toHaveBeenCalledWith("cs_test_astro_pop_status");
-    expect(mocks.isGuestAuthorized).toHaveBeenCalledWith(
-      expect.any(Object),
-      "a".repeat(64),
-    );
+    expect(mocks.isGuestAuthorized).toHaveBeenCalledWith(expect.any(Object), "a".repeat(64));
   });
 
   it("distinguishes a paid Checkout with no recorded order", async () => {
@@ -198,17 +199,17 @@ describe("Astro Pop checkout status handler", () => {
     });
   });
 
-  it.each([
-    { payment_status: "no_payment_required" },
-    { status: "open", payment_status: "paid" },
-  ])("never confirms unsupported Stripe states", async (overrides) => {
-    mocks.stripeClient.checkout.sessions.retrieve.mockResolvedValue(session(overrides));
+  it.each([{ payment_status: "no_payment_required" }, { status: "open", payment_status: "paid" }])(
+    "never confirms unsupported Stripe states",
+    async (overrides) => {
+      mocks.stripeClient.checkout.sessions.retrieve.mockResolvedValue(session(overrides));
 
-    await expect(handler({})).resolves.toEqual({
-      paymentStatus: "unknown",
-      orderStatus: "not_checked",
-      orderConfirmed: false,
-    });
-    expect(mocks.isOrderRecorded).not.toHaveBeenCalled();
-  });
+      await expect(handler({})).resolves.toEqual({
+        paymentStatus: "unknown",
+        orderStatus: "not_checked",
+        orderConfirmed: false,
+      });
+      expect(mocks.isOrderRecorded).not.toHaveBeenCalled();
+    },
+  );
 });

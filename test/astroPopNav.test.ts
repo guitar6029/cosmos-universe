@@ -9,7 +9,9 @@ import { useAstroPopCrateStore } from "../app/stores/astroPopCrate";
 const route = { path: "/app/astro-pop" };
 
 vi.stubGlobal("useRoute", () => route);
-vi.stubGlobal("useUser", () => ({ user: ref({ fullName: "Nova Ray", imageUrl: "https://example.test/nova.png" }) }));
+vi.stubGlobal("useUser", () => ({
+  user: ref({ fullName: "Nova Ray", imageUrl: "https://example.test/nova.png" }),
+}));
 vi.stubGlobal("useAuth", () => ({
   isLoaded: ref(true),
   isSignedIn: ref(true),
@@ -27,12 +29,15 @@ const renderNavigation = async (bottles = 0, path = "/app/astro-pop") => {
   const pinia = createPinia();
   const app = createSSRApp({ render: () => h(AstroPopNav) });
   app.use(pinia);
-  app.component("NuxtLink", defineComponent({
-    props: { to: { type: String, required: true } },
-    setup(props, { slots }) {
-      return () => h("a", { href: props.to }, slots.default?.());
-    },
-  }));
+  app.component(
+    "NuxtLink",
+    defineComponent({
+      props: { to: { type: String, required: true } },
+      setup(props, { slots }) {
+        return () => h("a", { href: props.to }, slots.default?.());
+      },
+    }),
+  );
 
   if (bottles > 0) {
     useAstroPopCrateStore(pinia).addItem(ASTROPOP_FLAVORS[0].id, bottles);

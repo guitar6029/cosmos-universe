@@ -1,15 +1,12 @@
 import Stripe from "stripe";
-import { checkoutSessionIdSchema, getCheckoutVerificationResult } from "../../../utils/astroPopCheckoutVerification";
-import { isAstroPopGuestCheckoutAuthorized } from "../../../utils/astroPopGuestCheckout";
 import {
-  createError,
-  defineEventHandler,
-  getQuery,
-} from "nuxt/server";
+  checkoutSessionIdSchema,
+  getCheckoutVerificationResult,
+} from "../../../utils/astroPopCheckoutVerification";
+import { isAstroPopGuestCheckoutAuthorized } from "../../../utils/astroPopGuestCheckout";
+import { createError, defineEventHandler, getQuery } from "nuxt/server";
 export default defineEventHandler(async (event) => {
-  const parsedQuery = checkoutSessionIdSchema.safeParse(
-    getQuery(event).session_id,
-  );
+  const parsedQuery = checkoutSessionIdSchema.safeParse(getQuery(event).session_id);
 
   if (!parsedQuery.success) {
     throw createError({
@@ -27,8 +24,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const stripe = new Stripe(secretKey);
-
-
 
   let session: Stripe.Checkout.Session;
 
@@ -48,12 +43,8 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-
   // Confirm this is an Astro Pop payment checkout.
-  if (
-    session.mode !== "payment" ||
-    session.metadata?.astro_pop_order !== "true"
-  ) {
+  if (session.mode !== "payment" || session.metadata?.astro_pop_order !== "true") {
     throw createError({
       status: 404,
       statusText: "Checkout session not found",
@@ -75,8 +66,4 @@ export default defineEventHandler(async (event) => {
 
   // Only return payment verification after authorization.
   return getCheckoutVerificationResult(parsedQuery.data, session);
-
-
-
-
 });

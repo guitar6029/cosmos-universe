@@ -71,10 +71,9 @@ const destinationQuery = `*[
   }
 }`;
 
-const { data, error, pending } = await useSanityQuery<DestinationContent | null>(
-  destinationQuery,
-  { slug: props.slug },
-);
+const { data, error, pending } = await useSanityQuery<DestinationContent | null>(destinationQuery, {
+  slug: props.slug,
+});
 
 const carousel = ref<HTMLElement | null>(null);
 const selectedIndex = ref(0);
@@ -96,9 +95,7 @@ const scrollToHighlight = (index: number) => {
   }
 
   const nextIndex = getWrappedIndex(index, count);
-  const card = carousel.value?.querySelector<HTMLElement>(
-    `[data-highlight-index="${nextIndex}"]`,
-  );
+  const card = carousel.value?.querySelector<HTMLElement>(`[data-highlight-index="${nextIndex}"]`);
 
   if (!card || !carousel.value) {
     return;
@@ -248,7 +245,9 @@ onBeforeUnmount(() => {
           <div v-if="imageAssetId(destination?.heroImage)" class="destination-hero-image">
             <SanityImage
               :asset-id="imageAssetId(destination?.heroImage)"
-              :alt="destination?.altText || `${destination?.name || props.fallbackName} destination`"
+              :alt="
+                destination?.altText || `${destination?.name || props.fallbackName} destination`
+              "
               width="960"
               height="620"
               sizes="sm:100vw md:50vw lg:45vw"
@@ -326,7 +325,11 @@ onBeforeUnmount(() => {
                   sizes="sm:82vw md:42vw lg:30vw"
                 />
               </div>
-              <div v-else class="destination-card__image destination-card__image--empty" aria-hidden="true">
+              <div
+                v-else
+                class="destination-card__image destination-card__image--empty"
+                aria-hidden="true"
+              >
                 <span>CPV / {{ props.fallbackName }}</span>
               </div>
               <div class="destination-card__body">

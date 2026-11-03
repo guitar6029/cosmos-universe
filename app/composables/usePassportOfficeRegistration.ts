@@ -12,13 +12,11 @@ type Application = {
 };
 type RegistrationSignUp = Pick<
   SignUpResource,
-  | "create"
-  | "prepareEmailAddressVerification"
-  | "attemptEmailAddressVerification"
+  "create" | "prepareEmailAddressVerification" | "attemptEmailAddressVerification"
 >;
 const errorMessage = (value: unknown) =>
-  (value as { errors?: { longMessage?: string }[] })?.errors?.[0]
-    ?.longMessage || "We couldn't complete that step. Please try again.";
+  (value as { errors?: { longMessage?: string }[] })?.errors?.[0]?.longMessage ||
+  "We couldn't complete that step. Please try again.";
 
 export function usePassportOfficeRegistration(
   signUp: Ref<RegistrationSignUp | null | undefined>,
@@ -70,11 +68,7 @@ export function usePassportOfficeRegistration(
         code: code.trim(),
       });
       const activate = setActive.value;
-      if (
-        attempt.status !== "complete" ||
-        !attempt.createdSessionId ||
-        !activate
-      ) {
+      if (attempt.status !== "complete" || !attempt.createdSessionId || !activate) {
         error.value =
           "Your application needs another Clerk security step before its session can be activated.";
         return;

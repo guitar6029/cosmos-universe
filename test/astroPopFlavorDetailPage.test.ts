@@ -1,13 +1,14 @@
 // @vitest-environment jsdom
 import { createApp as createVueApp, createSSRApp, h, nextTick } from "vue";
 import { renderToString } from "vue/server-renderer";
-// Astro Pop navigation now consumes shared Clerk identity.
-vi.stubGlobal("useUser", () => ({ user: { value: null } }));
 import { createPinia, setActivePinia } from "pinia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ASTROPOP_FLAVORS } from "../app/data/astroPopFlavors";
 import AstroPopFlavorDetailPage from "../app/pages/app/astro-pop/flavors/[slug].vue";
 import { useAstroPopCrateStore } from "../app/stores/astroPopCrate";
+
+// Astro Pop navigation now consumes shared Clerk identity.
+vi.stubGlobal("useUser", () => ({ user: { value: null } }));
 
 const route = { path: "/app/astro-pop/flavors", params: { slug: "" } };
 const useHead = vi.fn();

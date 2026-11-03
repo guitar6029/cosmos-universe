@@ -5,12 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <img
-    class="decorative-image"
-    :src="src"
-    alt=""
-    aria-hidden="true"
-  />
+  <img class="decorative-image" :src="src" alt="" aria-hidden="true" />
 </template>
 
 <style scoped>

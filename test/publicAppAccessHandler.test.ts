@@ -64,11 +64,14 @@ describe("Public app availability endpoint", () => {
     await expect(handler({})).rejects.toMatchObject({ statusCode: 503 });
   });
 
-  it.each(["", "../admin", "INVALID", "bad_id", "a".repeat(65)])("rejects malformed app IDs", async (id) => {
-    mocks.routeParam.mockReturnValue(id);
-    await expect(handler({})).rejects.toMatchObject({ statusCode: 400 });
-    expect(mocks.enabled).not.toHaveBeenCalled();
-  });
+  it.each(["", "../admin", "INVALID", "bad_id", "a".repeat(65)])(
+    "rejects malformed app IDs",
+    async (id) => {
+      mocks.routeParam.mockReturnValue(id);
+      await expect(handler({})).rejects.toMatchObject({ statusCode: 400 });
+      expect(mocks.enabled).not.toHaveBeenCalled();
+    },
+  );
 
   it("returns a safe 503 when Neon is unavailable", async () => {
     mocks.enabled.mockRejectedValue(new Error("Private database details"));

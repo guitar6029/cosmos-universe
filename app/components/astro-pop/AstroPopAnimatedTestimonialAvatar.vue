@@ -81,22 +81,26 @@ const onVideoTransitionEnd = (event: TransitionEvent) => {
 
 onMounted(() => {
   reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  canTapReplay.value = !reduceMotion && window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  canTapReplay.value =
+    !reduceMotion && window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
   if (reduceMotion || !avatar.value || !("IntersectionObserver" in window)) {
     return;
   }
 
-  observer = new IntersectionObserver((entries) => {
-    const entry = entries[0];
-    if (!entry?.isIntersecting || entry.intersectionRatio < 0.6 || hasAutoplayed) {
-      return;
-    }
+  observer = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+      if (!entry?.isIntersecting || entry.intersectionRatio < 0.6 || hasAutoplayed) {
+        return;
+      }
 
-    hasAutoplayed = true;
-    observer?.disconnect();
-    void playVideo();
-  }, { threshold: 0.6 });
+      hasAutoplayed = true;
+      observer?.disconnect();
+      void playVideo();
+    },
+    { threshold: 0.6 },
+  );
 
   observer.observe(avatar.value);
 });

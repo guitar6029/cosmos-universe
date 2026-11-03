@@ -1,10 +1,10 @@
 import { neon } from "@neondatabase/serverless";
-import {
-  type AstroPopOrderDetail,
-  type AstroPopOrderHistory,
-  type AstroPopOrder,
-  type AstroPopOrderHistoryItem,
-} from "../types/astro-pop.types"
+import type {
+  AstroPopOrderDetail,
+  AstroPopOrderHistory,
+  AstroPopOrder,
+  AstroPopOrderHistoryItem,
+} from "../types/astro-pop.types";
 
 export class AstroPopDatabaseConfigurationError extends Error {
   constructor() {
@@ -21,7 +21,6 @@ export class AstroPopDatabaseConfigurationError extends Error {
 export async function getAstroPopDatabaseHealth(
   connectionString = process.env.ASTROPOP_POOLED_URL,
 ) {
-
   assertAstroPopConnectionString(connectionString);
 
   const sql = neon(connectionString);
@@ -39,7 +38,6 @@ export async function persistAstroPopOrder(
   order: AstroPopOrder,
   connectionString = process.env.ASTROPOP_POOLED_URL,
 ) {
-
   assertAstroPopConnectionString(connectionString);
 
   const sql = neon(connectionString);
@@ -51,7 +49,6 @@ export async function persistAstroPopOrder(
       unit_price_cents: item.unitPriceCents,
     })),
   );
-
 
   if (order.items.length === 0) {
     throw new Error("Cannot persist an order without items");
@@ -104,8 +101,6 @@ export async function persistAstroPopOrder(
   return { persisted: rows.length === 1 } as const;
 }
 
-
-
 /**
  * Checks whether a Stripe Checkout Session has
  * a persisted Astro Pop order in Neon.
@@ -116,7 +111,6 @@ export async function isAstroPopOrderRecorded(
   sessionId: string,
   connectionString = process.env.ASTROPOP_POOLED_URL,
 ): Promise<boolean> {
-
   assertAstroPopConnectionString(connectionString);
 
   const sql = neon(connectionString);
@@ -138,12 +132,11 @@ export async function isAstroPopOrderRecorded(
 
 export async function getAstroPopOrdersByUser(
   clerkUserId: string,
-  connectionString = process.env.ASTROPOP_POOLED_URL
+  connectionString = process.env.ASTROPOP_POOLED_URL,
 ): Promise<AstroPopOrderHistory[]> {
-
   assertAstroPopConnectionString(connectionString);
 
-  const sql = neon(connectionString)
+  const sql = neon(connectionString);
 
   const rows = await sql`
    WITH recent_orders AS (
@@ -184,7 +177,7 @@ GROUP BY
   o.status,
   o.payment_status
 ORDER BY o.created_at DESC, o.id DESC;
-  `
+  `;
 
   return rows.map((row) => ({
     id: String(row.id),
@@ -195,7 +188,6 @@ ORDER BY o.created_at DESC, o.id DESC;
     paymentStatus: String(row.payment_status),
     items: row.items as AstroPopOrderHistoryItem[],
   }));
-
 }
 
 /**
@@ -257,7 +249,6 @@ export async function getAstroPopOrderByIdForUser(
     items: row.items as AstroPopOrderHistoryItem[],
   };
 }
-
 
 function assertAstroPopConnectionString(
   connectionString: string | undefined,

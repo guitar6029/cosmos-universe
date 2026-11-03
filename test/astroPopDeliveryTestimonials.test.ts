@@ -12,16 +12,22 @@ describe("AstroPop neighborhood testimonials", () => {
     const html = await renderSection();
 
     expect(html).toContain('aria-labelledby="astropop-testimonials-title"');
-    expect(html).toMatch(/<h2[^>]*id="astropop-testimonials-title"[^>]*>The Neighborhood Is Talking!<\/h2>/);
+    expect(html).toMatch(
+      /<h2[^>]*id="astropop-testimonials-title"[^>]*>\s*The Neighborhood Is Talking!\s*<\/h2>/,
+    );
     expect(html).toContain("GOOD NEWS TRAVELS FAST!");
     expect(html).toContain("Everybody&#39;s buzzing about AstroPop!");
     expect(html.match(/<figure\b/g)).toHaveLength(3);
     expect(html.match(/<blockquote\b/g)).toHaveLength(3);
     expect(html.match(/<figcaption\b/g)).toHaveLength(3);
     const speechBubbles = html.match(/<figure\b[\s\S]*?<\/figure>/g) ?? [];
-    expect(speechBubbles.every((bubble) =>
-      /<figure\b[^>]*><blockquote\b[\s\S]*?<\/blockquote><figcaption\b[\s\S]*?<\/figcaption><\/figure>/.test(bubble),
-    )).toBe(true);
+    expect(
+      speechBubbles.every((bubble) =>
+        /<figure\b[^>]*><blockquote\b[\s\S]*?<\/blockquote><figcaption\b[\s\S]*?<\/figcaption><\/figure>/.test(
+          bubble,
+        ),
+      ),
+    ).toBe(true);
   });
 
   it.each([
@@ -83,10 +89,12 @@ describe("AstroPop neighborhood testimonials", () => {
     const figure = figures.find((markup) => markup.includes(name));
 
     expect(figure).toBeDefined();
-    const quoteText = figure?.match(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/)?.[1]
+    const quoteText = figure
+      ?.match(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/)?.[1]
       .replace(/<[^>]*>/g, "")
       .replaceAll("&#39;", "'");
-    const captionText = figure?.match(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/)?.[1]
+    const captionText = figure
+      ?.match(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/)?.[1]
       .replace(/<[^>]*>/g, "");
 
     expect(quoteText).toBe(`“${quote}”`);
