@@ -61,6 +61,7 @@ describe("Clerk email.created webhook handler", () => {
     vi.clearAllMocks();
     vi.stubEnv("CLERK_EMAIL_WEBHOOK_SIGNING_SECRET", "whsec_clerk_email_test");
     vi.stubEnv("RESEND_API_KEY", "re_test_key");
+    vi.stubEnv("RESEND_EMAIL_DELIVERY_ENABLED", "true");
     toWebRequest.mockReturnValue(new Request("https://cosmos.test/api/webhooks/clerk-email"));
     mocks.verifyWebhook.mockResolvedValue(verificationEmailEvent());
     mocks.resendClient.emails.send.mockResolvedValue({
@@ -81,6 +82,34 @@ describe("Clerk email.created webhook handler", () => {
       statusCode: 400,
       statusText: "Invalid webhook signature",
     });
+
+    expect(mocks.resendConstructor).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid webhook signatures when delivery is disabled", async () => {
+    vi.stubEnv("RESEND_EMAIL_DELIVERY_ENABLED", "false");
+    mocks.verifyWebhook.mockRejectedValue(new Error("signature verification failed"));
+
+    await expect(handler({})).rejects.toMatchObject({
+      statusCode: 400,
+      statusText: "Invalid webhook signature",
+    });
+
+    expect(mocks.resendConstructor).not.toHaveBeenCalled();
+  });
+
+  it("disables delivery when the feature flag is missing", async () => {
+    vi.stubEnv("RESEND_EMAIL_DELIVERY_ENABLED", undefined);
+
+    await expect(handler({})).resolves.toEqual({ received: true, ignored: true });
+
+    expect(mocks.resendConstructor).not.toHaveBeenCalled();
+  });
+
+  it("disables delivery when the feature flag is false", async () => {
+    vi.stubEnv("RESEND_EMAIL_DELIVERY_ENABLED", "false");
+
+    await expect(handler({})).resolves.toEqual({ received: true, ignored: true });
 
     expect(mocks.resendConstructor).not.toHaveBeenCalled();
   });
@@ -147,7 +176,7 @@ describe("Clerk email.created webhook handler", () => {
     expect(mocks.resendConstructor).not.toHaveBeenCalled();
   });
 
-  it("delivers a verification email without logging its recipient, OTP, or API key", async () => {
+  it("delivers a verification email when the feature flag is true without logging sensitive data", async () => {
     const consoleError = vi.spyOn(console, "error");
 
     await expect(handler({})).resolves.toEqual({

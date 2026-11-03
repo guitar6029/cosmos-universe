@@ -8,7 +8,7 @@ describe("renderVerificationEmail", () => {
     expect(html).toContain("COSMOS UNIVERSE");
     expect(html).toContain("THE COSMIC ACCESS NETWORK");
     expect(html).toContain("Your Cosmic Access Code");
-    expect(html).toContain(">\n                      123456\n                    </span>");
+    expect(html).toMatch(/>\s*123456\s*<\/span>/);
     expect(html).toContain(`&copy; ${new Date().getUTCFullYear()} Cosmos Universe`);
   });
 

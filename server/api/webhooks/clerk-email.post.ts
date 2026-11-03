@@ -28,6 +28,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (process.env.RESEND_EMAIL_DELIVERY_ENABLED !== "true") {
+    return { received: true, ignored: true };
+  }
+
   if (evt.type !== "email.created") {
     return { received: true, ignored: true };
   }

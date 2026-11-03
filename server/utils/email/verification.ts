@@ -2,27 +2,12 @@ type VerificationEmailOptions = {
   otpCode: string;
 };
 
-function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => {
-    const entities: Record<string, string> = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    };
-
-    return entities[character] ?? character;
-  });
-}
-
 export function renderVerificationEmail({ otpCode }: VerificationEmailOptions): string {
   // OTP codes must be numeric and six digits long.
   if (!/^\d{6}$/.test(otpCode)) {
     throw new Error("Invalid verification code");
   }
 
-  const escapedOtpCode = escapeHtml(otpCode);
   const year = new Date().getUTCFullYear();
 
   return `<!DOCTYPE html>
@@ -86,7 +71,7 @@ export function renderVerificationEmail({ otpCode }: VerificationEmailOptions): 
                   <td align="center"
                     style="background-color:#FFF8EA;border:2px solid #C24E3C;border-radius:10px;padding:18px 28px;">
                     <span style="font-size:38px;font-weight:bold;letter-spacing:5px;color:#12313D;font-family:Arial,Helvetica,sans-serif;">
-                      ${escapedOtpCode}
+                      ${otpCode}
                     </span>
                   </td>
                 </tr>
