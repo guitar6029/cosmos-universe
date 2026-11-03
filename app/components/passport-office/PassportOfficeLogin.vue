@@ -212,7 +212,11 @@ function beginCheckIn() {
   cursor: wait;
 }
 .passport-login__secondary {
-  background: #fff3d7 !important;
+  background: #fff3d7;
+}
+.passport-login__form .passport-login__secondary,
+.passport-login__form .passport-login__secondary:hover {
+  background: #fff3d7;
 }
 .passport-login__error {
   color: #912c21;

@@ -86,7 +86,11 @@
   cursor: wait;
 }
 .passport-registration__secondary {
-  background: #fff3d7 !important;
+  background: #fff3d7;
+}
+.passport-registration__form .passport-registration__secondary,
+.passport-registration__form .passport-registration__secondary:hover {
+  background: #fff3d7;
 }
 .passport-registration__error {
   color: #912c21;
@@ -116,7 +120,7 @@
 }
 .passport-registration__portrait-option {
   position: relative;
-  display: block !important;
+  display: block;
   cursor: pointer;
 }
 .passport-registration__portrait-option input {
@@ -124,7 +128,6 @@
   width: 1px;
   height: 1px;
   margin: -1px;
-  clip: rect(0 0 0 0);
   clip-path: inset(50%);
   overflow: hidden;
   white-space: nowrap;
@@ -184,7 +187,6 @@
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0 0 0 0);
   clip-path: inset(50%);
   white-space: nowrap;
 }

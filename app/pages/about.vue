@@ -301,8 +301,7 @@ h2 em {
 .universe-about__engineering {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  column-gap: clamp(2rem, 7vw, 6rem);
-  row-gap: 1.5rem;
+  gap: 1.5rem clamp(2rem, 7vw, 6rem);
   background: #183d4a;
   color: #fff8e8;
   box-shadow: 0 0 0 100vmax #183d4a;

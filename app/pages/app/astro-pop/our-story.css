@@ -271,10 +271,10 @@
   line-height: 1.65;
 }
 
-.astropop-first-shop__closing-line {
+.astropop-first-shop__content > p.astropop-first-shop__closing-line {
   color: var(--astropop-gold, #e6c486);
-  font-family: var(--astropop-display-font, "Fraunces", Georgia, serif) !important;
-  font-size: clamp(1.2rem, 2vw, 1.55rem) !important;
+  font-family: var(--astropop-display-font, "Fraunces", Georgia, serif);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
   font-style: italic;
   font-weight: 700;
 }

@@ -71,6 +71,7 @@ const handleCheckout = async () => {
   border: var(--astropop-border-width) solid #6d2e35;
   border-radius: 999px;
   padding: 0.65rem 1.1rem;
+  width: 100%;
   background: var(--astropop-red);
   color: var(--astropop-cream);
   font-family: var(--astropop-label-font);
@@ -79,10 +80,6 @@ const handleCheckout = async () => {
   letter-spacing: 0.08em;
   text-decoration: none;
   text-transform: uppercase;
-}
-
-.astropop-cart-page__button {
-  width: 100%;
 }
 
 .astropop-cart-page__button:disabled {
