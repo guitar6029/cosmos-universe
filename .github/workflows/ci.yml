@@ -27,6 +27,12 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
+      # Keep local and CI Arborist behavior aligned. See npm/cli#10086.
+      - name: Set up npm
+        run: |
+          npm install --global npm@12.2.1
+          test "$(npm --version)" = "12.2.1"
+
       - name: Install dependencies
         run: npm ci
 
@@ -57,6 +63,12 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
           cache-dependency-path: package-lock.json
+
+      # Keep local and CI Arborist behavior aligned. See npm/cli#10086.
+      - name: Set up npm
+        run: |
+          npm install --global npm@12.2.1
+          test "$(npm --version)" = "12.2.1"
 
       - name: Install dependencies
         run: npm ci
