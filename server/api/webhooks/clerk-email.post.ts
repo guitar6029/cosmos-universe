@@ -1,7 +1,9 @@
 import { verifyWebhook } from "@clerk/backend/webhooks";
 import { Resend } from "resend";
-// Update the import path when we create this utility.
 import { renderVerificationEmail } from "../../utils/email/verification";
+
+const otpPattern = /^\d{6}$/;
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default defineEventHandler(async (event) => {
   const signingSecret = process.env.CLERK_EMAIL_WEBHOOK_SIGNING_SECRET;
@@ -36,13 +38,26 @@ export default defineEventHandler(async (event) => {
     return { received: true, ignored: true };
   }
 
-  const recipient = data.to_email_address;
+  const recipient = data.to_email_address?.trim();
   const otpCode = data.data?.otp_code;
+  const emailEventId = data.id;
 
-  if (!recipient || typeof otpCode !== "string") {
+  if (
+    !recipient ||
+    !emailPattern.test(recipient) ||
+    typeof otpCode !== "string" ||
+    !otpPattern.test(otpCode)
+  ) {
     throw createError({
       status: 400,
       statusText: "Missing recipient or verification code",
+    });
+  }
+
+  if (typeof emailEventId !== "string" || !emailEventId.trim()) {
+    throw createError({
+      status: 400,
+      statusText: "Missing email event ID",
     });
   }
 
@@ -55,24 +70,39 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const resend = new Resend(apiKey);
+  const resend = new Resend(apiKey.trim());
 
-  const { data: result, error } = await resend.emails.send(
-    {
-      from: "Cosmos Universe <access@mail.cosmos-universe.com>",
-      to: recipient,
-      subject: `${otpCode} — Your Cosmos Universe Access Code`,
-      html: renderVerificationEmail({ otpCode }),
-      text: `Your Cosmos Universe verification code is ${otpCode}. Do not share this code.`,
-    },
-    {
-      idempotencyKey: `clerk-email/${evt.data.id}`,
-    },
-  );
+  let result;
+  let error;
+
+  try {
+    ({ data: result, error } = await resend.emails.send(
+      {
+        from: "Cosmos Universe <access@mail.cosmos-universe.com>",
+        to: recipient,
+        subject: `${otpCode} — Your Cosmos Universe Access Code`,
+        html: renderVerificationEmail({ otpCode }),
+        text: `Your Cosmos Universe verification code is ${otpCode}. Do not share this code.`,
+      },
+      {
+        idempotencyKey: `clerk-email/${emailEventId}`,
+      },
+    ));
+  } catch (sendError) {
+    console.error("Resend email delivery failed", {
+      eventId: emailEventId,
+      errorName: sendError instanceof Error ? sendError.name : "UnknownError",
+    });
+
+    throw createError({
+      status: 502,
+      statusText: "Email delivery failed",
+    });
+  }
 
   if (error || !result) {
     console.error("Resend email delivery failed", {
-      eventId: evt.data.id,
+      eventId: emailEventId,
       errorName: error?.name,
     });
 
