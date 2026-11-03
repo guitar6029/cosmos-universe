@@ -18,10 +18,10 @@ vi.stubGlobal("definePageMeta", vi.fn());
 vi.stubGlobal("useSeoMeta", vi.fn());
 
 const UniverseNavStub = defineComponent({ template: "<nav>Cosmos Universe</nav>" });
-const renderPage = () => renderToString(
-  createSSRApp({ render: () => h(UniverseAccount) })
-    .component("UniverseNav", UniverseNavStub),
-);
+const renderPage = () =>
+  renderToString(
+    createSSRApp({ render: () => h(UniverseAccount) }).component("UniverseNav", UniverseNavStub),
+  );
 
 describe("Cosmos Universe account", () => {
   it("renders the shared profile without aggregating Astro Pop order data", async () => {

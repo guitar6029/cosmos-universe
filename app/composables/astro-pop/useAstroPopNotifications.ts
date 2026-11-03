@@ -34,10 +34,7 @@ interface NotificationTimer {
 const timers = new Map<string, NotificationTimer>();
 
 export function useAstroPopNotifications() {
-  const notifications = useState<AstroPopNotification[]>(
-    "astro-pop-notifications",
-    () => [],
-  );
+  const notifications = useState<AstroPopNotification[]>("astro-pop-notifications", () => []);
 
   function dismiss(id: string) {
     const timer = timers.get(id);
@@ -49,9 +46,7 @@ export function useAstroPopNotifications() {
 
     timers.delete(id);
 
-    notifications.value = notifications.value.filter(
-      (notification) => notification.id !== id,
-    );
+    notifications.value = notifications.value.filter((notification) => notification.id !== id);
   }
 
   function startTimer(id: string, timer: NotificationTimer) {

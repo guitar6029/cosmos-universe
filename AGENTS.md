@@ -98,8 +98,6 @@ Preserve existing systems; **do not introduce new services, authentication mecha
 - Keep server-side logic authoritative for payments, identity, and persisted orders.
 - Avoid touching unrelated Cloudflare deployment, Stripe settings, Clerk settings, database state, or external resources as part of UI-only tasks.
 
-
-
 ### Code formatting and readability
 
 - Write readable, consistently formatted TypeScript, JavaScript, Vue, and CSS.
@@ -116,8 +114,6 @@ Preserve existing systems; **do not introduce new services, authentication mecha
 - Avoid unrelated mass-formatting changes in feature PRs.
 - Review source readability before committing, even when tests pass.
 - Run repository formatting and lint checks when available.
-
-
 
 ### Vue component styling
 
@@ -172,4 +168,3 @@ Run task-relevant focused tests and full checks when practical. Report exactly w
 - Report the results of checks actually performed, including limitations.
 - Surface blockers and unresolved risks.
 - Do not expand the task scope or merge the PR without user authorization.
-

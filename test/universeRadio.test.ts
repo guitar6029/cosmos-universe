@@ -25,7 +25,9 @@ describe("CosmoPort Radio", () => {
   });
 
   it("uses the verified, centralized Grand Concourse MP3 URL", () => {
-    expect(UNIVERSE_MEDIA.interplanetaryLounge).toBe("https://media.cosmos-universe.com/sounds/grand-concourse/interplanetary-lounge.mp3");
+    expect(UNIVERSE_MEDIA.interplanetaryLounge).toBe(
+      "https://media.cosmos-universe.com/sounds/grand-concourse/interplanetary-lounge.mp3",
+    );
   });
 
   it("does not construct or play audio until a visitor presses Play", async () => {
@@ -51,13 +53,13 @@ describe("CosmoPort Radio", () => {
     await radio.play();
     const player = audioConstructor.mock.results[0]?.value as FakeAudio;
 
-    radio.setVolume(.24);
+    radio.setVolume(0.24);
     radio.toggleMute();
-    expect(player.volume).toBe(.24);
+    expect(player.volume).toBe(0.24);
     expect(player.muted).toBe(true);
     radio.toggleMute();
     expect(player.muted).toBe(false);
-    expect(player.volume).toBe(.24);
+    expect(player.volume).toBe(0.24);
     radio.stopForMiniApp();
     expect(player.pause).toHaveBeenCalled();
     expect(player.currentTime).toBe(0);
@@ -65,7 +67,9 @@ describe("CosmoPort Radio", () => {
 
   it("cancels a pending play request when entering a mini-app", async () => {
     let resolvePlay: () => void = () => undefined;
-    const pendingPlay = new Promise<void>((resolve) => { resolvePlay = resolve; });
+    const pendingPlay = new Promise<void>((resolve) => {
+      resolvePlay = resolve;
+    });
     const audioConstructor = vi.fn((src: string) => {
       const player = new FakeAudio(src);
       player.play.mockReturnValue(pendingPlay);
@@ -88,7 +92,9 @@ describe("CosmoPort Radio", () => {
 
   it("ignores a stale play rejection after Pause", async () => {
     let rejectPlay: (reason?: unknown) => void = () => undefined;
-    const pendingPlay = new Promise<void>((_resolve, reject) => { rejectPlay = reject; });
+    const pendingPlay = new Promise<void>((_resolve, reject) => {
+      rejectPlay = reject;
+    });
     const audioConstructor = vi.fn((src: string) => {
       const player = new FakeAudio(src);
       player.play.mockReturnValue(pendingPlay);
@@ -110,8 +116,12 @@ describe("CosmoPort Radio", () => {
   it("keeps the newest rapid Play request in control", async () => {
     let resolveFirst: () => void = () => undefined;
     let resolveSecond: () => void = () => undefined;
-    const firstPlay = new Promise<void>((resolve) => { resolveFirst = resolve; });
-    const secondPlay = new Promise<void>((resolve) => { resolveSecond = resolve; });
+    const firstPlay = new Promise<void>((resolve) => {
+      resolveFirst = resolve;
+    });
+    const secondPlay = new Promise<void>((resolve) => {
+      resolveSecond = resolve;
+    });
     const audioConstructor = vi.fn((src: string) => {
       const player = new FakeAudio(src);
       player.play.mockReturnValueOnce(firstPlay).mockReturnValueOnce(secondPlay);
@@ -144,10 +154,18 @@ describe("CosmoPort Radio", () => {
     await nextTick();
     expect(container.querySelector('[role="group"]')?.textContent).toContain("CosmoPort Radio");
     expect(container.querySelectorAll("svg[aria-hidden='true']")).toHaveLength(2);
-    expect(container.querySelector(".universe-radio__toggle svg path")?.getAttribute("d")).toContain("M17.25 9.75");
-    expect(container.querySelector(".universe-radio__action svg path")?.getAttribute("d")).toContain("M5.25 5.653");
-    expect(container.querySelector<HTMLInputElement>('input[type="range"]')?.getAttribute("aria-label")).toBe("Radio volume");
-    container.querySelector<HTMLInputElement>('input[type="range"]')?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    expect(
+      container.querySelector(".universe-radio__toggle svg path")?.getAttribute("d"),
+    ).toContain("M17.25 9.75");
+    expect(
+      container.querySelector(".universe-radio__action svg path")?.getAttribute("d"),
+    ).toContain("M5.25 5.653");
+    expect(
+      container.querySelector<HTMLInputElement>('input[type="range"]')?.getAttribute("aria-label"),
+    ).toBe("Radio volume");
+    container
+      .querySelector<HTMLInputElement>('input[type="range"]')
+      ?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
     await nextTick();
     expect(container.querySelector('[role="group"]')).toBeNull();
     app.unmount();

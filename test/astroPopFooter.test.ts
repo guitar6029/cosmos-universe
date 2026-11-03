@@ -13,7 +13,10 @@ vi.stubGlobal("useRoute", () => ({ path: "/app/astro-pop" }));
 
 const NuxtLink = defineComponent({
   props: { to: { type: String, required: true } },
-  setup: (props, { slots }) => () => h("a", { href: props.to }, slots.default?.()),
+  setup:
+    (props, { slots }) =>
+    () =>
+      h("a", { href: props.to }, slots.default?.()),
 });
 
 const renderFooter = () => {
@@ -71,8 +74,9 @@ describe("AstroPop footer", () => {
     expectedGroups.forEach(({ id, title, links }, index) => {
       expect(groups[index]).toContain(`aria-labelledby="${id}"`);
       expect(groups[index]).toMatch(new RegExp(`<h3[^>]*id="${id}"[^>]*>${title}</h3>`));
-      const renderedLinks = [...groups[index]!.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g)]
-        .map(([, href, label]) => [href, label]);
+      const renderedLinks = [
+        ...groups[index]!.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g),
+      ].map(([, href, label]) => [href, label]);
       expect(renderedLinks).toEqual(links);
     });
     expect(html).not.toMatch(/tabindex|aria-disabled/);

@@ -39,24 +39,40 @@ useSeoMeta({
 }
 .coming-soon__eyebrow {
   color: #a34f34;
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: .15em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
-.coming-soon__symbol { margin: 1.5rem 0; font-size: 3rem; color: #c16c45; }
-h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.25rem, 6vw, 3.75rem); line-height: 1.1; }
-p { margin: 1rem auto; line-height: 1.6; }
+.coming-soon__symbol {
+  margin: 1.5rem 0;
+  font-size: 3rem;
+  color: #c16c45;
+}
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  line-height: 1.1;
+}
+p {
+  margin: 1rem auto;
+  line-height: 1.6;
+}
 .coming-soon__link {
   display: inline-block;
   margin-top: 1rem;
-  padding: .8rem 1.25rem;
-  border-radius: .5rem;
+  padding: 0.8rem 1.25rem;
+  border-radius: 0.5rem;
   background: #173c49;
   color: #fff8e8;
   font-weight: 700;
   text-decoration: none;
 }
-.coming-soon__link:hover { background: #2b5968; }
-.coming-soon__link:focus-visible { outline: 3px solid #a34f34; outline-offset: 4px; }
+.coming-soon__link:hover {
+  background: #2b5968;
+}
+.coming-soon__link:focus-visible {
+  outline: 3px solid #a34f34;
+  outline-offset: 4px;
+}
 </style>

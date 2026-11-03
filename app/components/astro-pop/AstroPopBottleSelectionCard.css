@@ -56,7 +56,11 @@
   letter-spacing: 0.08em;
   line-height: 1;
   text-transform: uppercase;
-  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease, opacity 150ms ease;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    filter 150ms ease,
+    opacity 150ms ease;
 }
 
 .bottle-selection-card__actions {
@@ -82,7 +86,11 @@
   line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
-  transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease, color 150ms ease;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background 150ms ease,
+    color 150ms ease;
 }
 
 .bottle-selection-card__details-link:focus-visible {

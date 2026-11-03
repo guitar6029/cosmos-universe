@@ -27,8 +27,7 @@ describe("profile avatar endpoint", () => {
   let handler: ProfileHandler;
 
   beforeAll(async () => {
-    handler = (await import("../server/api/account/profile-avatar.get"))
-      .default as ProfileHandler;
+    handler = (await import("../server/api/account/profile-avatar.get")).default as ProfileHandler;
   });
 
   beforeEach(() => {

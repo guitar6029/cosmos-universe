@@ -48,8 +48,18 @@ describe("Astro Pop account order detail endpoint", () => {
       status: "PLACED",
       paymentStatus: "PAID",
       items: [
-        { flavorId: "atomic-cherry-fizz", flavorName: "Atomic Cherry Fizz", quantity: 2, unitPriceCents: 119 },
-        { flavorId: "lunar-lime-lift", flavorName: "Lunar Lime Lift", quantity: 1, unitPriceCents: 119 },
+        {
+          flavorId: "atomic-cherry-fizz",
+          flavorName: "Atomic Cherry Fizz",
+          quantity: 2,
+          unitPriceCents: 119,
+        },
+        {
+          flavorId: "lunar-lime-lift",
+          flavorName: "Lunar Lime Lift",
+          quantity: 1,
+          unitPriceCents: 119,
+        },
       ],
     };
     mocks.auth.mockReturnValue({ isAuthenticated: true, userId: "user_owner" });

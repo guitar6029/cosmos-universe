@@ -63,9 +63,11 @@ describe("useCosmosProfile", () => {
 
   it("starts one request after Clerk finishes loading for two waiting consumers", async () => {
     let resolveProfile: (value: { avatarId: string }) => void = () => undefined;
-    fetchProfile.mockReturnValue(new Promise((resolve) => {
-      resolveProfile = resolve;
-    }));
+    fetchProfile.mockReturnValue(
+      new Promise((resolve) => {
+        resolveProfile = resolve;
+      }),
+    );
     isLoaded.value = false;
 
     const first = scope.run(useCosmosProfile)!;
@@ -111,9 +113,11 @@ describe("useCosmosProfile", () => {
 
   it("shares one pending request and exposes the saved avatar to each consumer", async () => {
     let resolveProfile: (value: { avatarId: string }) => void = () => undefined;
-    fetchProfile.mockReturnValue(new Promise((resolve) => {
-      resolveProfile = resolve;
-    }));
+    fetchProfile.mockReturnValue(
+      new Promise((resolve) => {
+        resolveProfile = resolve;
+      }),
+    );
     isSignedIn.value = true;
     userId.value = "user_shared";
 
@@ -148,9 +152,11 @@ describe("useCosmosProfile", () => {
 
   it("clears the shared profile when signing out during a pending request", async () => {
     let resolveProfile: (value: { avatarId: string }) => void = () => undefined;
-    fetchProfile.mockReturnValue(new Promise((resolve) => {
-      resolveProfile = resolve;
-    }));
+    fetchProfile.mockReturnValue(
+      new Promise((resolve) => {
+        resolveProfile = resolve;
+      }),
+    );
     isSignedIn.value = true;
     userId.value = "user_signing_out";
 
@@ -172,12 +178,16 @@ describe("useCosmosProfile", () => {
     let resolveFirst: (value: { avatarId: string }) => void = () => undefined;
     let resolveSecond: (value: { avatarId: string }) => void = () => undefined;
     fetchProfile
-      .mockReturnValueOnce(new Promise((resolve) => {
-        resolveFirst = resolve;
-      }))
-      .mockReturnValueOnce(new Promise((resolve) => {
-        resolveSecond = resolve;
-      }));
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          resolveFirst = resolve;
+        }),
+      )
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          resolveSecond = resolve;
+        }),
+      );
     isSignedIn.value = true;
     userId.value = "user_first";
 

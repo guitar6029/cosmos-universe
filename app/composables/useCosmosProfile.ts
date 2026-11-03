@@ -1,10 +1,5 @@
 import { computed, watch } from "vue";
-import {
-  AVATARS_MEDIA,
-  avatarUrl,
-  isAvatarId,
-  type AvatarId,
-} from "../data/avatarsMedia";
+import { AVATARS_MEDIA, avatarUrl, isAvatarId, type AvatarId } from "../data/avatarsMedia";
 
 type AvatarResponse = {
   avatarId: AvatarId | null;
@@ -38,10 +33,7 @@ function requestsFor(nuxtApp: object) {
   return requests;
 }
 
-function resetProfile(
-  profile: { value: CosmosProfileState },
-  loading: boolean,
-) {
+function resetProfile(profile: { value: CosmosProfileState }, loading: boolean) {
   profile.value.avatarId = null;
   profile.value.error = false;
   profile.value.loading = loading;
@@ -85,8 +77,8 @@ export function useCosmosProfile() {
       }
 
       if (
-        profile.value.userId === activeUserId
-        && (profile.value.status === "success" || profile.value.status === "error")
+        profile.value.userId === activeUserId &&
+        (profile.value.status === "success" || profile.value.status === "error")
       ) {
         return;
       }
@@ -94,9 +86,9 @@ export function useCosmosProfile() {
       const pending = requests.get(activeUserId);
 
       if (
-        profile.value.userId === activeUserId
-        && profile.value.status === "loading"
-        && pending?.requestId === profile.value.requestId
+        profile.value.userId === activeUserId &&
+        profile.value.status === "loading" &&
+        pending?.requestId === profile.value.requestId
       ) {
         return;
       }
@@ -109,27 +101,17 @@ export function useCosmosProfile() {
       profile.value.userId = activeUserId;
       const requestId = profile.value.requestId;
 
-      void $fetch<AvatarResponse>(
-        "/api/account/profile-avatar",
-      )
+      void $fetch<AvatarResponse>("/api/account/profile-avatar")
         .then((response) => {
-          if (
-            profile.value.userId !== activeUserId
-            || profile.value.requestId !== requestId
-          ) {
+          if (profile.value.userId !== activeUserId || profile.value.requestId !== requestId) {
             return;
           }
 
-          profile.value.avatarId = isAvatarId(response.avatarId)
-            ? response.avatarId
-            : null;
+          profile.value.avatarId = isAvatarId(response.avatarId) ? response.avatarId : null;
           profile.value.status = "success";
         })
         .catch(() => {
-          if (
-            profile.value.userId !== activeUserId
-            || profile.value.requestId !== requestId
-          ) {
+          if (profile.value.userId !== activeUserId || profile.value.requestId !== requestId) {
             return;
           }
 
@@ -141,10 +123,7 @@ export function useCosmosProfile() {
             requests.delete(activeUserId);
           }
 
-          if (
-            profile.value.userId === activeUserId
-            && profile.value.requestId === requestId
-          ) {
+          if (profile.value.userId === activeUserId && profile.value.requestId === requestId) {
             profile.value.loading = false;
           }
         });

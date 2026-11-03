@@ -12,13 +12,13 @@ This is a **portfolio / product-engineering project**, not a real travel-booking
 
 **[Visit the live site →](https://cosmos-universe.com)** — browse the public experiences; account features require registration. The storefront is a fictional demonstration and Stripe checkout uses test-mode infrastructure, not live retail fulfillment.
 
-| Experience | Route | Current state |
-| --- | --- | --- |
-| **Grand Concourse** | `/` | Main Universe homepage with responsive illustrated hero, experience directory, navigation, and CosmoPort Radio controls |
-| **Astro Pop Soda Co.** | `/astro-pop` | Interactive fictional storefront with flavor pages, crate builder/cart, Stripe Checkout integration, and order confirmation |
-| **Passport Office** | `/passport-office` | Custom traveler registration, email verification, and returning-traveler sign-in powered by Clerk |
-| **CosmoPort Voyage** | `/cosmoport-voyage` | Illustrated space-tourism landing page and destination sections; search, comparison, and booking are **not** implemented |
-| **About the Universe** | `/about` | The shared world introduction and multiverse artwork |
+| Experience             | Route               | Current state                                                                                                               |
+| ---------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Grand Concourse**    | `/`                 | Main Universe homepage with responsive illustrated hero, experience directory, navigation, and CosmoPort Radio controls     |
+| **Astro Pop Soda Co.** | `/astro-pop`        | Interactive fictional storefront with flavor pages, crate builder/cart, Stripe Checkout integration, and order confirmation |
+| **Passport Office**    | `/passport-office`  | Custom traveler registration, email verification, and returning-traveler sign-in powered by Clerk                           |
+| **CosmoPort Voyage**   | `/cosmoport-voyage` | Illustrated space-tourism landing page and destination sections; search, comparison, and booking are **not** implemented    |
+| **About the Universe** | `/about`            | The shared world introduction and multiverse artwork                                                                        |
 
 Astro Pop also includes an Our Story page (`/astro-pop/our-story`), individual flavor routes (`/astro-pop/flavors/[slug]`), and a cart (`/astro-pop/cart`).
 
@@ -55,16 +55,16 @@ These are **planned**, not shipping features:
 
 ## Technology
 
-| Layer | Tools |
-| --- | --- |
-| Web application | Nuxt 4, Vue 3, TypeScript, Nitro |
-| UI and state | Tailwind CSS v4, DaisyUI v5, Pinia |
-| Authentication | Clerk (`@clerk/nuxt`) |
-| Commerce and data | Stripe, Neon serverless Postgres, Zod |
-| Media | Cloudflare R2, Workers, Cache API |
-| Content | Sanity CMS / standalone Sanity Studio (partially integrated) |
-| Configuration | Doppler-managed development environment |
-| Quality | Vitest, Playwright, GitHub Actions |
+| Layer             | Tools                                                        |
+| ----------------- | ------------------------------------------------------------ |
+| Web application   | Nuxt 4, Vue 3, TypeScript, Nitro                             |
+| UI and state      | Tailwind CSS v4, DaisyUI v5, Pinia                           |
+| Authentication    | Clerk (`@clerk/nuxt`)                                        |
+| Commerce and data | Stripe, Neon serverless Postgres, Zod                        |
+| Media             | Cloudflare R2, Workers, Cache API                            |
+| Content           | Sanity CMS / standalone Sanity Studio (partially integrated) |
+| Configuration     | Doppler-managed development environment                      |
+| Quality           | Vitest, Playwright, GitHub Actions                           |
 
 The repository includes a Nuxt app, Nitro API routes, database migrations, a standalone Sanity Studio, and an independently configured media Worker. Not every integration is required to browse every public page.
 

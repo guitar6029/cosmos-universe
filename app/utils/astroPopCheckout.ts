@@ -1,9 +1,7 @@
 import type { AstroPopCrateItem, useAstroPopCrateStore } from "../stores/astroPopCrate";
 
-export const PENDING_ASTROPOP_CHECKOUT_STORAGE_KEY =
-  "astropop-pending-checkout";
-export const COMPLETED_ASTROPOP_CHECKOUT_STORAGE_KEY =
-  "astropop-completed-checkout";
+export const PENDING_ASTROPOP_CHECKOUT_STORAGE_KEY = "astropop-pending-checkout";
+export const COMPLETED_ASTROPOP_CHECKOUT_STORAGE_KEY = "astropop-completed-checkout";
 
 export interface PendingAstroPopCheckout {
   sessionId: string;
@@ -15,9 +13,9 @@ export interface CompletedAstroPopCheckout {
 }
 
 const cloneItems = (items: readonly AstroPopCrateItem[]) =>
-  items.map((item) => ({ ...item })).sort((left, right) =>
-    left.flavorId.localeCompare(right.flavorId),
-  );
+  items
+    .map((item) => ({ ...item }))
+    .sort((left, right) => left.flavorId.localeCompare(right.flavorId));
 
 export const savePendingAstroPopCheckout = (
   sessionId: string,
@@ -110,11 +108,8 @@ export const completeVerifiedAstroPopCheckout = (
   crateStore: AstroPopCrateStore,
   pendingCheckout: PendingAstroPopCheckout,
   verification: { sessionId: string; verified: boolean },
-) : "cleared" | "preserved" | null => {
-  if (
-    !verification.verified ||
-    verification.sessionId !== pendingCheckout.sessionId
-  ) {
+): "cleared" | "preserved" | null => {
+  if (!verification.verified || verification.sessionId !== pendingCheckout.sessionId) {
     return null;
   }
 

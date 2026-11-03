@@ -24,10 +24,7 @@ export const getCheckoutVerificationResult = (
     session.payment_status === "paid",
 });
 
-type CheckoutStatusSession = Pick<
-  Stripe.Checkout.Session,
-  "status" | "payment_status"
->;
+type CheckoutStatusSession = Pick<Stripe.Checkout.Session, "status" | "payment_status">;
 
 /**
  * Maps Stripe's Checkout state and the optional Neon lookup result into the

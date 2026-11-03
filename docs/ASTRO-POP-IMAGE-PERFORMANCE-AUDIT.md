@@ -24,51 +24,51 @@ The simplest maintainable long-term approach is a small, explicit **Sharp build-
 
 Rendered dimensions are either the observed desktop bounds above (including CSS transforms where noted) or the CSS target/range. They are not a responsive source-selection mechanism. `Eager/default` means no `loading="lazy"` attribute; it does not use `fetchpriority` or a preload.
 
-| Asset | Format / bytes / pixels / transparency | Component and role | Approx. rendered size | Current loading |
-| --- | --- | --- | --- | --- |
-| `accents/AstroPop Soda Co. Delivery Note.png` | PNG; 2.96 MiB; 1536x1024; yes | `AstroPopDeliverySection`; decorative note | 550px nominal width; 648x648 transformed bounding box measured | Eager/default, off-screen on initial view |
-| `accents/CouponSavings.png` | PNG; 2.34 MiB; 1448x1086; yes | No application reference found | Not rendered | Not requested |
-| `accents/DeliveredFreshStamp.png` | PNG; 2.31 MiB; 1254x1254; yes | No application reference found | Not rendered | Not requested |
-| `accents/Vintage AstroPop Soda Bottle Opener.png` | PNG; 1.65 MiB; 1774x887; yes | `AstroPopFlavorSection`; decorative opener | 550px max nominal width; 615x482 transformed bounding box measured | Eager/default, requested initially |
-| `accents/Vintage AstroPop Soda Cap.png` | PNG; 2.14 MiB; 1254x1254; yes | Page/Flavor/Delivery sections; repeated decoration (6 DOM uses) | 150px nominal width / 184x184 transformed bounds measured; one URL request is cached | Eager/default, requested initially |
-| `bottles/AstroPop Atomic Cherry Fizz Bottle.png` | PNG; 1.81 MiB; 1024x1536; yes | Bottle selection and populated cart; product artwork | Selection: 225x192 box; cart: 72x112 mobile, 88x128 desktop | Selection lazy; cart default/eager once a cart item exists |
-| `bottles/AstroPop Lunar Lime Lift Bottle.png` | PNG; 1.78 MiB; 1024x1536; yes | Bottle selection and populated cart; product artwork | Same as Atomic Cherry | Same as Atomic Cherry |
-| `bottles/AstroPop Neptune Berry Fizz Bottle.png` | PNG; 1.86 MiB; 1024x1536; yes | Bottle selection and populated cart; product artwork | Same as Atomic Cherry | Same as Atomic Cherry |
-| `bottles/AstroPop Retro Soda Quartet.png` | PNG; 2.09 MiB; 1536x1024; no | No application reference found | Not rendered | Not requested |
-| `bottles/AstroPop Solar Citrus Spark Bottle.png` | PNG; 1.72 MiB; 1024x1536; yes | Bottle selection and populated cart; product artwork | Same as Atomic Cherry | Same as Atomic Cherry |
-| `cart/Retro Atomic Shopping Cart.png` | PNG; 1.61 MiB; 1314x1197; yes | No application reference found | Not rendered | Not requested |
-| `delivery/AstroPop Delivers_ Retro Soda Adventure.png` | PNG; 2.69 MiB; 1448x1086; no | `AstroPopDeliverySection`; delivery feature artwork | Up to 608px CSS width; 512x384 measured | Lazy |
-| `delivery/astropop-crate-large.png` | PNG; 1.54 MiB; 808x768; yes | `AstroPopDeliveryPlansSection`; plan artwork | 288–368px CSS height, 350x358 measured | Lazy; `width`/`height` attributes supplied |
-| `delivery/astropop-crate-medium.png` | PNG; 1.12 MiB; 655x768; yes | `AstroPopDeliveryPlansSection`; plan artwork | Same plan-art box | Lazy; `width`/`height` attributes supplied |
-| `delivery/astropop-crate-small.png` | PNG; 0.85 MiB; 585x768; yes | `AstroPopDeliveryPlansSection`; plan artwork | Same plan-art box | Lazy; `width`/`height` attributes supplied |
-| `drinks/AstroPop Atomic Cherry Fizz.png` | PNG; 2.80 MiB; 1448x1086; no | `AstroPopFlavorCard`; flavor poster | 478x362 measured in 2-column desktop grid | Lazy, but observed requested on initial view |
-| `drinks/AstroPop Lunar Lime Lift Retro Ad.png` | PNG; 2.77 MiB; 1448x1086; no | `AstroPopFlavorCard`; flavor poster | 478x362 measured | Lazy, but observed requested on initial view |
-| `drinks/Neptune Berry Fizz Space Adventure.png` | PNG; 2.71 MiB; 1448x1086; no | `AstroPopFlavorCard`; flavor poster | 478x362 measured | Lazy, but observed requested on initial view |
-| `drinks/Solar Citrus Spark Retro Poster.png` | PNG; 2.50 MiB; 1448x1086; no | `AstroPopFlavorCard`; flavor poster | 478x362 measured | Lazy, but observed requested on initial view |
-| `hero/AstroPopDeliveryMan.png` | PNG; 2.54 MiB; 1448x1086; no | `pages/astro-pop/index.vue`; primary hero/LCP candidate | 1233x632 measured; width is fluid and height is viewport-capped | Eager/default, requested initially; no priority hint/preload |
-| `logos/AstroPop Pack Your Pop Logo.png` | PNG; 1.92 MiB; 1377x1142; yes | `AstroPopPackYourPopSection`; section logo | Up to 544px wide (about 451px high at intrinsic ratio) | Lazy |
-| `testimonials/AstroPop Soda Housewife Portrait.png` | PNG; 1.60 MiB; 1312x1199; yes | `AstroPopDeliveryTestimonialsSection`; testimonial portrait | 152x152 measured desktop; 90x90 mobile | Lazy |
-| `testimonials/Grandpa’s AstroPop Soda Endorsement.png` | PNG; 2.10 MiB; 1086x1448; yes | `AstroPopDeliveryTestimonialsSection`; testimonial portrait | 152x152 measured desktop; 90x90 mobile | Lazy |
-| `testimonials/Retro AstroPop Golf Advertisement.png` | PNG; 2.15 MiB; 1122x1402; yes | `AstroPopDeliveryTestimonialsSection`; testimonial portrait | 152x152 measured desktop; 90x90 mobile | Lazy |
-| `testimonials/RetroFuturisticSuburbanUtopia.png` | PNG; 2.60 MiB; 1672x941; no | `AstroPopDeliveryTestimonialsSection`; CSS background | `cover` over 1265x1152 section measured | CSS background: eager request, no native lazy control |
-| `testimonials/TheNeighborhoodIsTalkingSign.png` | PNG; 1.44 MiB; 1448x1086; yes | `AstroPopDeliveryTestimonialsSection`; decorative heading sign | 288–496px CSS width; 496x372 measured | Eager/default, off-screen on initial view |
+| Asset                                                  | Format / bytes / pixels / transparency | Component and role                                              | Approx. rendered size                                                                | Current loading                                              |
+| ------------------------------------------------------ | -------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| `accents/AstroPop Soda Co. Delivery Note.png`          | PNG; 2.96 MiB; 1536x1024; yes          | `AstroPopDeliverySection`; decorative note                      | 550px nominal width; 648x648 transformed bounding box measured                       | Eager/default, off-screen on initial view                    |
+| `accents/CouponSavings.png`                            | PNG; 2.34 MiB; 1448x1086; yes          | No application reference found                                  | Not rendered                                                                         | Not requested                                                |
+| `accents/DeliveredFreshStamp.png`                      | PNG; 2.31 MiB; 1254x1254; yes          | No application reference found                                  | Not rendered                                                                         | Not requested                                                |
+| `accents/Vintage AstroPop Soda Bottle Opener.png`      | PNG; 1.65 MiB; 1774x887; yes           | `AstroPopFlavorSection`; decorative opener                      | 550px max nominal width; 615x482 transformed bounding box measured                   | Eager/default, requested initially                           |
+| `accents/Vintage AstroPop Soda Cap.png`                | PNG; 2.14 MiB; 1254x1254; yes          | Page/Flavor/Delivery sections; repeated decoration (6 DOM uses) | 150px nominal width / 184x184 transformed bounds measured; one URL request is cached | Eager/default, requested initially                           |
+| `bottles/AstroPop Atomic Cherry Fizz Bottle.png`       | PNG; 1.81 MiB; 1024x1536; yes          | Bottle selection and populated cart; product artwork            | Selection: 225x192 box; cart: 72x112 mobile, 88x128 desktop                          | Selection lazy; cart default/eager once a cart item exists   |
+| `bottles/AstroPop Lunar Lime Lift Bottle.png`          | PNG; 1.78 MiB; 1024x1536; yes          | Bottle selection and populated cart; product artwork            | Same as Atomic Cherry                                                                | Same as Atomic Cherry                                        |
+| `bottles/AstroPop Neptune Berry Fizz Bottle.png`       | PNG; 1.86 MiB; 1024x1536; yes          | Bottle selection and populated cart; product artwork            | Same as Atomic Cherry                                                                | Same as Atomic Cherry                                        |
+| `bottles/AstroPop Retro Soda Quartet.png`              | PNG; 2.09 MiB; 1536x1024; no           | No application reference found                                  | Not rendered                                                                         | Not requested                                                |
+| `bottles/AstroPop Solar Citrus Spark Bottle.png`       | PNG; 1.72 MiB; 1024x1536; yes          | Bottle selection and populated cart; product artwork            | Same as Atomic Cherry                                                                | Same as Atomic Cherry                                        |
+| `cart/Retro Atomic Shopping Cart.png`                  | PNG; 1.61 MiB; 1314x1197; yes          | No application reference found                                  | Not rendered                                                                         | Not requested                                                |
+| `delivery/AstroPop Delivers_ Retro Soda Adventure.png` | PNG; 2.69 MiB; 1448x1086; no           | `AstroPopDeliverySection`; delivery feature artwork             | Up to 608px CSS width; 512x384 measured                                              | Lazy                                                         |
+| `delivery/astropop-crate-large.png`                    | PNG; 1.54 MiB; 808x768; yes            | `AstroPopDeliveryPlansSection`; plan artwork                    | 288–368px CSS height, 350x358 measured                                               | Lazy; `width`/`height` attributes supplied                   |
+| `delivery/astropop-crate-medium.png`                   | PNG; 1.12 MiB; 655x768; yes            | `AstroPopDeliveryPlansSection`; plan artwork                    | Same plan-art box                                                                    | Lazy; `width`/`height` attributes supplied                   |
+| `delivery/astropop-crate-small.png`                    | PNG; 0.85 MiB; 585x768; yes            | `AstroPopDeliveryPlansSection`; plan artwork                    | Same plan-art box                                                                    | Lazy; `width`/`height` attributes supplied                   |
+| `drinks/AstroPop Atomic Cherry Fizz.png`               | PNG; 2.80 MiB; 1448x1086; no           | `AstroPopFlavorCard`; flavor poster                             | 478x362 measured in 2-column desktop grid                                            | Lazy, but observed requested on initial view                 |
+| `drinks/AstroPop Lunar Lime Lift Retro Ad.png`         | PNG; 2.77 MiB; 1448x1086; no           | `AstroPopFlavorCard`; flavor poster                             | 478x362 measured                                                                     | Lazy, but observed requested on initial view                 |
+| `drinks/Neptune Berry Fizz Space Adventure.png`        | PNG; 2.71 MiB; 1448x1086; no           | `AstroPopFlavorCard`; flavor poster                             | 478x362 measured                                                                     | Lazy, but observed requested on initial view                 |
+| `drinks/Solar Citrus Spark Retro Poster.png`           | PNG; 2.50 MiB; 1448x1086; no           | `AstroPopFlavorCard`; flavor poster                             | 478x362 measured                                                                     | Lazy, but observed requested on initial view                 |
+| `hero/AstroPopDeliveryMan.png`                         | PNG; 2.54 MiB; 1448x1086; no           | `pages/astro-pop/index.vue`; primary hero/LCP candidate         | 1233x632 measured; width is fluid and height is viewport-capped                      | Eager/default, requested initially; no priority hint/preload |
+| `logos/AstroPop Pack Your Pop Logo.png`                | PNG; 1.92 MiB; 1377x1142; yes          | `AstroPopPackYourPopSection`; section logo                      | Up to 544px wide (about 451px high at intrinsic ratio)                               | Lazy                                                         |
+| `testimonials/AstroPop Soda Housewife Portrait.png`    | PNG; 1.60 MiB; 1312x1199; yes          | `AstroPopDeliveryTestimonialsSection`; testimonial portrait     | 152x152 measured desktop; 90x90 mobile                                               | Lazy                                                         |
+| `testimonials/Grandpa’s AstroPop Soda Endorsement.png` | PNG; 2.10 MiB; 1086x1448; yes          | `AstroPopDeliveryTestimonialsSection`; testimonial portrait     | 152x152 measured desktop; 90x90 mobile                                               | Lazy                                                         |
+| `testimonials/Retro AstroPop Golf Advertisement.png`   | PNG; 2.15 MiB; 1122x1402; yes          | `AstroPopDeliveryTestimonialsSection`; testimonial portrait     | 152x152 measured desktop; 90x90 mobile                                               | Lazy                                                         |
+| `testimonials/RetroFuturisticSuburbanUtopia.png`       | PNG; 2.60 MiB; 1672x941; no            | `AstroPopDeliveryTestimonialsSection`; CSS background           | `cover` over 1265x1152 section measured                                              | CSS background: eager request, no native lazy control        |
+| `testimonials/TheNeighborhoodIsTalkingSign.png`        | PNG; 1.44 MiB; 1448x1086; yes          | `AstroPopDeliveryTestimonialsSection`; decorative heading sign  | 288–496px CSS width; 496x372 measured                                                | Eager/default, off-screen on initial view                    |
 
 ## 4. Largest assets and performance concerns
 
 ### Ten largest files
 
-| Rank | Asset | Size |
-| --- | --- | ---: |
-| 1 | `accents/AstroPop Soda Co. Delivery Note.png` | 2.96 MiB |
-| 2 | `drinks/AstroPop Atomic Cherry Fizz.png` | 2.80 MiB |
-| 3 | `drinks/AstroPop Lunar Lime Lift Retro Ad.png` | 2.77 MiB |
-| 4 | `drinks/Neptune Berry Fizz Space Adventure.png` | 2.71 MiB |
-| 5 | `delivery/AstroPop Delivers_ Retro Soda Adventure.png` | 2.69 MiB |
-| 6 | `testimonials/RetroFuturisticSuburbanUtopia.png` | 2.60 MiB |
-| 7 | `hero/AstroPopDeliveryMan.png` | 2.54 MiB |
-| 8 | `drinks/Solar Citrus Spark Retro Poster.png` | 2.50 MiB |
-| 9 | `accents/CouponSavings.png` | 2.34 MiB |
-| 10 | `accents/DeliveredFreshStamp.png` | 2.31 MiB |
+| Rank | Asset                                                  |     Size |
+| ---- | ------------------------------------------------------ | -------: |
+| 1    | `accents/AstroPop Soda Co. Delivery Note.png`          | 2.96 MiB |
+| 2    | `drinks/AstroPop Atomic Cherry Fizz.png`               | 2.80 MiB |
+| 3    | `drinks/AstroPop Lunar Lime Lift Retro Ad.png`         | 2.77 MiB |
+| 4    | `drinks/Neptune Berry Fizz Space Adventure.png`        | 2.71 MiB |
+| 5    | `delivery/AstroPop Delivers_ Retro Soda Adventure.png` | 2.69 MiB |
+| 6    | `testimonials/RetroFuturisticSuburbanUtopia.png`       | 2.60 MiB |
+| 7    | `hero/AstroPopDeliveryMan.png`                         | 2.54 MiB |
+| 8    | `drinks/Solar Citrus Spark Retro Poster.png`           | 2.50 MiB |
+| 9    | `accents/CouponSavings.png`                            | 2.34 MiB |
+| 10   | `accents/DeliveredFreshStamp.png`                      | 2.31 MiB |
 
 The four flavor posters are the largest interactive content group: **10.78 MiB** combined. They render at about 478x362 in the measured desktop layout versus 1448x1086 sources, and all four entered the initial browser resource set despite lazy markup. The biggest immediate inefficiency, however, is eager decoration: the 2.96 MiB delivery note, 2.14 MiB cap, 1.65 MiB opener, 1.44 MiB testimonial sign, and 2.60 MiB testimonial background are not needed to paint the hero.
 
@@ -93,11 +93,11 @@ This is an actual browser observation of which resources were fetched, not a sim
 
 ## 6. PNG vs. WebP vs. AVIF
 
-| Format | Best use here | Trade-offs | Audit conclusion |
-| --- | --- | --- | --- |
-| PNG | Masters, pixel-critical UI art, or a compatibility fallback | Large for photographic/painted art; all current production assets use it | Preserve as master; retain selectively as fallback rather than serving every master by default |
-| WebP | Default production derivative for hero, posters, backgrounds, portraits, and alpha artwork | Needs visual QA for retro texture/text edges; broad browser support | First modern production target; supports transparency for decorative/bottle assets |
-| AVIF | Optional additional source for large opaque artwork and possibly alpha artwork | Slower encode/decode trade-off; visual QA and browser fallback required | Evaluate after WebP proof of concept; use `<picture>` with WebP/PNG fallback only when measurements prove worthwhile |
+| Format | Best use here                                                                              | Trade-offs                                                               | Audit conclusion                                                                                                     |
+| ------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| PNG    | Masters, pixel-critical UI art, or a compatibility fallback                                | Large for photographic/painted art; all current production assets use it | Preserve as master; retain selectively as fallback rather than serving every master by default                       |
+| WebP   | Default production derivative for hero, posters, backgrounds, portraits, and alpha artwork | Needs visual QA for retro texture/text edges; broad browser support      | First modern production target; supports transparency for decorative/bottle assets                                   |
+| AVIF   | Optional additional source for large opaque artwork and possibly alpha artwork             | Slower encode/decode trade-off; visual QA and browser fallback required  | Evaluate after WebP proof of concept; use `<picture>` with WebP/PNG fallback only when measurements prove worthwhile |
 
 Sharp can write WebP and AVIF output and reports output bytes/dimensions, which makes it appropriate for a controlled experiment. Its output docs also state that metadata is removed by default, so a future script must deliberately preserve any metadata that is relevant to artwork provenance. See the [Sharp output API](https://sharp.pixelplumbing.com/api-output/).
 

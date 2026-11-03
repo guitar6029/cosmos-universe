@@ -17,10 +17,13 @@ describe("Global mini-app availability middleware", () => {
   beforeAll(async () => {
     guard = (await import("../app/middleware/app-availability.global")).default as typeof guard;
   });
-  beforeEach(() => { vi.clearAllMocks(); });
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it.each(["/", "/about", "/admin", "/passport-office", "/coming-soon"])(
-    "does not query Neon for a system route: %s", async (url) => {
+    "does not query Neon for a system route: %s",
+    async (url) => {
       await expect(guard(path(url))).resolves.toBeUndefined();
       expect(mocks.request).not.toHaveBeenCalled();
     },
@@ -59,7 +62,8 @@ describe("Global mini-app availability middleware", () => {
   });
 
   it.each(["/astro-pop", "/astro-pop/cart", "/cosmoport-voyage"])(
-    "ignores retired top-level application routes: %s", async (url) => {
+    "ignores retired top-level application routes: %s",
+    async (url) => {
       await expect(guard(path(url))).resolves.toBeUndefined();
       expect(mocks.request).not.toHaveBeenCalled();
       expect(mocks.redirect).not.toHaveBeenCalled();

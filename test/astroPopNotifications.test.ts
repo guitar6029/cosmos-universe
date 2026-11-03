@@ -25,8 +25,11 @@ afterEach(() => {
 
 describe("AstroPop notifications", () => {
   it("renders each notification asset and stacks multiple notifications", async () => {
-    const { useAstroPopNotifications } = await import("../app/composables/astro-pop/useAstroPopNotifications");
-    const AstroPopNotificationContainer = (await import("../app/components/astro-pop/AstroPopNotificationContainer.vue")).default;
+    const { useAstroPopNotifications } =
+      await import("../app/composables/astro-pop/useAstroPopNotifications");
+    const AstroPopNotificationContainer = (
+      await import("../app/components/astro-pop/AstroPopNotificationContainer.vue")
+    ).default;
     const notifications = useAstroPopNotifications();
     const container = document.createElement("div");
     const app = createApp(AstroPopNotificationContainer);
@@ -51,7 +54,8 @@ describe("AstroPop notifications", () => {
   });
 
   it("auto-dismisses each notification independently and clears dismissed timers", async () => {
-    const { useAstroPopNotifications } = await import("../app/composables/astro-pop/useAstroPopNotifications");
+    const { useAstroPopNotifications } =
+      await import("../app/composables/astro-pop/useAstroPopNotifications");
     const notifications = useAstroPopNotifications();
     const successId = notifications.show({
       type: "success",
@@ -84,7 +88,8 @@ describe("AstroPop notifications", () => {
   });
 
   it("pauses on pointer interaction and resumes only the remaining time", async () => {
-    const { useAstroPopNotifications } = await import("../app/composables/astro-pop/useAstroPopNotifications");
+    const { useAstroPopNotifications } =
+      await import("../app/composables/astro-pop/useAstroPopNotifications");
     const notifications = useAstroPopNotifications();
 
     const id = notifications.show({
@@ -112,7 +117,8 @@ describe("AstroPop notifications", () => {
   });
 
   it("does not reset time across repeated pointer interactions", async () => {
-    const { useAstroPopNotifications } = await import("../app/composables/astro-pop/useAstroPopNotifications");
+    const { useAstroPopNotifications } =
+      await import("../app/composables/astro-pop/useAstroPopNotifications");
     const notifications = useAstroPopNotifications();
 
     const id = notifications.show({
@@ -140,7 +146,8 @@ describe("AstroPop notifications", () => {
   });
 
   it("keeps the timer paused until both pointer and focus interactions end", async () => {
-    const { useAstroPopNotifications } = await import("../app/composables/astro-pop/useAstroPopNotifications");
+    const { useAstroPopNotifications } =
+      await import("../app/composables/astro-pop/useAstroPopNotifications");
     const notifications = useAstroPopNotifications();
     const id = notifications.show({ type: "error", message: "An error message", duration: 1000 });
 
@@ -163,10 +170,19 @@ describe("AstroPop notifications", () => {
   });
 
   it("cleans up paused notifications when manually dismissed and keeps non-expiring notifications", async () => {
-    const { useAstroPopNotifications } = await import("../app/composables/astro-pop/useAstroPopNotifications");
+    const { useAstroPopNotifications } =
+      await import("../app/composables/astro-pop/useAstroPopNotifications");
     const notifications = useAstroPopNotifications();
-    const pausedId = notifications.show({ type: "success", message: "A success message", duration: 1000 });
-    const permanentId = notifications.show({ type: "info", message: "An info message", duration: 0 });
+    const pausedId = notifications.show({
+      type: "success",
+      message: "A success message",
+      duration: 1000,
+    });
+    const permanentId = notifications.show({
+      type: "info",
+      message: "An info message",
+      duration: 0,
+    });
 
     if (pausedId === undefined || permanentId === undefined) {
       throw new Error("Expected notifications to be created");
@@ -185,8 +201,11 @@ describe("AstroPop notifications", () => {
   });
 
   it("uses custom titles and renders long messages in a focusable scroll area", async () => {
-    const { useAstroPopNotifications } = await import("../app/composables/astro-pop/useAstroPopNotifications");
-    const AstroPopNotificationContainer = (await import("../app/components/astro-pop/AstroPopNotificationContainer.vue")).default;
+    const { useAstroPopNotifications } =
+      await import("../app/composables/astro-pop/useAstroPopNotifications");
+    const AstroPopNotificationContainer = (
+      await import("../app/components/astro-pop/AstroPopNotificationContainer.vue")
+    ).default;
     const notifications = useAstroPopNotifications();
     const container = document.createElement("div");
     const app = createApp(AstroPopNotificationContainer);
@@ -217,7 +236,8 @@ describe("AstroPop notifications", () => {
   });
 
   it("does not create a notification for an empty message", async () => {
-    const { useAstroPopNotifications } = await import("../app/composables/astro-pop/useAstroPopNotifications");
+    const { useAstroPopNotifications } =
+      await import("../app/composables/astro-pop/useAstroPopNotifications");
     const notifications = useAstroPopNotifications();
 
     const id = notifications.show({ type: "info", message: "   " });

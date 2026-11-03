@@ -21,21 +21,29 @@ const errorStatus = computed(() => {
   return fetchError?.statusCode ?? fetchError?.response?.status;
 });
 
-const formattedDate = computed(() => order.value && new Intl.DateTimeFormat("en-US", {
-  dateStyle: "long",
-}).format(new Date(order.value.createdAt)));
+const formattedDate = computed(
+  () =>
+    order.value &&
+    new Intl.DateTimeFormat("en-US", {
+      dateStyle: "long",
+    }).format(new Date(order.value.createdAt)),
+);
 
-const formatCurrency = (amountCents: number) => new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: order.value?.currency.toUpperCase() ?? "USD",
-}).format(amountCents / 100);
+const formatCurrency = (amountCents: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: order.value?.currency.toUpperCase() ?? "USD",
+  }).format(amountCents / 100);
 
 const formatStatus = (status: string) => status.replaceAll("_", " ").toLowerCase();
 
-const itemImages = computed(() => order.value?.items.map((item) => ({
-  ...item,
-  image: ASTROPOP_FLAVORS.find((flavor) => flavor.id === item.flavorId)?.bottleImage,
-})) ?? []);
+const itemImages = computed(
+  () =>
+    order.value?.items.map((item) => ({
+      ...item,
+      image: ASTROPOP_FLAVORS.find((flavor) => flavor.id === item.flavorId)?.bottleImage,
+    })) ?? [],
+);
 </script>
 
 <template>
@@ -96,7 +104,9 @@ const itemImages = computed(() => order.value?.items.map((item) => ({
               <div class="order-detail__artwork">
                 <img v-if="item.image" :src="item.image" :alt="item.flavorName" />
                 <span v-else aria-hidden="true">✦</span>
-                <span class="order-detail__quantity" :aria-label="`Quantity ${item.quantity}`">×{{ item.quantity }}</span>
+                <span class="order-detail__quantity" :aria-label="`Quantity ${item.quantity}`"
+                  >×{{ item.quantity }}</span
+                >
               </div>
               <div class="order-detail__item-copy">
                 <strong>{{ item.flavorName }}</strong>

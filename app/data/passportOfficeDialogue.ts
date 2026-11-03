@@ -34,4 +34,5 @@ export const PASSPORT_OFFICE_DIALOGUE: Record<"opening" | PassportOfficeChoice, 
 };
 
 export const openingDialogueStep = (): "opening" => "opening";
-export const dialogueFor = (step: "opening" | PassportOfficeChoice): DialogueScreen => PASSPORT_OFFICE_DIALOGUE[step];
+export const dialogueFor = (step: "opening" | PassportOfficeChoice): DialogueScreen =>
+  PASSPORT_OFFICE_DIALOGUE[step];

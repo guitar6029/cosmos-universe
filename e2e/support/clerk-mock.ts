@@ -6,7 +6,8 @@ import type { SignInResource, SignUpResource } from "@clerk/nuxt/types";
 // module and development instance in playwright.clerk.config.ts.
 const isLoaded = ref(true);
 const isSignedIn = ref(
-  typeof window !== "undefined" && window.localStorage.getItem("playwright-clerk-authenticated") === "true",
+  typeof window !== "undefined" &&
+    window.localStorage.getItem("playwright-clerk-authenticated") === "true",
 );
 const user = ref(isSignedIn.value ? {} : null);
 const signOut = ref(async () => undefined);

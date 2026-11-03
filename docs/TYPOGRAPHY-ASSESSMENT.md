@@ -8,12 +8,12 @@ This review covers the homepage hero and the shared `DestinationSection` used by
 
 Fonts are loaded through `@nuxt/fonts` in [`nuxt.config.ts`](../nuxt.config.ts):
 
-| Font | Current use | Declared weights |
-| --- | --- | --- |
-| Fontdiner Swanky | Hero title and destination names | `400` in component styles |
-| Cherry Cream Soda | Hero supporting title, destination taglines, guide headings, and card titles | `400` |
-| Georgia / Times New Roman | Fallback for display headings | Browser fallback only |
-| `system-ui` | Body copy, labels, controls, metadata, and fallback | `400`, with some `800` labels |
+| Font                      | Current use                                                                  | Declared weights              |
+| ------------------------- | ---------------------------------------------------------------------------- | ----------------------------- |
+| Fontdiner Swanky          | Hero title and destination names                                             | `400` in component styles     |
+| Cherry Cream Soda         | Hero supporting title, destination taglines, guide headings, and card titles | `400`                         |
+| Georgia / Times New Roman | Fallback for display headings                                                | Browser fallback only         |
+| `system-ui`               | Body copy, labels, controls, metadata, and fallback                          | `400`, with some `800` labels |
 
 No explicit font weights or subsets are configured in Nuxt. The display fonts are used at regular weight; bold label weights belong to the system-font portions of the UI.
 

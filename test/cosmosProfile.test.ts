@@ -38,9 +38,7 @@ describe("createCosmosProfile", () => {
     await createCosmosProfile("user_parameterized", "alien", "postgresql://test.example/cosmos");
 
     expect(sql).toHaveBeenCalledOnce();
-    expect(sql.mock.calls[0]?.[0].raw.join(" ")).toContain(
-      "ON CONFLICT (user_id) DO NOTHING",
-    );
+    expect(sql.mock.calls[0]?.[0].raw.join(" ")).toContain("ON CONFLICT (user_id) DO NOTHING");
     expect(sql.mock.calls[0]?.slice(1)).toEqual(["user_parameterized", "alien"]);
   });
 

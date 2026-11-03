@@ -46,21 +46,28 @@ onMounted(() => {
             <p class="astropop-hero__tagline">Bringing Tomorrow to Your Doorstep!</p>
           </div>
           <h1 v-else id="astropop-title" class="sr-only">AstroPop Soda Co.</h1>
-          <img v-if="!heroFailed" ref="heroImage" class="astropop-hero__image"
+          <img
+            v-if="!heroFailed"
+            ref="heroImage"
+            class="astropop-hero__image"
             :class="{ 'astropop-hero__image--loaded': heroLoaded }"
             :src="ASTRO_POP_MEDIA.hero"
             alt="Vintage AstroPop Soda Co. advertisement featuring a smiling soda delivery man and a flying delivery rocket"
             fetchpriority="high"
             decoding="async"
             @load="heroLoaded = true"
-            @error="heroFailed = true" />
+            @error="heroFailed = true"
+          />
         </div>
       </section>
 
       <div class="astropop-flavor-pack-transition">
         <AstroPopFlavorSection class="astropop-flavor-pack-transition__section" />
         <div class="astropop-flavor-pack-transition__artwork" aria-hidden="true">
-          <DecorativeImage class="astropop-flavor-pack-transition__cap" :src="ASTRO_POP_MEDIA.sodaCap" />
+          <DecorativeImage
+            class="astropop-flavor-pack-transition__cap"
+            :src="ASTRO_POP_MEDIA.sodaCap"
+          />
         </div>
         <AstroPopPackYourPopSection class="astropop-flavor-pack-transition__section" />
       </div>
@@ -130,8 +137,7 @@ onMounted(() => {
   overflow: hidden;
   padding: 4.5rem 1rem 1rem;
   background:
-    radial-gradient(circle at 50% 35%, rgba(255, 249, 225, 0.7), transparent 48%),
-    #e8d3ad;
+    radial-gradient(circle at 50% 35%, rgba(255, 249, 225, 0.7), transparent 48%), #e8d3ad;
 }
 
 .astropop-hero__visual {
@@ -151,7 +157,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(.75rem, 2vw, 1.5rem);
+  gap: clamp(0.75rem, 2vw, 1.5rem);
   width: 100%;
   min-height: min(60vh, 36rem);
   padding: clamp(2rem, 5vw, 4rem) 1rem;
@@ -163,7 +169,7 @@ onMounted(() => {
   margin: 0;
   color: #a83f2e;
   font-weight: 800;
-  letter-spacing: .14em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -173,13 +179,13 @@ onMounted(() => {
   font-family: var(--astropop-display-font), Georgia, serif;
   font-size: clamp(3.5rem, 11vw, 9rem);
   font-weight: 900;
-  line-height: .95;
+  line-height: 0.95;
   text-wrap: balance;
 }
 
 .astropop-hero__fallback h1 span {
   display: block;
-  font-size: .5em;
+  font-size: 0.5em;
 }
 
 .astropop-hero__tagline {

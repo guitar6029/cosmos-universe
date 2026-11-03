@@ -2,7 +2,6 @@
   max-width: min(550px, 75vw);
 }
 
-
 .astropop-delivery-section {
   position: relative;
   z-index: 1;
@@ -16,8 +15,7 @@
   border-radius: 1.5rem 0.5rem 1.5rem 0.5rem;
   padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem);
   background:
-    radial-gradient(circle at 82% 18%, rgba(255, 249, 225, 0.8), transparent 35%),
-    #fff0d2;
+    radial-gradient(circle at 82% 18%, rgba(255, 249, 225, 0.8), transparent 35%), #fff0d2;
   color: #3a2c35;
 }
 

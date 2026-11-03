@@ -10,9 +10,9 @@ CosmoPort Voyage can be more than an isolated fictional space-tourism website. I
 
 Humanity has settled distant worlds. Families vacation by rocketliner. Atomic-powered cars and domestic robots are everyday conveniences. Radio stations broadcast across colonies, and every corporation is eager to sell the next miracle product.
 
-The universe should feel much larger than any one application. A visitor may encounter a cereal advertisement, a robotic hotel concierge, or a particular automobile model in a CosmoPort illustration. Those details establish recurring companies and lore. Any of those companies *could* someday become the subject of its own small application.
+The universe should feel much larger than any one application. A visitor may encounter a cereal advertisement, a robotic hotel concierge, or a particular automobile model in a CosmoPort illustration. Those details establish recurring companies and lore. Any of those companies _could_ someday become the subject of its own small application.
 
-**Creative north star:** *The future is fantastic — and the advertisements insist it is even better.*
+**Creative north star:** _The future is fantastic — and the advertisements insist it is even better._
 
 ## Tone and visual identity
 
@@ -51,15 +51,15 @@ See [CosmoPort Visual Style Guide](./COSMOPORT-VISUAL-STYLE-GUIDE.md) for image-
 
 ## Setting foundations — working concepts
 
-| Element | Current idea | Status |
-| --- | --- | --- |
-| Shared setting | **The Radiant Age** | Working universe title |
-| Era | An alternate, spacefaring future imagined through 1950s optimism | Direction |
-| Space travel | Commercially ordinary: rocketliners, spaceports, interplanetary tourism | Direction |
-| Technology | Atomic propulsion, domestic robots, exotic vehicles, orbital infrastructure | Direction |
-| Commercial culture | Brands, endorsements, jingles, slogans, consumer gadgets, corporate rivalries | Central motif |
-| First featured planet | **Velora-7** | Working name |
-| First featured travel regions | **Aurora City**, **Pearlwater Coast**, **Saffron Expanse** | Working names |
+| Element                       | Current idea                                                                  | Status                 |
+| ----------------------------- | ----------------------------------------------------------------------------- | ---------------------- |
+| Shared setting                | **The Radiant Age**                                                           | Working universe title |
+| Era                           | An alternate, spacefaring future imagined through 1950s optimism              | Direction              |
+| Space travel                  | Commercially ordinary: rocketliners, spaceports, interplanetary tourism       | Direction              |
+| Technology                    | Atomic propulsion, domestic robots, exotic vehicles, orbital infrastructure   | Direction              |
+| Commercial culture            | Brands, endorsements, jingles, slogans, consumer gadgets, corporate rivalries | Central motif          |
+| First featured planet         | **Velora-7**                                                                  | Working name           |
+| First featured travel regions | **Aurora City**, **Pearlwater Coast**, **Saffron Expanse**                    | Working names          |
 
 We do **not** need a complete timeline, a map of the galaxy, hundreds of settlements, or scientific explanations for every device. Consistency matters more than encyclopedic detail.
 
@@ -67,13 +67,13 @@ We do **not** need a complete timeline, a map of the galaxy, hundreds of settlem
 
 These companies are early lore seeds and possible future app concepts, not an implementation backlog.
 
-| Company | In-universe role | Working slogan / personality | Potential standalone experience |
-| --- | --- | --- | --- |
-| **CosmoPort Voyage** | Interplanetary travel agency and the entry point into the setting | *Your World Away!* Cheerful, aspirational, polished | Destination browser, vacation finder, shareable itinerary and printable travel dossier |
-| **Atomic Cluster Cereal** | Mass-market atomic breakfast cereal | *You'll go bunkers for every bite!* Mascots, collectible rocket toys, improbable nutritional promises | Playful product marketing microsite, interactive cereal box, collector experience |
-| **Mike & Mike's RoboFactory** | Domestic and industrial robot manufacturer | *Two Mikes. A Million Possibilities!* Two founders with competing ideas about robots | Build-a-Robot configurator, lightweight factory-management simulator |
-| **Starline Motors** | Atomic-powered cars, cruisers, and futuristic family transportation | *Tomorrow Drives Today!* Glossy styling and exceedingly confident safety advertising | Retro automobile catalog or vehicle configurator |
-| **Galaxy Wave Broadcasting** | Interplanetary news, entertainment, radio, and advertising network | *The Voice of a Thousand Worlds!* Jingles, broadcasts, personality-driven presenters | In-universe radio player, curated programs and commercials |
+| Company                       | In-universe role                                                    | Working slogan / personality                                                                          | Potential standalone experience                                                        |
+| ----------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| **CosmoPort Voyage**          | Interplanetary travel agency and the entry point into the setting   | _Your World Away!_ Cheerful, aspirational, polished                                                   | Destination browser, vacation finder, shareable itinerary and printable travel dossier |
+| **Atomic Cluster Cereal**     | Mass-market atomic breakfast cereal                                 | _You'll go bunkers for every bite!_ Mascots, collectible rocket toys, improbable nutritional promises | Playful product marketing microsite, interactive cereal box, collector experience      |
+| **Mike & Mike's RoboFactory** | Domestic and industrial robot manufacturer                          | _Two Mikes. A Million Possibilities!_ Two founders with competing ideas about robots                  | Build-a-Robot configurator, lightweight factory-management simulator                   |
+| **Starline Motors**           | Atomic-powered cars, cruisers, and futuristic family transportation | _Tomorrow Drives Today!_ Glossy styling and exceedingly confident safety advertising                  | Retro automobile catalog or vehicle configurator                                       |
+| **Galaxy Wave Broadcasting**  | Interplanetary news, entertainment, radio, and advertising network  | _The Voice of a Thousand Worlds!_ Jingles, broadcasts, personality-driven presenters                  | In-universe radio player, curated programs and commercials                             |
 
 Additional companies may arise naturally from illustrations, destinations, stories, or product references. Resist building a large company taxonomy before it becomes useful.
 
@@ -89,7 +89,7 @@ These are storytelling prompts, not facts the application must simulate.
 
 ## How the universe feels connected
 
-Crossovers should be visible and optional. They begin as *set dressing*, not technical integrations.
+Crossovers should be visible and optional. They begin as _set dressing_, not technical integrations.
 
 **Example: A CosmoPort visit to Aurora City**
 
@@ -115,13 +115,13 @@ Crossovers can also appear in:
 
 Each brand may provide a different, self-contained project and a different engineering challenge.
 
-| Experience | Main interaction | Possible skills to explore |
-| --- | --- | --- |
-| CosmoPort Voyage | Choose a holiday and receive a travel itinerary | Nuxt, Sanity, SEO, recommendations, testing |
-| Atomic Cluster Cereal | Explore a brand and its collectible packaging | Motion design, playful UI, storytelling |
-| Mike & Mike's RoboFactory | Configure robots or manage a small production line | State modeling, simulation, interactive dashboards |
-| Starline Motors | Configure an Atomic Cruiser | Reactive UI, product customization, possibly 3D later |
-| Galaxy Wave Broadcasting | Tune a fictional interplanetary radio | Audio UX, curated media, time-based interactions |
+| Experience                | Main interaction                                   | Possible skills to explore                            |
+| ------------------------- | -------------------------------------------------- | ----------------------------------------------------- |
+| CosmoPort Voyage          | Choose a holiday and receive a travel itinerary    | Nuxt, Sanity, SEO, recommendations, testing           |
+| Atomic Cluster Cereal     | Explore a brand and its collectible packaging      | Motion design, playful UI, storytelling               |
+| Mike & Mike's RoboFactory | Configure robots or manage a small production line | State modeling, simulation, interactive dashboards    |
+| Starline Motors           | Configure an Atomic Cruiser                        | Reactive UI, product customization, possibly 3D later |
+| Galaxy Wave Broadcasting  | Tune a fictional interplanetary radio              | Audio UX, curated media, time-based interactions      |
 
 If spin-offs materialize, they can be separate repositories and independently deployed websites. Sharing lore does **not** imply shared authentication, databases, APIs, microservices, or deployment infrastructure. A common design system could be extracted only when there is demonstrated reuse.
 
@@ -133,20 +133,20 @@ This makes the universe a coherent collection of projects rather than one enormo
 
 ### The visitor promise
 
-CosmoPort can eventually be one attraction in a wider, curated retrofuturistic universe: fictional businesses that visitors can actually *play with*. Fun, humor, nostalgia, discovery, and memorable interactions are valid outcomes. Some experiences may teach real integration or engineering skills; none needs enterprise complexity merely to justify its existence.
+CosmoPort can eventually be one attraction in a wider, curated retrofuturistic universe: fictional businesses that visitors can actually _play with_. Fun, humor, nostalgia, discovery, and memorable interactions are valid outcomes. Some experiences may teach real integration or engineering skills; none needs enterprise complexity merely to justify its existence.
 
 A visitor might plan an imaginary vacation, tune a radio, configure a robot, explore a diner, or order an absurdly cheerful soda delivery. Each experience should offer at least one satisfying interaction or takeaway, not just more images and text.
 
 ### Candidate attractions and technical experiments
 
-| Working experience | Small, entertaining interaction | Distinct visual approach | Optional skills to explore |
-| --- | --- | --- | --- |
-| **AstroPop Soda Co.** | Choose flavors and a daily, weekly, every-two-weeks, or monthly visit from a fictional soda delivery person; receive a period-style order slip. | Pencil-and-ink characters, halftone print, soda packaging, cheerful 1950s advertisements. | Reactive forms, plan selection, validation; optionally payment-provider **test mode** and subscription webhooks in a later, explicitly approved task. |
-| **Atomic Diner** | Wander one small retro diner, talk to a few characters, order food, and play a jukebox. | Pixel art or a deliberately stylized 2D game world with warm neon and Googie interiors. | Canvas or a small game framework, dialogue trees, game state, lightweight audio. No multiplayer needed. |
-| **Tomorrow's Gazette** | Read fictional news, sign up for an imaginary newspaper route, and assign or rearrange a handful of delivery stops. | Newsprint, monochrome photography, editorial columns, hand-inked cartoons. | Client-side route state first; optionally a tiny CRUD API or persistence if a clear interaction requires it. |
-| **Mike & Mike's RoboFactory** | Mix robot bodies, heads, tools, colors, and dubious household upgrades; generate an absurd product specification or order form. | Retro product catalog, exploded technical diagrams, polished showroom illustrations. | Configurator state, conditional options, optional on-demand Three.js preview; a playful small-scale storefront parody. |
-| **Tomorrow Homes Realty** | Browse fictional properties, filter homes, inspect floor plans, and take an exaggerated sales tour with domestic robots. | Mid-century real-estate brochures, staged family photography, optimistic suburban ads. | Search/filter UI, floor-plan interactions, optional 3D tours or mock inquiry forms. |
-| **CosmoPort / Galaxy Wave Radio** | Tune in to laid-back Space Age lounge music, adjust volume, and encounter station IDs or fictional commercials. | Bakelite knobs, glowing radio dials, analog broadcast graphics. | HTML audio, playback state, user-initiated sound and accessible controls; no autoplay with sound. |
+| Working experience                | Small, entertaining interaction                                                                                                                 | Distinct visual approach                                                                  | Optional skills to explore                                                                                                                            |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AstroPop Soda Co.**             | Choose flavors and a daily, weekly, every-two-weeks, or monthly visit from a fictional soda delivery person; receive a period-style order slip. | Pencil-and-ink characters, halftone print, soda packaging, cheerful 1950s advertisements. | Reactive forms, plan selection, validation; optionally payment-provider **test mode** and subscription webhooks in a later, explicitly approved task. |
+| **Atomic Diner**                  | Wander one small retro diner, talk to a few characters, order food, and play a jukebox.                                                         | Pixel art or a deliberately stylized 2D game world with warm neon and Googie interiors.   | Canvas or a small game framework, dialogue trees, game state, lightweight audio. No multiplayer needed.                                               |
+| **Tomorrow's Gazette**            | Read fictional news, sign up for an imaginary newspaper route, and assign or rearrange a handful of delivery stops.                             | Newsprint, monochrome photography, editorial columns, hand-inked cartoons.                | Client-side route state first; optionally a tiny CRUD API or persistence if a clear interaction requires it.                                          |
+| **Mike & Mike's RoboFactory**     | Mix robot bodies, heads, tools, colors, and dubious household upgrades; generate an absurd product specification or order form.                 | Retro product catalog, exploded technical diagrams, polished showroom illustrations.      | Configurator state, conditional options, optional on-demand Three.js preview; a playful small-scale storefront parody.                                |
+| **Tomorrow Homes Realty**         | Browse fictional properties, filter homes, inspect floor plans, and take an exaggerated sales tour with domestic robots.                        | Mid-century real-estate brochures, staged family photography, optimistic suburban ads.    | Search/filter UI, floor-plan interactions, optional 3D tours or mock inquiry forms.                                                                   |
+| **CosmoPort / Galaxy Wave Radio** | Tune in to laid-back Space Age lounge music, adjust volume, and encounter station IDs or fictional commercials.                                 | Bakelite knobs, glowing radio dials, analog broadcast graphics.                           | HTML audio, playback state, user-initiated sound and accessible controls; no autoplay with sound.                                                     |
 
 These are **working names and experiments**. The original seeds—Atomic Cluster Cereal, Starline Motors, Galaxy Wave Broadcasting, and other companies—remain possible future attractions. Naming an idea here neither changes the approved brand direction nor starts implementation.
 
@@ -184,7 +184,7 @@ Independent visual identity does not require independent infrastructure. Convers
 
 Complete the existing CosmoPort destination experience and its lightweight vacation-finder / itinerary / souvenir boarding-pass loop first. Radio or an illustrative AstroPop micro-experience may be natural next experiments after that, but this page is deliberately **not** a sprint plan.
 
-Choose future work by three questions: *Would a visitor enjoy interacting with it? Can we finish a satisfying small version? Is the technology justified by the experience or learning goal?* If not, leave the idea here for later.
+Choose future work by three questions: _Would a visitor enjoy interacting with it? Can we finish a satisfying small version? Is the technology justified by the experience or learning goal?_ If not, leave the idea here for later.
 
 ## CosmoPort remains the first finished product
 

@@ -2,7 +2,9 @@ import { createSSRApp } from "vue";
 import { renderToString } from "vue/server-renderer";
 import { describe, expect, it } from "vitest";
 import { ABOUT_MEDIA, ABOUT_MEDIA_BASE_URL } from "../app/data/aboutMedia";
-import UniverseMultiverseCollage, { MULTIVERSE_ARTWORK } from "../app/components/universe/UniverseMultiverseCollage.vue";
+import UniverseMultiverseCollage, {
+  MULTIVERSE_ARTWORK,
+} from "../app/components/universe/UniverseMultiverseCollage.vue";
 
 describe("Cosmo Universe multiverse collage", () => {
   it("maps precisely six reviewed About CDN images", () => {

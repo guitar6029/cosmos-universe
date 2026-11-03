@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { AVATAR_IDS, AVATARS_MEDIA, AVATARS_MEDIA_BASE_URL, avatarUrl, isAvatarId } from "../app/data/avatarsMedia";
+import {
+  AVATAR_IDS,
+  AVATARS_MEDIA,
+  AVATARS_MEDIA_BASE_URL,
+  avatarUrl,
+  isAvatarId,
+} from "../app/data/avatarsMedia";
 
 describe("Cosmos Passport preset avatars", () => {
   it("provides exactly four stable preset IDs and matching CDN image URLs", () => {
@@ -19,7 +25,15 @@ describe("Cosmos Passport preset avatars", () => {
       expect(isAvatarId(id)).toBe(true);
       expect(avatarUrl(id)).toBe(AVATARS_MEDIA[id]);
     }
-    for (const value of [null, undefined, "", "custom", "../secret.png", "https://other.example/avatar.png", 42]) {
+    for (const value of [
+      null,
+      undefined,
+      "",
+      "custom",
+      "../secret.png",
+      "https://other.example/avatar.png",
+      42,
+    ]) {
       expect(isAvatarId(value)).toBe(false);
       expect(avatarUrl(value)).toBeNull();
     }

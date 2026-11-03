@@ -14,7 +14,9 @@ describe("AstroPop flavor lineup", () => {
       expect(flavor.theme).toBeTruthy();
       expect(flavor.artwork.label).toBeTruthy();
       expect(flavor.artwork.pose).toBeTruthy();
-      expect(flavor.artwork.src).toMatch(new RegExp(`^${ASTRO_POP_MEDIA_BASE_URL}/drinks/.+\\.png$`));
+      expect(flavor.artwork.src).toMatch(
+        new RegExp(`^${ASTRO_POP_MEDIA_BASE_URL}/drinks/.+\\.png$`),
+      );
       expect(flavor.artwork.alt).toContain(flavor.name);
     }
   });

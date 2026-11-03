@@ -48,9 +48,18 @@ export const ASTRO_POP_MEDIA = {
     neighborhood: cdnMedia("our_story/astro-pop-neighborhood-block-party.png"),
   },
   testimonials: {
-    dorothy: { portrait: cdnMedia("testimonials/dorothy-miller.jpg"), video: cdnMedia("testimonials/dorothy-miller.mp4") },
-    walter: { portrait: cdnMedia("testimonials/walter-peterson.jpg"), video: cdnMedia("testimonials/walter-peterson.mp4") },
-    grandpaHenry: { portrait: cdnMedia("testimonials/grandpa-henry.jpg"), video: cdnMedia("testimonials/grandpa-henry.mp4") },
+    dorothy: {
+      portrait: cdnMedia("testimonials/dorothy-miller.jpg"),
+      video: cdnMedia("testimonials/dorothy-miller.mp4"),
+    },
+    walter: {
+      portrait: cdnMedia("testimonials/walter-peterson.jpg"),
+      video: cdnMedia("testimonials/walter-peterson.mp4"),
+    },
+    grandpaHenry: {
+      portrait: cdnMedia("testimonials/grandpa-henry.jpg"),
+      video: cdnMedia("testimonials/grandpa-henry.mp4"),
+    },
     sign: cdnMedia("testimonials/the-neighborhood-is-talking-retro-sign.png"),
     backdrop: cdnMedia("testimonials/retro-futuristic-suburban-utopia.png"),
   },

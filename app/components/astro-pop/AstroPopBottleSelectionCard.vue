@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
         type="button"
         :disabled="props.disabled"
         :class="{ 'bottle-selection-card__button--added': isShowingSuccess }"
-        @click="emit('add', flavor.id )"
+        @click="emit('add', flavor.id)"
       >
         <span v-if="isShowingSuccess" aria-hidden="true">✓ ADDED!</span>
         <span v-else>Add Bottle</span>

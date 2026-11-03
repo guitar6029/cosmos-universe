@@ -18,12 +18,9 @@ import SaffronExpanseSection from "../../../components/cosmoport-voyage/SaffronE
         <div class="hero-heading flex flex-col gap-1">
           <p class="hero-kicker">CosmoPort Voyage presents</p>
           <div class="flex flex-col gap-2 max-w-2xl">
-            <h1 id="hero-title" class="hero-title">
-              Tired of the Same Old World?
-            </h1>
+            <h1 id="hero-title" class="hero-title">Tired of the Same Old World?</h1>
             <span id="hero-supporting-title">Take a Vacation on Another!</span>
           </div>
-
         </div>
         <div class="hero-description-panel">
           <img
@@ -33,8 +30,8 @@ import SaffronExpanseSection from "../../../components/cosmoport-voyage/SaffronE
             aria-hidden="true"
           />
           <p class="hero-description">
-            Discover extraordinary destinations, spectacular cities, and unforgettable
-            adventures. Your next vacation is just a rocket ride away.
+            Discover extraordinary destinations, spectacular cities, and unforgettable adventures.
+            Your next vacation is just a rocket ride away.
           </p>
         </div>
       </section>

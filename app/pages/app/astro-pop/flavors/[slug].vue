@@ -36,10 +36,7 @@ const addBottle = () => {
 </script>
 
 <template>
-  <main
-    class="astropop-flavor-detail-page"
-    :class="`astropop-flavor-detail-page--${flavor.theme}`"
-  >
+  <main class="astropop-flavor-detail-page" :class="`astropop-flavor-detail-page--${flavor.theme}`">
     <section class="astropop-flavor-hero" :aria-labelledby="`${flavor.id}-title`">
       <NuxtLink class="astropop-flavor-hero__back-link" to="/app/astro-pop">
         <span aria-hidden="true">←</span> Back to AstroPop
@@ -50,8 +47,14 @@ const addBottle = () => {
       </div>
 
       <div class="astropop-flavor-hero__panel">
-        <div class="astropop-flavor-hero__orbit astropop-flavor-hero__orbit--one" aria-hidden="true" />
-        <div class="astropop-flavor-hero__orbit astropop-flavor-hero__orbit--two" aria-hidden="true" />
+        <div
+          class="astropop-flavor-hero__orbit astropop-flavor-hero__orbit--one"
+          aria-hidden="true"
+        />
+        <div
+          class="astropop-flavor-hero__orbit astropop-flavor-hero__orbit--two"
+          aria-hidden="true"
+        />
 
         <div class="astropop-flavor-hero__bottle-stage">
           <span class="astropop-flavor-hero__burst" aria-hidden="true">✦</span>

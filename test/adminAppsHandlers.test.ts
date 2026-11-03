@@ -11,7 +11,8 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("h3", () => ({
   defineEventHandler: <T>(fn: T) => fn,
-  createError: (opts: { statusCode: number; statusMessage: string }) => Object.assign(new Error(opts.statusMessage), opts),
+  createError: (opts: { statusCode: number; statusMessage: string }) =>
+    Object.assign(new Error(opts.statusMessage), opts),
   readBody: (...args: unknown[]) => mocks.body(...args),
   getRouterParam: (...args: unknown[]) => mocks.id(...args),
   setResponseHeader: (...args: unknown[]) => mocks.header(...args),
@@ -67,21 +68,27 @@ describe("Admin apps endpoints", () => {
     expect(mocks.header).toHaveBeenCalledWith(event, "Cache-Control", "no-store");
   });
 
-  it.each(["", "INVALID", "../other", "bad_id", undefined])("rejects an invalid id: %j", async (id) => {
-    mocks.id.mockReturnValue(id);
-    await expect(patchApp(event)).rejects.toMatchObject({ statusCode: 400 });
-    expect(mocks.body).not.toHaveBeenCalled();
-    expect(mocks.update).not.toHaveBeenCalled();
-  });
-
-  it.each([{ enabled: "false" }, { enabled: 0 }, { enabled: null }, {}, { enabled: true, role: "super_admin" }])(
-    "rejects an invalid request body: %j",
-    async (body) => {
-      mocks.body.mockResolvedValue(body);
+  it.each(["", "INVALID", "../other", "bad_id", undefined])(
+    "rejects an invalid id: %j",
+    async (id) => {
+      mocks.id.mockReturnValue(id);
       await expect(patchApp(event)).rejects.toMatchObject({ statusCode: 400 });
+      expect(mocks.body).not.toHaveBeenCalled();
       expect(mocks.update).not.toHaveBeenCalled();
     },
   );
+
+  it.each([
+    { enabled: "false" },
+    { enabled: 0 },
+    { enabled: null },
+    {},
+    { enabled: true, role: "super_admin" },
+  ])("rejects an invalid request body: %j", async (body) => {
+    mocks.body.mockResolvedValue(body);
+    await expect(patchApp(event)).rejects.toMatchObject({ statusCode: 400 });
+    expect(mocks.update).not.toHaveBeenCalled();
+  });
 
   it("returns 404 for a valid but unregistered app id", async () => {
     mocks.update.mockResolvedValue(null);

@@ -12,9 +12,12 @@ type Event = { res: { headers: Headers }; context: Record<string, unknown> };
 describe("Astro Pop account session guard endpoint", () => {
   let handler: (event: Event) => unknown;
   beforeAll(async () => {
-    handler = (await import("../server/api/astro-pop/account/session.get")).default as typeof handler;
+    handler = (await import("../server/api/astro-pop/account/session.get"))
+      .default as typeof handler;
   });
-  beforeEach(() => { vi.clearAllMocks(); });
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it("rejects signed-out visitors", () => {
     mocks.auth.mockReturnValue({ isAuthenticated: false, userId: null });

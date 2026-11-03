@@ -11,10 +11,13 @@ describe("AstroPop cart persistence", () => {
   });
 
   it("restores valid saved bottles and persists subsequent cart changes", () => {
-    window.localStorage.setItem("astropop-crate", JSON.stringify([
-      { flavorId: ASTROPOP_FLAVORS[0].id, quantity: 2 },
-      { flavorId: ASTROPOP_FLAVORS[1].id, quantity: 1 },
-    ]));
+    window.localStorage.setItem(
+      "astropop-crate",
+      JSON.stringify([
+        { flavorId: ASTROPOP_FLAVORS[0].id, quantity: 2 },
+        { flavorId: ASTROPOP_FLAVORS[1].id, quantity: 1 },
+      ]),
+    );
     const store = useAstroPopCrateStore();
 
     expect(store.restoreFromStorage()).toBe(true);
@@ -29,12 +32,15 @@ describe("AstroPop cart persistence", () => {
   });
 
   it("ignores malformed and over-capacity saved entries", () => {
-    window.localStorage.setItem("astropop-crate", JSON.stringify([
-      { flavorId: "unknown", quantity: 1 },
-      { flavorId: ASTROPOP_FLAVORS[0].id, quantity: 6 },
-      { flavorId: ASTROPOP_FLAVORS[1].id, quantity: 1 },
-      { flavorId: ASTROPOP_FLAVORS[2].id, quantity: -1 },
-    ]));
+    window.localStorage.setItem(
+      "astropop-crate",
+      JSON.stringify([
+        { flavorId: "unknown", quantity: 1 },
+        { flavorId: ASTROPOP_FLAVORS[0].id, quantity: 6 },
+        { flavorId: ASTROPOP_FLAVORS[1].id, quantity: 1 },
+        { flavorId: ASTROPOP_FLAVORS[2].id, quantity: -1 },
+      ]),
+    );
     const store = useAstroPopCrateStore();
 
     store.restoreFromStorage();

@@ -10,9 +10,7 @@ definePageMeta({
 
 const { data, status, error, refresh } = await useFetch("/api/admin/apps");
 
-const noApps = computed(() =>
-  status.value === "success" && data.value?.apps.length === 0,
-);
+const noApps = computed(() => status.value === "success" && data.value?.apps.length === 0);
 
 function handleAppUpdated(updatedApp: CosmoportApp) {
   const app = data.value?.apps.find((item) => item.id === updatedApp.id);
@@ -25,8 +23,8 @@ function handleAppUpdated(updatedApp: CosmoportApp) {
     <header class="space-y-2">
       <h1 id="admin-dashboard-title" class="text-2xl font-bold">App Management</h1>
       <p class="max-w-2xl text-sm">
-        Manage the availability flag for each CosmoPort experience.
-        Public route restrictions will be implemented separately.
+        Manage the availability flag for each CosmoPort experience. Public route restrictions will
+        be implemented separately.
       </p>
     </header>
 

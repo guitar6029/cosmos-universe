@@ -1,4 +1,1 @@
-export type AstroPopNotificationType =
-    | "success"
-    | "error"
-    | "info";
+export type AstroPopNotificationType = "success" | "error" | "info";

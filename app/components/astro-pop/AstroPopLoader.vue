@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ASTRO_POP_MEDIA } from "../../data/astroPopMedia";
 
-withDefaults(defineProps<{
-  message?: string;
-}>(), {
-  message: undefined,
-});
+withDefaults(
+  defineProps<{
+    message?: string;
+  }>(),
+  {
+    message: undefined,
+  },
+);
 </script>
 
 <template>
@@ -30,7 +33,7 @@ withDefaults(defineProps<{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: .5rem;
+  gap: 0.5rem;
   min-height: 10rem;
   padding: 1rem;
   text-align: center;
@@ -61,10 +64,17 @@ withDefaults(defineProps<{
   border: 0;
 }
 @keyframes astro-pop-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .astro-pop-loader__rocket { animation: none; }
+  .astro-pop-loader__rocket {
+    animation: none;
+  }
 }
 </style>

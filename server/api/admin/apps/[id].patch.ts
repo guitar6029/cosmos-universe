@@ -1,15 +1,13 @@
-import {
-  createError,
-  defineEventHandler,
-  getRouterParam,
-  readBody,
-  setResponseHeader,
-} from "h3";
+import { createError, defineEventHandler, getRouterParam, readBody, setResponseHeader } from "h3";
 import { z } from "zod";
 import { requireSuperAdmin } from "../../../utils/requireSuperAdmin";
 import { updateCosmoportAppStatus } from "../../../utils/cosmoportCoreDatabase";
 
-const appIdSchema = z.string().min(1).max(64).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+const appIdSchema = z
+  .string()
+  .min(1)
+  .max(64)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const updateAppSchema = z.strictObject({ enabled: z.boolean() });
 
 export default defineEventHandler(async (event) => {

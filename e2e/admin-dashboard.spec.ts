@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-test("redirects signed-out visitors away from /admin before the dashboard renders", async ({ page }) => {
+test("redirects signed-out visitors away from /admin before the dashboard renders", async ({
+  page,
+}) => {
   // Standard E2E mode intentionally disables Clerk.
   await page.goto("/admin");
 

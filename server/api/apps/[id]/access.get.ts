@@ -13,9 +13,10 @@ export default defineEventHandler(async (event) => {
 
   let enabled: boolean | null;
   try {
-    enabled = import.meta.dev && process.env.PLAYWRIGHT_TEST === "true"
-      ? getE2eAppEnabled(id)
-      : await getCosmoportAppEnabled(id);
+    enabled =
+      import.meta.dev && process.env.PLAYWRIGHT_TEST === "true"
+        ? getE2eAppEnabled(id)
+        : await getCosmoportAppEnabled(id);
   } catch {
     throw createError({ statusCode: 503, statusMessage: "Application availability unavailable" });
   }
