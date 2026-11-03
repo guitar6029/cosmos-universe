@@ -140,6 +140,7 @@ onBeforeUnmount(() => {
     <div class="flex items-center gap-2">
       <NuxtLink class="universe-nav__link" to="/">Home</NuxtLink>
       <NuxtLink class="universe-nav__link" to="/about">About</NuxtLink>
+      <NuxtLink class="universe-nav__link" to="/blog">Blog</NuxtLink>
       <UniverseRadioControl />
     </div>
 
