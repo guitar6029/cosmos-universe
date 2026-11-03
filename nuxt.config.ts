@@ -71,6 +71,10 @@ export default defineNuxtConfig({
         }
       : undefined,
   },
+  devServer: {
+    host: "127.0.0.1",
+    allowedHosts: ["trilogy-plant-unrefined.ngrok-free.dev"],
+  },
   imports: usePlaywrightAuthMock
     ? {
         imports: [
