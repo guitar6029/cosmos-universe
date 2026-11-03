@@ -206,7 +206,7 @@ onBeforeUnmount(() => close());
     width: 1px;
     height: 1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
   }
   .universe-radio__toggle {
     min-width: 2.5rem;

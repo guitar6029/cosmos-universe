@@ -17,6 +17,10 @@
 .universe-nav__account {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  min-width: 0;
+  min-height: 2.75rem;
 }
 
 .universe-nav__link {
@@ -35,13 +39,6 @@
 .universe-nav__link.router-link-exact-active {
   border-color: var(--cp-universe-gold);
   color: var(--cp-universe-gold);
-}
-
-.universe-nav__account {
-  justify-content: flex-end;
-  gap: 0.45rem;
-  min-width: 0;
-  min-height: 2.75rem;
 }
 
 .universe-nav__button {

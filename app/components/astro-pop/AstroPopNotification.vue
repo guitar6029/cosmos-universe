@@ -94,8 +94,7 @@ function handleFocusOut(event: FocusEvent) {
   min-width: 0;
   min-height: 0;
   max-height: 9rem;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden auto;
   overscroll-behavior: contain;
   padding: 1rem 2.75rem 1rem 0;
   color: #3a2c35;
