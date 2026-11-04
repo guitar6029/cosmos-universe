@@ -17,6 +17,7 @@
     "format:check": "prettier --check .",
     "typecheck": "nuxt typecheck",
     "test": "vitest run",
+    "validate:pr": "npm run format:check && npm run lint && npm run lint:css && npm run typecheck && npm run test",
     "test:e2e": "playwright test",
     "test:e2e:clerk": "doppler run -p cosmoport-universe -c dev -- node scripts/run-clerk-e2e.mjs",
     "test:e2e:clerk:cleanup": "doppler run -p cosmoport-universe -c dev -- node scripts/cleanup-clerk-test-users.mjs",
