@@ -1,4 +1,8 @@
+Failed to create stream fd: Operation not permitted
+Failed to create stream fd: Operation not permitted
+Failed to create stream fd: Operation not permitted
 import { expect, test, type Page } from "@playwright/test";
+import { openUniverseMobileMenu } from "./helpers/universeNavigation";
 
 const GRAND_CONCOURSE_CDN_URL =
   "https://media.cosmos-universe.com/grand-concourse/cosmoport-grand-concourse.png";
@@ -15,10 +19,6 @@ async function mockGrandConcourseImage(page: Page, status: 200 | 404) {
       status === 200 ? { status, contentType: "image/png", body: ONE_PIXEL_PNG } : { status },
     );
   });
-}
-
-async function waitForClientHydration(page: Page) {
-  await page.waitForLoadState("networkidle");
 }
 
 test("presents AstroPop as the only active Grand Concourse experience", async ({ page }) => {
@@ -90,10 +90,7 @@ test("keeps the hero, auth navigation, and content free of horizontal overflow",
     );
 
     if (width <= 768) {
-      await waitForClientHydration(page);
-      await navigation.getByRole("button", { name: "Open navigation menu" }).click();
-
-      const mobileMenu = page.getByRole("dialog", { name: "CosmoPort navigation menu" });
+      const mobileMenu = await openUniverseMobileMenu(page);
       await expect(mobileMenu.getByRole("link", { name: "Home", exact: true })).toHaveAttribute(
         "href",
         "/",
@@ -161,14 +158,12 @@ test("keeps every signed-out navigation control usable at 320px", async ({ page 
   await mockGrandConcourseImage(page, 200);
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
-  await page.waitForTimeout(250);
 
   const navigation = page.getByRole("navigation", { name: "CosmoPort Universe" });
-  const menuTrigger = navigation.getByRole("button", { name: "Open navigation menu" });
   const signIn = navigation.getByRole("link", { name: "Sign In" });
   const register = navigation.getByRole("link", { name: "Register" });
 
-  await expect(menuTrigger).toBeVisible();
+  await expect(navigation.getByRole("button", { name: "Open navigation menu" })).toBeVisible();
   await expect(signIn).toBeVisible();
   await expect(register).toBeVisible();
   await expect(signIn).toHaveAttribute("href", "/passport-office?intent=sign-in");
@@ -177,8 +172,7 @@ test("keeps every signed-out navigation control usable at 320px", async ({ page 
     true,
   );
 
-  await menuTrigger.click();
-  const menu = page.getByRole("dialog", { name: "CosmoPort navigation menu" });
+  const menu = await openUniverseMobileMenu(page);
   await expect(menu.getByRole("link", { name: "Home", exact: true })).toBeVisible();
   await expect(menu.getByRole("link", { name: "About", exact: true })).toBeVisible();
   await expect(menu.getByRole("link", { name: "Blog", exact: true })).toBeVisible();
@@ -187,16 +181,16 @@ test("keeps every signed-out navigation control usable at 320px", async ({ page 
   await menu.getByRole("link", { name: "About", exact: true }).click();
   await expect(page).toHaveURL(/\/about$/);
 
-  await page.getByRole("button", { name: "Open navigation menu" }).click();
-  await page
-    .getByRole("dialog", { name: "CosmoPort navigation menu" })
+  await (
+    await openUniverseMobileMenu(page)
+  )
     .getByRole("link", { name: "Home", exact: true })
     .click();
   await expect(page).toHaveURL(/\/$/);
 
-  await page.getByRole("button", { name: "Open navigation menu" }).click();
-  await page
-    .getByRole("dialog", { name: "CosmoPort navigation menu" })
+  await (
+    await openUniverseMobileMenu(page)
+  )
     .getByRole("link", { name: "Blog", exact: true })
     .click();
   await expect(page).toHaveURL(/\/blog$/);
