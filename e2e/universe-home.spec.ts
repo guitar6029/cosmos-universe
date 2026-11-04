@@ -1,6 +1,3 @@
-Failed to create stream fd: Operation not permitted
-Failed to create stream fd: Operation not permitted
-Failed to create stream fd: Operation not permitted
 import { expect, test, type Page } from "@playwright/test";
 import { openUniverseMobileMenu } from "./helpers/universeNavigation";
 
