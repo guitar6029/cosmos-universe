@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { SITE_URL } from "~/site";
 import type { BlogArticle } from "~/types/blog";
 import { getSanityImageUrl } from "~/utils/sanityImage";
 
@@ -58,7 +59,9 @@ useSeoMeta({
   ogImage: () => coverImageUrl.value ?? undefined,
   ogType: "article",
 });
-useHead({ link: [{ rel: "canonical", href: () => `/blog/${slug.value}` }] });
+useHead({
+  link: [{ rel: "canonical", href: () => new URL(`/blog/${slug.value}`, SITE_URL).toString() }],
+});
 </script>
 
 <template>

@@ -109,7 +109,8 @@ describe("Chronicle article presentation", () => {
     expect(renderer).toContain('h("pre"');
     expect(renderer).toContain('h("figure"');
     expect(renderer).toContain("noopener noreferrer");
-    expect(renderer).toContain('url.protocol === "https:" || url.protocol === "http:"');
+    expect(renderer).toContain('href.startsWith("/") && !href.startsWith("//")');
+    expect(renderer).toContain('url.protocol !== "https:" && url.protocol !== "http:"');
     expect(renderer).not.toContain("v-html");
   });
 });
