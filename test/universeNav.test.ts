@@ -13,6 +13,7 @@ import {
   GRAND_CONCOURSE_MEDIA,
   GRAND_CONCOURSE_MEDIA_BASE_URL,
 } from "../app/data/grandConcourseMedia";
+import { BLOG_MEDIA } from "../app/data/blogMedia";
 
 type AccountState = "signed-in" | "signed-out" | "loading";
 
@@ -412,12 +413,21 @@ describe("CosmoPort Universe navigation", () => {
     expect(html.match(/<img/g)).toHaveLength(6);
   });
 
-  it("renders the Universe Chronicle placeholder with shared navigation", async () => {
+  it("renders the Universe Chronicle hero with shared navigation and an accessible fallback", async () => {
     const html = await renderWithAccountState(UniverseBlogPage, "signed-out");
 
     expect(html).toContain("The Universe Chronicle");
     expect(html).toContain("Engineering logs, cosmic dispatches, and stories from tomorrow.");
+    expect(html).toContain(BLOG_MEDIA.universeChronicleTerminal);
+    expect(html).toContain('fetchpriority="high"');
     expect(html).toContain('href="/blog"');
+
+    const source = await readFile(resolve(process.cwd(), "app/pages/blog.vue"), "utf8");
+    const styles = await readFile(resolve(process.cwd(), "app/pages/blog.css"), "utf8");
+    expect(source).toContain('@error="heroFailed = true"');
+    expect(source).toContain("heroImage.value?.decode().catch");
+    expect(styles).toContain("object-fit: cover");
+    expect(styles).toContain("min-height: 100svh");
   });
 
   it("is integrated only by the Universe root page", async () => {
