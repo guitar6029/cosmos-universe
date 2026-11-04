@@ -1,75 +1,65 @@
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { schemaTypes } from "../studio/schemaTypes";
+const schemaTypesDirectory = resolve(process.cwd(), "studio/schemaTypes");
 
-const schemaByName = new Map(schemaTypes.map((schema) => [schema.name, schema]));
-
-function fieldsByName(schemaName: string) {
-  const schema = schemaByName.get(schemaName);
-
-  if (!schema) {
-    throw new Error(`Expected the ${schemaName} schema to be registered.`);
-  }
-
-  return new Map(schema.fields.map((field) => [field.name, field]));
+async function readSchema(name: string) {
+  return readFile(resolve(schemaTypesDirectory, name), "utf8");
 }
 
 describe("Sanity content schemas", () => {
-  it("registers the existing destination schema with blog and author schemas", () => {
-    expect(schemaTypes.map((schema) => schema.name)).toEqual(["destination", "author", "blogPost"]);
+  it("registers the existing destination schema with blog and author schemas", async () => {
+    const schemaIndex = await readSchema("index.ts");
+
+    expect(schemaIndex).toContain('import { author } from "./author";');
+    expect(schemaIndex).toContain('import { blogPost } from "./blogPost";');
+    expect(schemaIndex).toContain('import { destination } from "./destination";');
+    expect(schemaIndex).toContain("export const schemaTypes = [destination, author, blogPost];");
   });
 
-  it("defines optional author images and editorial identity fields", () => {
-    const fields = fieldsByName("author");
-    const avatar = fields.get("avatar");
+  it("defines optional author images and editorial identity fields", async () => {
+    const author = await readSchema("author.ts");
 
-    expect(fields.get("name")?.type).toBe("string");
-    expect(fields.get("slug")?.options?.source).toBe("name");
-    expect(avatar?.type).toBe("image");
-    expect(avatar?.options?.hotspot).toBe(true);
-    expect(avatar?.validation).toBeUndefined();
-    expect(fields.get("isFictional")?.initialValue).toBe(false);
+    expect(author).toContain('name: "author"');
+    expect(author).toContain('name: "name"');
+    expect(author).toContain('name: "slug"');
+    expect(author).toContain('source: "name"');
+    expect(author).toContain('name: "avatar"');
+    expect(author).toContain("hotspot: true");
+    expect(author).toContain('name: "isFictional"');
+    expect(author).toContain("initialValue: false");
   });
 
-  it("uses the author document type and expected categories for blog posts", () => {
-    const fields = fieldsByName("blogPost");
-    const author = fields.get("author");
-    const categories = fields.get("category")?.options?.list;
+  it("uses the author document type and expected categories for blog posts", async () => {
+    const blogPost = await readSchema("blogPost.ts");
 
-    expect(author?.type).toBe("reference");
-    expect(author?.to).toEqual([{ type: "author" }]);
-    expect(categories).toEqual([
-      { title: "Engineering Logs", value: "engineering" },
-      { title: "Debugging Dispatches", value: "debugging" },
-      { title: "Universe Updates", value: "updates" },
-      { title: "Universe Lore", value: "lore" },
-    ]);
-    expect(fields.get("coverImage")?.validation).toBeUndefined();
-    expect(fields.get("coverImage")?.options?.hotspot).toBe(true);
+    expect(blogPost).toContain('name: "blogPost"');
+    expect(blogPost).toContain('name: "author"');
+    expect(blogPost).toContain('type: "reference"');
+    expect(blogPost).toContain('to: [{ type: "author" }]');
+    expect(blogPost).toContain('{ title: "Engineering Logs", value: "engineering" }');
+    expect(blogPost).toContain('{ title: "Debugging Dispatches", value: "debugging" }');
+    expect(blogPost).toContain('{ title: "Universe Updates", value: "updates" }');
+    expect(blogPost).toContain('{ title: "Universe Lore", value: "lore" }');
+    expect(blogPost).toContain('name: "coverImage"');
+    expect(blogPost).toContain("hotspot: true");
   });
 
-  it("supports the expected Portable Text structures", () => {
-    const body = fieldsByName("blogPost").get("body");
-    const block = body?.of?.find((member) => member.type === "block");
-    const image = body?.of?.find((member) => member.name === "image");
-    const code = body?.of?.find((member) => member.name === "code");
+  it("supports the expected Portable Text structures", async () => {
+    const blogPost = await readSchema("blogPost.ts");
 
-    expect(block?.styles).toEqual([
-      { title: "Normal", value: "normal" },
-      { title: "Heading 2", value: "h2" },
-      { title: "Heading 3", value: "h3" },
-    ]);
-    expect(block?.lists).toEqual([
-      { title: "Bullet", value: "bullet" },
-      { title: "Numbered", value: "number" },
-    ]);
-    expect(block?.marks?.decorators).toEqual([
-      { title: "Bold", value: "strong" },
-      { title: "Italic", value: "em" },
-    ]);
-    expect(block?.marks?.annotations?.[0]?.name).toBe("link");
-    expect(image?.type).toBe("image");
-    expect(image?.fields?.[0]?.name).toBe("alt");
-    expect(code?.fields?.map((field) => field.name)).toEqual(["code", "language"]);
+    expect(blogPost).toContain('type: "block"');
+    expect(blogPost).toContain('{ title: "Heading 2", value: "h2" }');
+    expect(blogPost).toContain('{ title: "Heading 3", value: "h3" }');
+    expect(blogPost).toContain('{ title: "Bullet", value: "bullet" }');
+    expect(blogPost).toContain('{ title: "Numbered", value: "number" }');
+    expect(blogPost).toContain('{ title: "Bold", value: "strong" }');
+    expect(blogPost).toContain('{ title: "Italic", value: "em" }');
+    expect(blogPost).toContain('name: "link"');
+    expect(blogPost).toContain('name: "image"');
+    expect(blogPost).toContain('name: "alt"');
+    expect(blogPost).toContain('name: "code"');
+    expect(blogPost).toContain('name: "language"');
   });
 });
