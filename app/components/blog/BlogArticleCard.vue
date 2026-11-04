@@ -57,8 +57,13 @@ const categoryLabel = computed(() => categoryLabels[props.post.category] ?? prop
     </div>
     <div class="blog-article-card__content">
       <p class="blog-article-card__category">{{ categoryLabel }}</p>
-      <h3 class="blog-article-card__title">{{ post.title }}</h3>
+      <h3 class="blog-article-card__title">
+        <NuxtLink :to="`/blog/${post.slug}`">{{ post.title }}</NuxtLink>
+      </h3>
       <p class="blog-article-card__excerpt">{{ post.excerpt }}</p>
+      <NuxtLink class="blog-article-card__read-more" :to="`/blog/${post.slug}`">
+        Read more<span class="blog-article-card__read-more-arrow" aria-hidden="true"> →</span>
+      </NuxtLink>
       <footer class="blog-article-card__byline">
         <img
           v-if="avatarUrl"
