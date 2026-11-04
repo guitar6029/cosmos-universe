@@ -103,6 +103,7 @@ export default defineNuxtConfig({
         ? { script: [{ src: "/_vercel/insights/script.js", defer: true }] }
         : {}),
       title: SITE_TITLE,
+      link: [{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
       meta: [
         { name: "description", content: SITE_DESCRIPTION },
         { property: "og:title", content: SITE_TITLE },
