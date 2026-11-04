@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { BLOG_MEDIA } from "../data/blogMedia";
+import type { BlogListingPost } from "~/types/blog";
 
 const heroFailed = ref(false);
 const heroImage = ref<HTMLImageElement>();
+const {
+  data: posts,
+  error,
+  status,
+} = await useFetch<BlogListingPost[]>("/api/blog", {
+  default: () => [],
+  key: "blog-listing",
+});
 
 onMounted(() => {
   if (heroImage.value?.complete && heroImage.value.naturalWidth === 0) {
@@ -47,6 +56,29 @@ useSeoMeta({
           fetchpriority="high"
           @error="heroFailed = true"
         />
+      </section>
+
+      <section class="universe-blog__dispatches" aria-labelledby="latest-dispatches-title">
+        <div class="universe-blog__dispatches-inner">
+          <header class="universe-blog__dispatches-heading">
+            <p class="universe-blog__dispatches-kicker">The Universe Chronicle</p>
+            <h2 id="latest-dispatches-title">Latest Dispatches</h2>
+            <p>Stories, engineering logs and transmissions from across the universe.</p>
+          </header>
+
+          <div v-if="status === 'pending'" class="universe-blog__state" aria-live="polite">
+            <p>Receiving the latest transmissions…</p>
+          </div>
+          <div v-else-if="error" class="universe-blog__state" role="alert">
+            <p>The newsroom is temporarily off the air. Please check back soon.</p>
+          </div>
+          <div v-else-if="posts.length === 0" class="universe-blog__state">
+            <p>The newsroom is preparing its first dispatch. Check back soon.</p>
+          </div>
+          <div v-else class="universe-blog__grid">
+            <BlogArticleCard v-for="post in posts" :key="post.slug" :post="post" />
+          </div>
+        </div>
       </section>
     </main>
   </div>
