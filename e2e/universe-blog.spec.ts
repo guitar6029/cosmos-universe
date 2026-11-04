@@ -1,4 +1,8 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+async function waitForClientHydration(page: Page) {
+  await page.waitForLoadState("networkidle");
+}
 
 test("opens the Universe Chronicle from shared navigation with an active Blog link", async ({
   page,
@@ -18,6 +22,28 @@ test("opens the Universe Chronicle from shared navigation with an active Blog li
   await expect(
     page
       .getByRole("navigation", { name: "CosmoPort Universe" })
+      .getByRole("link", { name: "Blog", exact: true }),
+  ).toHaveClass(/router-link-exact-active/);
+});
+
+test("opens the Universe Chronicle from the mobile navigation with an active Blog link", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto("/");
+  await waitForClientHydration(page);
+
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
+  await page
+    .getByRole("dialog", { name: "CosmoPort navigation menu" })
+    .getByRole("link", { name: "Blog", exact: true })
+    .click();
+
+  await expect(page).toHaveURL(/\/blog$/);
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
+  await expect(
+    page
+      .getByRole("dialog", { name: "CosmoPort navigation menu" })
       .getByRole("link", { name: "Blog", exact: true }),
   ).toHaveClass(/router-link-exact-active/);
 });

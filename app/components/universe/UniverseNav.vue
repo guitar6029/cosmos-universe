@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import UniverseRadioControl from "./UniverseRadioControl.vue";
+import UniverseMobileNavPanel from "./UniverseMobileNavPanel.vue";
 import UniverseAvatar from "../shared/UniverseAvatar.vue";
 import { useCosmosProfile } from "../../composables/useCosmosProfile";
 
@@ -12,6 +13,15 @@ const accountMenuOpen = ref(false);
 const profileRoot = ref<HTMLDivElement>();
 const accountToggle = ref<HTMLButtonElement>();
 const signOutButton = ref<HTMLButtonElement>();
+const mobileMenuTrigger = ref<HTMLButtonElement>();
+const mobileMenuOpen = ref(false);
+let previousBodyOverflow = "";
+
+const navigationLinks = [
+  { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
+  { label: "Blog", to: "/blog" },
+];
 
 const hasAdminAccess = ref(false);
 
@@ -84,6 +94,14 @@ function toggleAccountMenu() {
   openAccountMenu();
 }
 
+function closeMobileMenu(restoreFocus = true) {
+  mobileMenuOpen.value = false;
+
+  if (restoreFocus) {
+    void nextTick(() => mobileMenuTrigger.value?.focus());
+  }
+}
+
 function handleAccountKeydown(event: KeyboardEvent) {
   if (event.key === "Escape" && accountMenuOpen.value && !isSigningOut.value) {
     event.preventDefault();
@@ -125,9 +143,20 @@ onMounted(() => {
   );
 });
 
+watch(mobileMenuOpen, (isOpen) => {
+  if (isOpen) {
+    previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return;
+  }
+
+  document.body.style.overflow = previousBodyOverflow;
+});
+
 onBeforeUnmount(() => {
   document.removeEventListener("pointerdown", closeOnOutsideInteraction);
   document.removeEventListener("focusin", closeOnOutsideInteraction);
+  document.body.style.overflow = previousBodyOverflow;
 });
 </script>
 
@@ -137,10 +166,30 @@ onBeforeUnmount(() => {
     :class="`universe-nav--${presentation}`"
     aria-label="CosmoPort Universe"
   >
-    <div class="flex items-center gap-2">
-      <NuxtLink class="universe-nav__link" to="/">Home</NuxtLink>
-      <NuxtLink class="universe-nav__link" to="/about">About</NuxtLink>
-      <NuxtLink class="universe-nav__link" to="/blog">Blog</NuxtLink>
+    <button
+      ref="mobileMenuTrigger"
+      class="universe-nav__menu-toggle"
+      type="button"
+      :aria-expanded="mobileMenuOpen"
+      aria-controls="universe-mobile-navigation"
+      aria-label="Open navigation menu"
+      @click="mobileMenuOpen = true"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+      <span>Menu</span>
+    </button>
+
+    <div class="universe-nav__primary" aria-label="CosmoPort sections">
+      <NuxtLink
+        v-for="link in navigationLinks"
+        :key="link.to"
+        class="universe-nav__link"
+        :to="link.to"
+      >
+        {{ link.label }}
+      </NuxtLink>
       <UniverseRadioControl />
     </div>
 
@@ -308,6 +357,15 @@ onBeforeUnmount(() => {
       </template>
     </div>
   </nav>
+
+  <UniverseMobileNavPanel
+    v-if="mobileMenuOpen"
+    :links="navigationLinks"
+    @close="closeMobileMenu"
+    @navigate="closeMobileMenu(false)"
+  >
+    <UniverseRadioControl />
+  </UniverseMobileNavPanel>
 </template>
 
 <style scoped src="./UniverseNav.css"></style>

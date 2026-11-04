@@ -143,6 +143,52 @@ describe("CosmoPort Universe navigation", () => {
     expect(html).not.toContain("UserButton");
   });
 
+  it("opens and closes the mobile navigation panel with accessible controls", async () => {
+    authState.value = "signed-out";
+    user.value = null;
+    const container = document.createElement("div");
+    const app = createApp(UniverseNav);
+    app.component("NuxtLink", NuxtLink);
+    document.body.appendChild(container);
+    app.mount(container);
+
+    const trigger = container.querySelector<HTMLButtonElement>(".universe-nav__menu-toggle");
+    trigger?.click();
+    await nextTick();
+
+    const panel = document.querySelector<HTMLElement>("#universe-mobile-navigation");
+    expect(panel?.getAttribute("role")).toBe("dialog");
+    expect(panel?.getAttribute("aria-modal")).toBe("true");
+    expect(panel?.textContent).toContain("Home");
+    expect(panel?.textContent).toContain("About");
+    expect(panel?.textContent).toContain("Blog");
+    expect(document.body.style.overflow).toBe("hidden");
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    await nextTick();
+    expect(document.querySelector("#universe-mobile-navigation")).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    expect(document.body.style.overflow).toBe("");
+
+    trigger?.click();
+    await nextTick();
+    document.querySelector<HTMLButtonElement>(".universe-mobile-nav__backdrop")?.click();
+    await nextTick();
+    expect(document.querySelector("#universe-mobile-navigation")).toBeNull();
+
+    trigger?.click();
+    await nextTick();
+    const aboutLink = document.querySelector<HTMLAnchorElement>(
+      '#universe-mobile-navigation a[href="/about"]',
+    );
+    aboutLink?.addEventListener("click", (event) => event.preventDefault());
+    aboutLink?.click();
+    await nextTick();
+    expect(document.querySelector("#universe-mobile-navigation")).toBeNull();
+
+    app.unmount();
+  });
+
   it("shows the saved Cosmos avatar in the Account control", async () => {
     const html = await renderWithAccountState(UniverseNav, "signed-in");
 
