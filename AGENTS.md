@@ -54,6 +54,7 @@ Choose a unique branch and path instead of reusing this illustrative example. If
 - Perform edits, installs, builds, tests, and commits only in the agent-owned worktree.
 - Recheck the worktree root, branch, and `git status --short --branch` before committing and pushing.
 - Review `git diff` and staged changes; do not mix unrelated tasks.
+- Before opening or updating a PR, complete the mandatory final validation below. If formatting fails, fix the formatting and rerun the check before completing the task. If a check cannot run, report the reason explicitly; never claim a check passed without executing it.
 - Open a PR targeting `main` and **leave merging to explicit user approval**.
 - Do not remove branches or worktrees as automatic cleanup; request authorization after work is finished, particularly for dirty worktrees.
 
@@ -129,6 +130,20 @@ Keep Vue Single-File Components readable without creating unnecessary files.
 - Treat extraction as a behavior-preserving refactor: run relevant tests and visual/responsive checks, and avoid unrelated redesigns.
 
 ## Validation
+
+### Mandatory final validation before a PR
+
+Before opening or updating any PR, run these repository commands from the root:
+
+```sh
+npm run format:check
+npm run lint
+npm run lint:css
+npm run typecheck
+npm run test
+```
+
+Also run task-relevant E2E tests and the production build when appropriate. If any formatting check fails, fix the reported files and rerun `npm run format:check` before completing the task. Report every command that could not run and why; do not state that a check passed unless it was executed.
 
 Inspect the root `package.json` before selecting commands. At the repository root:
 
