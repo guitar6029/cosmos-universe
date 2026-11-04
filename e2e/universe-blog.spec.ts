@@ -77,6 +77,13 @@ test("shows the Chronicle fallback when the hero artwork is unavailable", async 
   ).toBeVisible();
 });
 
+test("renders the Latest Dispatches section beneath the Chronicle hero", async ({ page }) => {
+  await mockUniverseChronicleImage(page, 200);
+  await page.goto("/blog");
+
+  await expect(page.getByRole("heading", { name: "Latest Dispatches" })).toBeVisible();
+});
+
 test("opens the Universe Chronicle from the mobile navigation with an active Blog link", async ({
   page,
 }) => {

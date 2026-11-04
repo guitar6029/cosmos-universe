@@ -28,6 +28,73 @@
   isolation: isolate;
 }
 
+.universe-blog__dispatches {
+  padding: clamp(4.5rem, 9vw, 8rem) 1.25rem;
+  background: var(--cp-universe-cream);
+}
+.universe-blog__dispatches-inner {
+  width: min(100%, 75rem);
+  margin: 0 auto;
+}
+.universe-blog__dispatches-heading {
+  max-width: 42rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+.universe-blog__dispatches-heading h2,
+.universe-blog__dispatches-heading p {
+  margin: 0;
+}
+.universe-blog__dispatches-kicker {
+  color: var(--cp-universe-rust);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.universe-blog__dispatches-heading h2 {
+  margin-top: 0.65rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.7rem, 6vw, 4.7rem);
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+.universe-blog__dispatches-heading > p:last-child {
+  max-width: 35rem;
+  margin-top: 1rem;
+  color: color-mix(in srgb, var(--cp-universe-space-teal) 78%, transparent);
+  font-size: 1.1rem;
+  line-height: 1.55;
+}
+.universe-blog__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.universe-blog__grid :deep(.blog-article-card) {
+  grid-column: span 3;
+}
+
+.universe-blog__grid :deep(.blog-article-card--horizontal) {
+  grid-column: span 6;
+}
+.universe-blog__state {
+  display: grid;
+  min-height: 13rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--cp-universe-space-teal) 32%, transparent);
+  border-radius: var(--cp-universe-plaque-radius);
+  background: color-mix(in srgb, var(--cp-universe-muted-teal) 36%, var(--cp-universe-cream));
+  text-align: center;
+}
+.universe-blog__state p {
+  max-width: 28rem;
+  margin: 1.5rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
 .universe-blog__artwork,
 .universe-blog__fallback {
   position: absolute;
@@ -96,11 +163,29 @@
   .universe-blog__artwork {
     object-position: 58% center;
   }
+
+  .universe-blog__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .universe-blog__grid :deep(.blog-article-card),
+  .universe-blog__grid :deep(.blog-article-card--horizontal) {
+    grid-column: span 1;
+  }
 }
 
 @media (max-width: 30rem) {
   .universe-blog__artwork {
     object-position: 62% center;
+  }
+
+  .universe-blog__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .universe-blog__grid :deep(.blog-article-card),
+  .universe-blog__grid :deep(.blog-article-card--horizontal) {
+    grid-column: auto;
   }
 }
 
