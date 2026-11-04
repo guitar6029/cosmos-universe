@@ -1,0 +1,109 @@
+.universe-mobile-nav {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.universe-mobile-nav__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(9 31 39 / 0.66);
+  cursor: default;
+}
+
+.universe-mobile-nav__panel {
+  position: relative;
+  width: min(22rem, calc(100% - 2.5rem));
+  min-height: 100%;
+  border-left: 1px solid var(--cp-universe-gold);
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 88% 8%, rgb(255 210 129 / 0.18), transparent 25%),
+    var(--cp-universe-space-teal-deep);
+  box-shadow: -0.4rem 0 0 rgb(9 31 39 / 0.18);
+  color: var(--cp-universe-cream);
+}
+
+.universe-mobile-nav__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgb(255 210 129 / 0.5);
+  padding-bottom: 0.9rem;
+}
+
+.universe-mobile-nav__header p {
+  margin: 0;
+  color: var(--cp-universe-gold);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.universe-mobile-nav__close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.5rem;
+  border: 1px solid var(--cp-universe-gold);
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.55rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.universe-mobile-nav__close span:first-child {
+  font-size: 1.4rem;
+  line-height: 0.7;
+}
+
+.universe-mobile-nav__links {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 1.25rem;
+}
+
+.universe-mobile-nav__links a {
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  border-left: 2px solid transparent;
+  padding: 0.55rem 0.75rem;
+  color: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.universe-mobile-nav__links a:hover,
+.universe-mobile-nav__links a:focus-visible,
+.universe-mobile-nav__links a.router-link-exact-active {
+  border-color: var(--cp-universe-gold);
+  background: rgb(255 210 129 / 0.12);
+  color: var(--cp-universe-gold);
+}
+
+.universe-mobile-nav__radio {
+  margin-top: 1.25rem;
+  border-top: 1px solid rgb(255 210 129 / 0.5);
+  padding-top: 1rem;
+}
+
+.universe-mobile-nav__close:focus-visible,
+.universe-mobile-nav__links a:focus-visible {
+  outline: 3px solid var(--cp-universe-cream);
+  outline-offset: 3px;
+}

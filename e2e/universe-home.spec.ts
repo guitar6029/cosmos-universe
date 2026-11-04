@@ -133,41 +133,51 @@ test("shows the complete hero artwork at every viewport width", async ({ page })
   }
 });
 
-// TODO(JOS-115): Re-enable after the responsive navigation redesign.
-// Temporarily skipped due to the 320px navigation timeout.
-test.skip("keeps every signed-out navigation control usable at 320px", async ({ page }) => {
+test("keeps every signed-out navigation control usable at 320px", async ({ page }) => {
   await mockGrandConcourseImage(page, 200);
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
+  await page.waitForTimeout(250);
 
   const navigation = page.getByRole("navigation", { name: "CosmoPort Universe" });
-  const home = navigation.getByRole("link", { name: "Home", exact: true });
-  const about = navigation.getByRole("link", { name: "About", exact: true });
-  const blog = navigation.getByRole("link", { name: "Blog", exact: true });
+  const menuTrigger = navigation.getByRole("button", { name: "Open navigation menu" });
   const signIn = navigation.getByRole("link", { name: "Sign In" });
   const register = navigation.getByRole("link", { name: "Register" });
-  const radio = navigation.getByRole("button", { name: "Open CosmoPort Radio controls" });
 
-  await expect(home).toBeVisible();
-  await expect(about).toBeVisible();
-  await expect(blog).toBeVisible();
+  await expect(menuTrigger).toBeVisible();
   await expect(signIn).toBeVisible();
   await expect(register).toBeVisible();
-  await expect(radio).toBeVisible();
   await expect(signIn).toHaveAttribute("href", "/passport-office?intent=sign-in");
   await expect(register).toHaveAttribute("href", "/passport-office?intent=register");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
 
-  await about.click();
+  await menuTrigger.click();
+  const menu = page.getByRole("dialog", { name: "CosmoPort navigation menu" });
+  await expect(menu.getByRole("link", { name: "Home", exact: true })).toBeVisible();
+  await expect(menu.getByRole("link", { name: "About", exact: true })).toBeVisible();
+  await expect(menu.getByRole("link", { name: "Blog", exact: true })).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Open CosmoPort Radio controls" })).toBeVisible();
+
+  await menu.getByRole("link", { name: "About", exact: true }).click();
   await expect(page).toHaveURL(/\/about$/);
+
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
   await page
-    .getByRole("navigation", { name: "CosmoPort Universe" })
+    .getByRole("dialog", { name: "CosmoPort navigation menu" })
     .getByRole("link", { name: "Home", exact: true })
     .click();
   await expect(page).toHaveURL(/\/$/);
 
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
+  await page
+    .getByRole("dialog", { name: "CosmoPort navigation menu" })
+    .getByRole("link", { name: "Blog", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/blog$/);
+
+  await page.goto("/");
   await page
     .getByRole("navigation", { name: "CosmoPort Universe" })
     .getByRole("link", { name: "Sign In" })
