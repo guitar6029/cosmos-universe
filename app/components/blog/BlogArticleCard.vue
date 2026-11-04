@@ -1,9 +1,30 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { BlogListingPost } from "../../types/blog";
+import type {
+  BlogArticleCardImagePosition,
+  BlogArticleCardLayout,
+} from "../../utils/blogEditorialLayout";
 import { getSanityImageUrl } from "../../utils/sanityImage";
 
-const props = defineProps<{ post: BlogListingPost }>();
+const props = withDefaults(
+  defineProps<{
+    post: BlogListingPost;
+    layout?: BlogArticleCardLayout;
+    imagePosition?: BlogArticleCardImagePosition;
+  }>(),
+  {
+    layout: "vertical",
+    imagePosition: "start",
+  },
+);
+
+const categoryLabels: Record<string, string> = {
+  engineering: "Engineering Logs",
+  debugging: "Debugging Dispatches",
+  updates: "Universe Updates",
+  lore: "Universe Lore",
+};
 const coverImageUrl = computed(() => getSanityImageUrl(props.post.coverImageUrl, 960, 640));
 const avatarUrl = computed(() => getSanityImageUrl(props.post.author?.avatarUrl ?? null, 96, 96));
 const publishedDate = computed(() =>
@@ -11,16 +32,17 @@ const publishedDate = computed(() =>
     new Date(props.post.publishedAt),
   ),
 );
-const categoryLabel = computed(() =>
-  props.post.category.replace(
-    /(^|[-_])(\w)/g,
-    (_, prefix: string, letter: string) => `${prefix ? " " : ""}${letter.toUpperCase()}`,
-  ),
-);
+const categoryLabel = computed(() => categoryLabels[props.post.category] ?? props.post.category);
 </script>
 
 <template>
-  <article class="blog-article-card">
+  <article
+    class="blog-article-card"
+    :class="[
+      `blog-article-card--${layout}`,
+      { 'blog-article-card--image-end': layout === 'horizontal' && imagePosition === 'end' },
+    ]"
+  >
     <div class="blog-article-card__image-wrap">
       <img
         v-if="coverImageUrl"

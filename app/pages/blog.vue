@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { BLOG_MEDIA } from "../data/blogMedia";
+import { getBlogEditorialLayout } from "../utils/blogEditorialLayout";
 import type { BlogListingPost } from "~/types/blog";
 
 const heroFailed = ref(false);
@@ -76,7 +77,13 @@ useSeoMeta({
             <p>The newsroom is preparing its first dispatch. Check back soon.</p>
           </div>
           <div v-else class="universe-blog__grid">
-            <BlogArticleCard v-for="post in posts" :key="post.slug" :post="post" />
+            <BlogArticleCard
+              v-for="(post, index) in posts"
+              :key="post.slug"
+              :post="post"
+              :layout="getBlogEditorialLayout(index).layout"
+              :image-position="getBlogEditorialLayout(index).imagePosition"
+            />
           </div>
         </div>
       </section>

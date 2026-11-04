@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getSanityImageUrl } from "../app/utils/sanityImage";
+import { getBlogEditorialLayout } from "../app/utils/blogEditorialLayout";
 import { BLOG_LISTING_QUERY } from "../server/utils/blogListing";
 
 describe("blog listing query", () => {
@@ -55,5 +56,18 @@ describe("Chronicle listing presentation", () => {
     expect(card).not.toContain("NuxtLink");
     expect(card).toContain('loading="lazy"');
     expect(card).toContain("blog-article-card__image-fallback");
+    expect(card).toContain('engineering: "Engineering Logs"');
+    expect(card).toContain('debugging: "Debugging Dispatches"');
+    expect(card).toContain('updates: "Universe Updates"');
+    expect(card).toContain('lore: "Universe Lore"');
+  });
+});
+
+describe("Chronicle editorial layout", () => {
+  it("uses a stable repeating mix of vertical and reversible horizontal cards", () => {
+    expect(getBlogEditorialLayout(0)).toEqual({ layout: "horizontal", imagePosition: "start" });
+    expect(getBlogEditorialLayout(1)).toEqual({ layout: "vertical", imagePosition: "start" });
+    expect(getBlogEditorialLayout(5)).toEqual({ layout: "horizontal", imagePosition: "end" });
+    expect(getBlogEditorialLayout(6)).toEqual(getBlogEditorialLayout(0));
   });
 });
