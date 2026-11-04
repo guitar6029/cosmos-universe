@@ -9,14 +9,23 @@ import type {
 
 const props = defineProps<{ blocks: PortableTextContent[] }>();
 
-function safeHref(href: string): string | null {
-  if (href.startsWith("/")) {
-    return href;
+interface SafeLink {
+  external: boolean;
+  href: string;
+}
+
+function safeLink(href: string): SafeLink | null {
+  if (href.startsWith("/") && !href.startsWith("//")) {
+    return { external: false, href };
   }
 
   try {
     const url = new URL(href);
-    return url.protocol === "https:" || url.protocol === "http:" ? url.toString() : null;
+    if (url.protocol !== "https:" && url.protocol !== "http:") {
+      return null;
+    }
+
+    return { external: true, href: url.toString() };
   } catch {
     return null;
   }
@@ -32,13 +41,14 @@ function renderSpan(span: PortableTextSpan, block: PortableTextBlock): VNode {
       content = h("em", content);
     } else {
       const definition = block.markDefs?.find((candidate) => candidate._key === mark);
-      const href = definition ? safeHref(definition.href) : null;
+      const link = definition ? safeLink(definition.href) : null;
 
-      if (href) {
-        const external = href.startsWith("http");
+      if (link) {
         content = h(
           "a",
-          external ? { href, rel: "noopener noreferrer", target: "_blank" } : { href },
+          link.external
+            ? { href: link.href, rel: "noopener noreferrer", target: "_blank" }
+            : { href: link.href },
           content,
         );
       }
