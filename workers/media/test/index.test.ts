@@ -328,7 +328,18 @@ describe("media worker", () => {
     expect(match).not.toHaveBeenCalled();
   });
 
-  it.each(["/outside/object.mp4", "/sounds/private.mp3", "/sounds/grand-concourse/private-map.svg", "/passport-office/briefing.pdf", "/about/unreviewed.svg", "/grand-concourse/private-map.svg", "/grand-concourse/../secret.png", "/astro-pop/script.js", "/astro-pop/document.html"])("hides unsupported path %s without R2 access", async (path) => {
+  it("serves reviewed blog artwork", async () => {
+    const key = "blog/hero/universe-chronicle-terminal.png";
+    const { env, get } = enabledEnv({ [key]: "image" });
+
+    const response = await dispatch(`/${key}`, env);
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe("image/png");
+    expect(get).toHaveBeenCalledWith(key);
+  });
+
+  it.each(["/outside/object.mp4", "/sounds/private.mp3", "/sounds/grand-concourse/private-map.svg", "/passport-office/briefing.pdf", "/about/unreviewed.svg", "/blog/unreviewed.svg", "/grand-concourse/private-map.svg", "/grand-concourse/../secret.png", "/astro-pop/script.js", "/astro-pop/document.html"])("hides unsupported path %s without R2 access", async (path) => {
     const { env, get, head } = enabledEnv();
     expect((await dispatch(path, env)).status).toBe(404);
     expect(get).not.toHaveBeenCalled();
