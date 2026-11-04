@@ -8,7 +8,7 @@ import UniverseNav from "../app/components/universe/UniverseNav.vue";
 import UniverseMultiverseCollage from "../app/components/universe/UniverseMultiverseCollage.vue";
 import UniverseHomePage from "../app/pages/index.vue";
 import UniverseAboutPage from "../app/pages/about.vue";
-import UniverseBlogPage from "../app/pages/blog.vue";
+import UniverseBlogPage from "../app/pages/blog/index.vue";
 import {
   GRAND_CONCOURSE_MEDIA,
   GRAND_CONCOURSE_MEDIA_BASE_URL,
@@ -468,7 +468,7 @@ describe("CosmoPort Universe navigation", () => {
     expect(html).toContain('fetchpriority="high"');
     expect(html).toContain('href="/blog"');
 
-    const source = await readFile(resolve(process.cwd(), "app/pages/blog.vue"), "utf8");
+    const source = await readFile(resolve(process.cwd(), "app/pages/blog/index.vue"), "utf8");
     const styles = await readFile(resolve(process.cwd(), "app/pages/blog.css"), "utf8");
     expect(source).toContain('@error="heroFailed = true"');
     expect(source).toContain("heroImage.value?.decode().catch");

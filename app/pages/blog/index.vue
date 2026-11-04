@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { BLOG_MEDIA } from "../data/blogMedia";
-import { getBlogEditorialLayout } from "../utils/blogEditorialLayout";
+import { BLOG_MEDIA } from "../../data/blogMedia";
+import { getBlogEditorialLayout } from "../../utils/blogEditorialLayout";
 import type { BlogListingPost } from "~/types/blog";
 
 const heroFailed = ref(false);
@@ -91,4 +91,4 @@ useSeoMeta({
   </div>
 </template>
 
-<style scoped src="./blog.css"></style>
+<style scoped src="../blog.css"></style>
