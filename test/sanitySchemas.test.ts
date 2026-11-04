@@ -1,6 +1,3 @@
-Failed to create stream fd: Operation not permitted
-Failed to create stream fd: Operation not permitted
-Failed to create stream fd: Operation not permitted
 import { describe, expect, it } from "vitest";
 
 import { schemaTypes } from "../studio/schemaTypes";
