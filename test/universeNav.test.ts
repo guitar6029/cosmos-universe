@@ -8,6 +8,7 @@ import UniverseNav from "../app/components/universe/UniverseNav.vue";
 import UniverseMultiverseCollage from "../app/components/universe/UniverseMultiverseCollage.vue";
 import UniverseHomePage from "../app/pages/index.vue";
 import UniverseAboutPage from "../app/pages/about.vue";
+import UniverseBlogPage from "../app/pages/blog.vue";
 import {
   GRAND_CONCOURSE_MEDIA,
   GRAND_CONCOURSE_MEDIA_BASE_URL,
@@ -96,7 +97,11 @@ const NuxtLink = defineComponent({
 });
 
 const renderWithAccountState = (
-  component: typeof UniverseNav | typeof UniverseHomePage | typeof UniverseAboutPage,
+  component:
+    | typeof UniverseNav
+    | typeof UniverseHomePage
+    | typeof UniverseAboutPage
+    | typeof UniverseBlogPage,
   accountState: AccountState,
 ) => {
   authState.value = accountState;
@@ -134,6 +139,7 @@ describe("CosmoPort Universe navigation", () => {
     expect(html).toContain('href="/passport-office?intent=sign-in"');
     expect(html).toContain('href="/passport-office?intent=register"');
     expect(html).toContain('href="/about"');
+    expect(html).toContain('href="/blog"');
     expect(html).not.toContain("UserButton");
   });
 
@@ -369,6 +375,7 @@ describe("CosmoPort Universe navigation", () => {
     expect(html).toContain('href="/passport-office?intent=register"');
     expect(html).toContain('href="/"');
     expect(html).toContain('href="/about"');
+    expect(html).toContain('href="/blog"');
   });
 
   it("uses the reviewed Grand Concourse CDN artwork with a motion-safe fallback", async () => {
@@ -403,6 +410,14 @@ describe("CosmoPort Universe navigation", () => {
     expect(html).toContain("Built with curiosity.");
     expect(html).toContain('href="/"');
     expect(html.match(/<img/g)).toHaveLength(6);
+  });
+
+  it("renders the Universe Chronicle placeholder with shared navigation", async () => {
+    const html = await renderWithAccountState(UniverseBlogPage, "signed-out");
+
+    expect(html).toContain("The Universe Chronicle");
+    expect(html).toContain("Engineering logs, cosmic dispatches, and stories from tomorrow.");
+    expect(html).toContain('href="/blog"');
   });
 
   it("is integrated only by the Universe root page", async () => {
