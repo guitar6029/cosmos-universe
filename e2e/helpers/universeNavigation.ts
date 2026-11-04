@@ -1,6 +1,3 @@
-Failed to create stream fd: Operation not permitted
-Failed to create stream fd: Operation not permitted
-Failed to create stream fd: Operation not permitted
 import { expect, type Locator, type Page } from "@playwright/test";
 
 export async function openUniverseMobileMenu(page: Page): Promise<Locator> {
