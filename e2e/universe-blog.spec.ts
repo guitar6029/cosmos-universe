@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-test("opens the Universe Chronicle from shared navigation with an active Blog link", async ({ page }) => {
+test("opens the Universe Chronicle from shared navigation with an active Blog link", async ({
+  page,
+}) => {
   await page.goto("/");
 
   await page
