@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openUniverseMobileMenu } from "./helpers/universeNavigation";
 
 test("opens the Universe Chronicle from shared navigation with an active Blog link", async ({
   page,
@@ -19,5 +20,23 @@ test("opens the Universe Chronicle from shared navigation with an active Blog li
     page
       .getByRole("navigation", { name: "CosmoPort Universe" })
       .getByRole("link", { name: "Blog", exact: true }),
+  ).toHaveClass(/router-link-exact-active/);
+});
+
+test("opens the Universe Chronicle from the mobile navigation with an active Blog link", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto("/");
+
+  await (
+    await openUniverseMobileMenu(page)
+  )
+    .getByRole("link", { name: "Blog", exact: true })
+    .click();
+
+  await expect(page).toHaveURL(/\/blog$/);
+  await expect(
+    (await openUniverseMobileMenu(page)).getByRole("link", { name: "Blog", exact: true }),
   ).toHaveClass(/router-link-exact-active/);
 });

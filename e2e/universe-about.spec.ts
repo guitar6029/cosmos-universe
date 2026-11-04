@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openUniverseMobileMenu } from "./helpers/universeNavigation";
 
 test.describe("CosmoPort Universe About page", () => {
   test("opens About from the floating Universe navigation", async ({ page }) => {
@@ -8,6 +9,19 @@ test.describe("CosmoPort Universe About page", () => {
       .getByRole("navigation", { name: "CosmoPort Universe" })
       .getByRole("link", { name: "About", exact: true })
       .click();
+    await expect(page).toHaveURL(/\/about$/);
+  });
+
+  test("opens About from the mobile Universe navigation", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 900 });
+    await page.goto("/");
+
+    await (
+      await openUniverseMobileMenu(page)
+    )
+      .getByRole("link", { name: "About", exact: true })
+      .click();
+
     await expect(page).toHaveURL(/\/about$/);
   });
 
