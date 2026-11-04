@@ -161,7 +161,7 @@ test("keeps every signed-out navigation control usable at 320px", async ({ page 
   await mockGrandConcourseImage(page, 200);
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
-  await waitForClientHydration(page);
+  await page.waitForTimeout(250);
 
   const navigation = page.getByRole("navigation", { name: "CosmoPort Universe" });
   const menuTrigger = navigation.getByRole("button", { name: "Open navigation menu" });
