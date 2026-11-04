@@ -10,7 +10,14 @@ const IMAGE_CACHE_TTL_SECONDS = 300;
 const RATE_LIMIT_RETRY_AFTER_SECONDS = 60;
 // Each prefix is a deliberately reviewed public-artwork namespace. Keep this
 // allowlist narrow; R2 itself remains private.
-const PUBLIC_MEDIA_PREFIXES = ["astro-pop/", "passport-office/", "about/", "grand-concourse/", "sounds/grand-concourse/"];
+const PUBLIC_MEDIA_PREFIXES = [
+  "astro-pop/",
+  "passport-office/",
+  "about/",
+  "blog/",
+  "grand-concourse/",
+  "sounds/grand-concourse/",
+];
 // Avatar delivery is limited to the four reviewed presets, not arbitrary uploads.
 const PUBLIC_AVATAR_KEYS = new Set([
   "avatars/cosmos_avatar_astronaut_transparent.png",
