@@ -17,10 +17,10 @@ onMounted(() => {
 });
 
 useSeoMeta({
-  title: "CosmoPort Universe",
-  description: "Welcome to the Grand Concourse, your gateway to the CosmoPort Universe.",
-  ogTitle: "CosmoPort Universe",
-  ogDescription: "Welcome to the Grand Concourse, your gateway to the CosmoPort Universe.",
+  title: "CosmosUniverse",
+  description: "Welcome to the CosmoPort Grand Concourse, your gateway to CosmosUniverse.",
+  ogTitle: "CosmosUniverse",
+  ogDescription: "Welcome to the CosmoPort Grand Concourse, your gateway to CosmosUniverse.",
 });
 const { data, status, error, refresh } = useFetch("/api/apps");
 </script>
