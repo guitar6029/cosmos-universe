@@ -1,6 +1,3 @@
-Failed to create stream fd: Operation not permitted
-Failed to create stream fd: Operation not permitted
-Failed to create stream fd: Operation not permitted
 import { describe, expect, it } from "vitest";
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../app/site";
 
