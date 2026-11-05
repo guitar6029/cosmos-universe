@@ -18,11 +18,16 @@ async function mockGrandConcourseImage(page: Page, status: 200 | 404) {
   });
 }
 
-test("uses CosmosUniverse branding for the home page title and social metadata", async ({ page }) => {
+test("uses CosmosUniverse branding for the home page title and social metadata", async ({
+  page,
+}) => {
   await page.goto("/");
 
   await expect(page).toHaveTitle("CosmosUniverse");
-  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", "CosmosUniverse");
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    "content",
+    "CosmosUniverse",
+  );
 });
 
 test("presents AstroPop as the only active Grand Concourse experience", async ({ page }) => {
