@@ -8,8 +8,17 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("h3", () => ({
   defineEventHandler: <T>(handler: T) => handler,
-  createError: ({ status, statusText }: { status: number; statusText: string }) =>
-    Object.assign(new Error(statusText), { statusCode: status }),
+  createError: ({
+    status,
+    statusCode,
+    statusMessage,
+    statusText,
+  }: {
+    status?: number;
+    statusCode?: number;
+    statusMessage?: string;
+    statusText?: string;
+  }) => Object.assign(new Error(statusMessage ?? statusText), { statusCode: statusCode ?? status }),
   getRouterParam: (...args: unknown[]) => mocks.routeParam(...args),
   setResponseHeader: (event: { res: { headers: Headers } }, name: string, value: string) =>
     event.res.headers.set(name, value),
