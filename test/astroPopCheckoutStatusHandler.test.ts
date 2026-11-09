@@ -14,6 +14,7 @@ const mocks = vi.hoisted(() => {
 
   return {
     StripeInvalidRequestError,
+    getGuestCredential: vi.fn(),
     isGuestAuthorized: vi.fn(),
     getQuery: vi.fn(),
     isOrderRecorded: vi.fn(),
@@ -47,6 +48,7 @@ vi.mock("../server/utils/astroPopDatabase", () => ({
 }));
 
 vi.mock("../server/utils/astroPopGuestCheckout", () => ({
+  getAstroPopGuestCredential: mocks.getGuestCredential,
   isAstroPopGuestCheckoutAuthorized: mocks.isGuestAuthorized,
 }));
 
@@ -78,6 +80,7 @@ describe("Astro Pop checkout status handler", () => {
     mocks.getQuery.mockReturnValue({ session_id: "cs_test_astro_pop_status" });
     mocks.stripeClient.checkout.sessions.retrieve.mockResolvedValue(session());
     mocks.isOrderRecorded.mockResolvedValue(true);
+    mocks.getGuestCredential.mockReturnValue("a".repeat(43));
     mocks.isGuestAuthorized.mockReturnValue(true);
   });
 
@@ -97,6 +100,14 @@ describe("Astro Pop checkout status handler", () => {
 
     await expect(handler({})).rejects.toMatchObject({ statusCode: 500 });
     expect(mocks.stripeClient.checkout.sessions.retrieve).not.toHaveBeenCalled();
+  });
+
+  it("rejects a missing guest credential before calling Stripe", async () => {
+    mocks.getGuestCredential.mockReturnValue(undefined);
+
+    await expect(handler({})).rejects.toMatchObject({ statusCode: 403 });
+    expect(mocks.stripeClient.checkout.sessions.retrieve).not.toHaveBeenCalled();
+    expect(mocks.isOrderRecorded).not.toHaveBeenCalled();
   });
 
   it("maps a missing Stripe session to 404", async () => {
@@ -125,11 +136,10 @@ describe("Astro Pop checkout status handler", () => {
   });
 
   it.each([
-    ["a missing browser credential", undefined],
     ["an incorrect browser credential", "b".repeat(64)],
     ["a missing fingerprint", undefined],
   ])("rejects %s before querying Neon", async (_description, fingerprint) => {
-    if (fingerprint === undefined && _description === "a missing fingerprint") {
+    if (fingerprint === undefined) {
       mocks.stripeClient.checkout.sessions.retrieve.mockResolvedValue(
         session({ metadata: { astro_pop_order: "true" } }),
       );

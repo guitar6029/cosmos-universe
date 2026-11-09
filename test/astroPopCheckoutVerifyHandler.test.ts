@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => {
 
   return {
     StripeInvalidRequestError,
+    getGuestCredential: vi.fn(),
     getQuery: vi.fn(),
     isGuestAuthorized: vi.fn(),
     stripeClient,
@@ -32,6 +33,7 @@ vi.mock("stripe", () => ({
 }));
 
 vi.mock("../server/utils/astroPopGuestCheckout", () => ({
+  getAstroPopGuestCredential: mocks.getGuestCredential,
   isAstroPopGuestCheckoutAuthorized: mocks.isGuestAuthorized,
 }));
 
@@ -61,6 +63,7 @@ describe("Astro Pop checkout verification handler", () => {
     vi.stubEnv("ASTROPOP_STRIPE_SECRET_KEY", "sk_test_verify_handler");
     vi.clearAllMocks();
     mocks.getQuery.mockReturnValue({ session_id: "cs_test_astro_pop_verify" });
+    mocks.getGuestCredential.mockReturnValue("a".repeat(43));
     mocks.isGuestAuthorized.mockReturnValue(true);
     mocks.stripeClient.checkout.sessions.retrieve.mockResolvedValue(session());
   });
@@ -76,7 +79,14 @@ describe("Astro Pop checkout verification handler", () => {
     });
   });
 
-  it.each(["missing", "incorrect"])("rejects %s guest authorization", async () => {
+  it("rejects a missing guest credential before calling Stripe", async () => {
+    mocks.getGuestCredential.mockReturnValue(undefined);
+
+    await expect(handler({})).rejects.toMatchObject({ statusCode: 403 });
+    expect(mocks.stripeClient.checkout.sessions.retrieve).not.toHaveBeenCalled();
+  });
+
+  it("rejects an incorrect guest credential after retrieving the checkout", async () => {
     mocks.isGuestAuthorized.mockReturnValue(false);
 
     await expect(handler({})).rejects.toMatchObject({ statusCode: 403 });

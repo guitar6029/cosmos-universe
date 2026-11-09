@@ -3,7 +3,10 @@ import {
   checkoutSessionIdSchema,
   getCheckoutVerificationResult,
 } from "../../../utils/astroPopCheckoutVerification";
-import { isAstroPopGuestCheckoutAuthorized } from "../../../utils/astroPopGuestCheckout";
+import {
+  getAstroPopGuestCredential,
+  isAstroPopGuestCheckoutAuthorized,
+} from "../../../utils/astroPopGuestCheckout";
 import { createError, defineEventHandler, getQuery } from "nuxt/server";
 export default defineEventHandler(async (event) => {
   const parsedQuery = checkoutSessionIdSchema.safeParse(getQuery(event).session_id);
@@ -13,6 +16,12 @@ export default defineEventHandler(async (event) => {
       status: 400,
       statusText: "Invalid checkout session ID",
     });
+  }
+
+  // A Checkout Session ID alone must not trigger a Stripe lookup. Legitimate
+  // guest returns always have the HttpOnly credential set after session creation.
+  if (!getAstroPopGuestCredential(event)) {
+    throw createError({ status: 403, statusText: "Checkout access denied" });
   }
 
   const secretKey = process.env.ASTROPOP_STRIPE_SECRET_KEY;
