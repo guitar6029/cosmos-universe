@@ -5,7 +5,10 @@ import {
   checkoutSessionIdSchema,
   getAstroPopCheckoutStatus,
 } from "../../../utils/astroPopCheckoutVerification";
-import { isAstroPopGuestCheckoutAuthorized } from "../../../utils/astroPopGuestCheckout";
+import {
+  getAstroPopGuestCredential,
+  isAstroPopGuestCheckoutAuthorized,
+} from "../../../utils/astroPopGuestCheckout";
 
 /**
  * Reports whether an Astro Pop Checkout Session is paid and has been recorded
@@ -16,6 +19,12 @@ export default defineEventHandler(async (event) => {
 
   if (!parsedQuery.success) {
     throw createError({ status: 400, statusText: "Invalid checkout session ID" });
+  }
+
+  // A Checkout Session ID alone must not trigger a Stripe lookup. Legitimate
+  // guest returns always have the HttpOnly credential set after session creation.
+  if (!getAstroPopGuestCredential(event)) {
+    throw createError({ status: 403, statusText: "Checkout access denied" });
   }
 
   const secretKey = process.env.ASTROPOP_STRIPE_SECRET_KEY;
