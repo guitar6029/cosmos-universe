@@ -36,6 +36,31 @@ describe("Sanity image URLs", () => {
       "https://cdn.sanity.io/images/project/dataset/image.jpg?auto=format&fit=crop&w=960&h=640",
     );
   });
+
+  it("preserves valid existing image parameters while applying display transforms", () => {
+    expect(
+      getSanityImageUrl(
+        "https://cdn.sanity.io/images/project/dataset/image.jpg?fm=webp&auto=compress",
+        960,
+        640,
+      ),
+    ).toBe(
+      "https://cdn.sanity.io/images/project/dataset/image.jpg?fm=webp&auto=format&fit=crop&w=960&h=640",
+    );
+  });
+
+  it.each([
+    "not a URL",
+    "https://cdn.sanity.io/images/project/dataset",
+    "https://cdn.sanity.io/images/project/dataset/image.jpg/extra",
+    "http://cdn.sanity.io/images/project/dataset/image.jpg",
+    "https://example.com/images/project/dataset/image.jpg",
+    "https://cdn.sanity.io.evil.example/images/project/dataset/image.jpg",
+    "javascript:alert(1)",
+    "https://user:password@cdn.sanity.io/images/project/dataset/image.jpg",
+  ])("returns null for malformed or unsupported CMS image URLs: %s", (imageUrl) => {
+    expect(getSanityImageUrl(imageUrl, 960, 640)).toBeNull();
+  });
 });
 
 describe("Chronicle listing presentation", () => {
