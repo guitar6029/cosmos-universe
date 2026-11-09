@@ -31,7 +31,9 @@ describe("CosmoPort Radio", () => {
   });
 
   it("does not construct or play audio until a visitor presses Play", async () => {
-    const audioConstructor = vi.fn((src: string) => new FakeAudio(src));
+    const audioConstructor = vi.fn(function (src: string) {
+      return new FakeAudio(src);
+    });
     vi.stubGlobal("Audio", audioConstructor);
     const { useUniverseRadio } = await import("../app/composables/useUniverseRadio");
     const radio = useUniverseRadio();
@@ -46,7 +48,9 @@ describe("CosmoPort Radio", () => {
   });
 
   it("updates volume immediately, preserves it through mute, and stops for a mini-app", async () => {
-    const audioConstructor = vi.fn((src: string) => new FakeAudio(src));
+    const audioConstructor = vi.fn(function (src: string) {
+      return new FakeAudio(src);
+    });
     vi.stubGlobal("Audio", audioConstructor);
     const { useUniverseRadio } = await import("../app/composables/useUniverseRadio");
     const radio = useUniverseRadio();
@@ -70,7 +74,7 @@ describe("CosmoPort Radio", () => {
     const pendingPlay = new Promise<void>((resolve) => {
       resolvePlay = resolve;
     });
-    const audioConstructor = vi.fn((src: string) => {
+    const audioConstructor = vi.fn(function (src: string) {
       const player = new FakeAudio(src);
       player.play.mockReturnValue(pendingPlay);
       return player;
@@ -95,7 +99,7 @@ describe("CosmoPort Radio", () => {
     const pendingPlay = new Promise<void>((_resolve, reject) => {
       rejectPlay = reject;
     });
-    const audioConstructor = vi.fn((src: string) => {
+    const audioConstructor = vi.fn(function (src: string) {
       const player = new FakeAudio(src);
       player.play.mockReturnValue(pendingPlay);
       return player;
@@ -122,7 +126,7 @@ describe("CosmoPort Radio", () => {
     const secondPlay = new Promise<void>((resolve) => {
       resolveSecond = resolve;
     });
-    const audioConstructor = vi.fn((src: string) => {
+    const audioConstructor = vi.fn(function (src: string) {
       const player = new FakeAudio(src);
       player.play.mockReturnValueOnce(firstPlay).mockReturnValueOnce(secondPlay);
       return player;
